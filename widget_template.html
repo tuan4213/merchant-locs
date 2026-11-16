@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#mwidget{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#1e1e2e 0%,#2a2a3e 100%);color:#e0e0e0;padding:16px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:1180px;margin:8px 0;border:1px solid #3a3a4e;overflow-x:auto}
+#mwidget .t{font-size:13px;font-weight:600;letter-spacing:1px;color:#7ab7ff;text-transform:uppercase;margin-bottom:10px}
+#mwidget .big{font-size:34px;font-weight:700;color:#ffd166;font-variant-numeric:tabular-nums;margin:6px 0}
+#mwidget .sub{font-size:13px;color:#a0a0b0;margin-bottom:16px;line-height:1.4;min-height:20px}
+#mwidget .card{background:rgba(255,255,255,.03);border-radius:8px;padding:10px 14px;margin:8px 0;border-left:3px solid #3a3a4e;min-width:600px;position:relative;transition:background 0.15s}
+#mwidget .card.next{background:rgba(255,209,102,.08);border-left-color:#ffd166}
+#mwidget .card.past{opacity:.5}
+#mwidget .card.actual{background:rgba(144,238,144,.06);border-left-color:#90ee90;opacity:1}
+#mwidget .card.bridge{background:rgba(138,124,255,.06);border-left-color:#8a7cff;opacity:.85}
+#mwidget .ch { padding-left: 0; display:flex; justify-content:space-between; align-items:center; font-size:14px; margin-bottom:8px; gap:12px; flex-wrap:wrap; }
+#mwidget .pat-row { padding-left: 0; display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+#mwidget .items-list { padding-left: 0; display:flex; flex-direction:column; }
+#mwidget .float-btn {position: absolute; left: 0; top: 50%; transform: translateY(-50%); height: 24px; width: 24px; border-radius: 12px; background: rgba(30,30,46,0.95); color: #7ab7ff; border: 1px solid #7ab7ff; box-shadow: 0 2px 6px rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; font-family: inherit; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding: 0; overflow: hidden; white-space: nowrap;}
+#mwidget .ch.active .float-btn, #mwidget .pat-row.active .float-btn, #mwidget .items-list.active .float-btn, #mwidget .fb-item.active .copy-fb-btn { display: flex; }
+#mwidget .float-btn:hover, #mwidget .copy-fb-btn:hover { background: #7ab7ff; color: #1e1e2e; transform: translateY(-50%) scale(1.1); }
+#mwidget .float-btn.copied, #mwidget .copy-fb-btn.copied {width: 74px; background: #90ee90; color: #1e1e2e; border-color: #90ee90; justify-content: flex-start; padding-left: 7px;}
+#mwidget .ch .left{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+#mwidget .ch .slot{color:#7ab7ff;font-weight:700;font-size:15px}
+#mwidget .ch .time{color:#c0c0d0;font-weight:600}
+#mwidget .ch .local{font-size:11px;color:#888;margin-left:6px}
+#mwidget .ch .tag{font-size:11px;padding:1px 6px;border-radius:3px;background:rgba(122,183,255,.15);color:#7ab7ff}
+#mwidget .ch .tag.phase{background:rgba(255,158,100,.15);color:#ff9e64}
+#mwidget .ch .cd{color:#90ee90;font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
+#mwidget .ch .cd.soon{color:#ff6b6b;animation:pulse 1s infinite}
+#mwidget .ch .cd.past{color:#666}
+#mwidget .body{display:grid;grid-template-columns:minmax(280px,1fr) 340px;gap:16px;align-items:start}
+#mwidget .body.single{grid-template-columns:minmax(280px,1fr)}
+#mwidget .pat{flex:1;min-width:0;font-family:'SF Mono',Monaco,Consolas,monospace;font-size:13px;color:#ffd166;margin:0;padding:6px 10px;background:rgba(255,209,102,.06);border-radius:4px;letter-spacing:.4px;word-break:break-all}
+#mwidget .pos{display:grid;grid-template-columns:64px 1fr;gap:10px;font-size:12px;padding:3px 6px;color:#b0b0c0;line-height:1.4}
+#mwidget .pos .p{color:#ff9e64;font-family:'SF Mono',Monaco,Consolas,monospace;font-weight:600}
+#mwidget .pos .it{color:#9090a0;word-break:break-word}
+#mwidget .fb-col{border-left:1px dashed rgba(255,255,255,.08);padding-left:20px;max-height:280px;overflow-y:auto;overflow-x:visible}
+#mwidget .fb-item{padding:6px 8px;padding-left: 8px; margin:6px 0;background:rgba(255,255,255,.02);border-radius:4px;border-left:2px solid #7ab7ff;font-size:11px;line-height:1.35;cursor:pointer}
+#mwidget .fb-item.active { padding-left: 32px; }
+#mwidget .fb-item.top2{border-left-color:#ffd166;background:rgba(255,209,102,.08);padding:8px 10px;margin-bottom:12px}
+#mwidget .fb-item.top2 .fb-pat{color:#ffd166;font-size:12px}
+#mwidget .fb-item.top2 .fb-prob{color:#ffd166;font-size:12px}
+#mwidget .copy-fb-btn {position: absolute; left: 6px; top: 50%; transform: translateY(-50%); height: 24px; width: 24px; border-radius: 12px; background: rgba(30,30,46,0.95); color: #7ab7ff; border: 1px solid #7ab7ff; box-shadow: 0 2px 6px rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; font-family: inherit; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding: 0; overflow: hidden; white-space: nowrap;}
+@keyframes pulse{50%{opacity:.4}}
+</style>
+<div id="mwidget"><div class="t" id="mtitle">—</div><div class="big" id="mbig">--</div><div class="sub" id="msub">—</div><div id="mrow"></div></div>
+<script>
+(function(){
+  const payload=__P__,data=payload.slots,L=payload.L,utc_offset=payload.utc_offset;
+  const realNextIso=payload.real_next_iso,offsetSlots=payload.offset_slots||0;
+  const isTimeTravel=offsetSlots!==0;
+  const bigEl=document.getElementById('mbig'),subEl=document.getElementById('msub'),rowEl=document.getElementById('mrow');
+  document.getElementById('mtitle').textContent = L.title || 'Merchant'; 
+  subEl.textContent = L.loading || 'Loading...';
+  const pad=n=>String(n).padStart(2,'0');
+  let lastBigIdx = -1;
+
+  const missingSlots = payload.missing_04 || [];
+  const missingMap = {};
+  missingSlots.forEach(m => missingMap[String(m.slot)] = m.iso);
+
+  function getTimeParts(isoString, offset) {
+      const d = new Date(isoString);
+      const localMs = d.getTime() + offset * 3600000;
+      const localDate = new Date(localMs);
+      return { timeStr: pad(localDate.getUTCHours()) + ':' + pad(localDate.getUTCMinutes()), dateStr: pad(localDate.getUTCMonth() + 1) + '/' + pad(localDate.getUTCDate()) };
+  }
+
+  function fmt(ms){
+    if(ms<0)return L.passed || 'Passed';
+    const s=Math.floor(ms/1000);
+    const d=Math.floor(s/86400),h=Math.floor(s%86400/3600), m=Math.floor(s%3600/60),sec=s%60;
+    if(d>0)return d+'d '+pad(h)+'h '+pad(m)+'m';
+    if(h>0)return h+'h '+pad(m)+'m '+pad(sec)+'s';
+    if(m>0)return m+'m '+pad(sec)+'s';
+    return sec+'s';
+  }
+  function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+  async function copyToClipboard(text) {
+    try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch(e) {}
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.cssText='position:fixed;left:-9999px;top:0';
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta); return ok;
+    } catch(e) { return false; }
+  }
+
+  function render(){
+    const now=Date.now();
+    let nextIdx = -1;
+    for(let i=0; i<data.length; i++){
+      if(Date.parse(data[i].iso) > now){ nextIdx = i; break; }
+    }
+    const bigIdx = (nextIdx === -1) ? 0 : nextIdx;
+    lastBigIdx = bigIdx;
+    const n = data[bigIdx];
+    const t = Date.parse(n.iso);
+    const d = t - now;
+    
+    if(n.is_actual){ bigEl.textContent = L.real_badge || 'Actual'; bigEl.style.color = '#90ee90'; }
+    else if(n.is_bridge){ bigEl.textContent = L.bridge_badge || 'Bridge'; bigEl.style.color = '#8a7cff'; }
+    else { bigEl.textContent='⏱ '+fmt(d); bigEl.style.color=d<600000?'#ff6b6b':'#ffd166'; }
+    
+    const top=n.top||{pattern:'?',positions:[],source:'?',type:'?'};
+    let icon = '🟡';
+    if(top.type === 'actual') icon = '✅';
+    else if(top.type === 'real') icon = '🟢';
+    else if(top.type === 'bridge') icon = '🌉';
+    
+    const nParts = getTimeParts(n.iso, utc_offset);
+    subEl.innerHTML=icon+' <b>Slot '+n.slot+'</b> · <b>'+esc(nParts.timeStr)+' ('+esc(nParts.dateStr)+')</b>'+
+      ' <span class="local">('+esc(n.hname)+' VN)</span>';
+      
+    const startIdx = Math.max(0, bigIdx - 1); // Bắt đầu hiển thị từ 1 slot cũ
+    const endIdx = Math.min(startIdx + 5, data.length);
+    let html='';
+    for(let i=startIdx; i<endIdx; i++){
+      const s=data[i], tt=Date.parse(s.iso), dd=tt-now;
+      const isNext = (i === bigIdx);
+      let cardCls='card'+(isNext?' next':'')+(dd<0?' past':'');
+      if(s.is_actual) cardCls += ' actual';
+      else if(s.is_bridge) cardCls += ' bridge';
+      const cdCls='cd'+(dd<0?' past':(dd<600000?' soon':''));
+      
+      let cdDisplay = (s.is_actual || s.is_bridge || dd <= 0) ? '<span class="'+cdCls+'">✓</span>' : '<span class="'+cdCls+'">'+fmt(dd)+'</span>';
+      const sParts = getTimeParts(s.iso, utc_offset);
+      
+      let tags = s.phase ? '<span class="tag phase">'+esc(s.phase)+'</span>' : '';
+      if(s.top && s.top.prob) tags += '<span class="tag">'+esc(s.top.prob)+'</span>';
+
+      html+='<div class="'+cardCls+'" data-iso="'+esc(s.iso)+'">' +
+        '<div class="ch">'+
+        '<div class="left"><span>'+icon+'</span><span class="slot">'+s.slot+'</span>'+
+        '<span class="time">'+esc(sParts.timeStr)+' ('+esc(sParts.dateStr)+')</span>'+
+        '<span class="local">('+esc(s.hname)+' VN)</span>'+tags+
+        '</div>'+cdDisplay+'</div>'+
+        '<div class="body single"><div class="top-col">'+
+        '<div class="pat-row"><div class="pat">'+esc(top.pattern)+'</div></div>'+
+        '</div></div></div>';
+    }
+    rowEl.innerHTML=html;
+  }
+  
+  function tick(){
+    const now = Date.now();
+    let nextIdx = -1;
+    for(let i=0; i<data.length; i++){
+      if(Date.parse(data[i].iso) > now){ nextIdx = i; break; }
+    }
+    const bigIdx = (nextIdx === -1) ? 0 : nextIdx;
+    
+    if (bigIdx !== lastBigIdx) { render(); return; }
+    
+    const n = data[bigIdx];
+    const d = Date.parse(n.iso) - now;
+    if(!n.is_actual && !n.is_bridge){
+      bigEl.textContent = '⏱ ' + fmt(d);
+      bigEl.style.color = d<600000 ? '#ff6b6b' : '#ffd166';
+    }
+    document.querySelectorAll('.card[data-iso]').forEach(card => {
+      const ms = Date.parse(card.dataset.iso) - now;
+      const cdEl = card.querySelector('.cd');
+      if(!cdEl) return;
+      if(card.classList.contains('actual') || card.classList.contains('bridge') || ms <= 0){
+        cdEl.textContent = '✓'; cdEl.className = 'cd past'; return;
+      }
+      cdEl.textContent = fmt(ms);
+      cdEl.className = 'cd' + (ms < 600000 ? ' soon' : '');
+    });
+  }
+
+  render();
+  setInterval(tick, 1000);
+})();
+</script>
+</html>
