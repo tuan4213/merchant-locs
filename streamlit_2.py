@@ -124,7 +124,7 @@ WIDGET_TEMPLATE_HTML = """<!DOCTYPE html>
 <html>
 <head>
 <style>
-#mwidget{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#1e1e2e 0%,#2a2a3e 100%);color:#e0e0e0;padding:16px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:1180px;margin:8px auto;border:1px solid #3a3a4e;overflow-x:auto}
+#mwidget{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#1e1e2e 0%,#2a2a3e 100%);color:#e0e0e0;padding:16px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:1180px;margin:8px 0;border:1px solid #3a3a4e;overflow-x:auto}
 #mwidget .t{font-size:13px;font-weight:600;letter-spacing:1px;color:#7ab7ff;text-transform:uppercase;margin-bottom:10px}
 #mwidget .big{font-size:34px;font-weight:700;color:#ffd166;font-variant-numeric:tabular-nums;margin:6px 0}
 #mwidget .sub{font-size:13px;color:#a0a0b0;margin-bottom:16px;line-height:1.4;min-height:20px}
@@ -203,7 +203,8 @@ WIDGET_TEMPLATE_HTML = """<!DOCTYPE html>
     else if(top.type === 'bridge') icon = '🌉';
     
     const nParts = getTimeParts(n.iso, utc_offset);
-    subEl.innerHTML=icon+' <b>Slot '+n.slot+'</b> · <b>'+esc(nParts.timeStr)+' ('+esc(nParts.dateStr)+')</b>'+ ' <span class="local">('+esc(n.hname)+' VN)</span>';
+    subEl.innerHTML=icon+' <b>Slot '+n.slot+'</b> · <b>'+esc(nParts.timeStr)+' ('+esc(nParts.dateStr)+')</b>'+
+      ' <span class="local">('+esc(n.hname)+' VN)</span>';
       
     const startIdx = Math.max(0, bigIdx - 1);
     const endIdx = Math.min(startIdx + 6, data.length);
