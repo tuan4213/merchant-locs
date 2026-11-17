@@ -1,42 +1,48 @@
-# logger_utils.py
+# logger_utils.py — Logging helpers cho pipeline
 import io
 
 class PipelineLogger:
     def __init__(self):
         self.buffer = io.StringIO()
-    
-    def write(self, text):
-        if text is None: return
-        text = str(text)
-        self.buffer.write(text)
-        if not text.endswith('\n'):
-            self.buffer.write('\n')
-    
-    def flush(self): pass
-    
+        self.indent = "   "
+
+    def write(self, msg=""):
+        print(msg, file=self.buffer)
+
     def hdr(self, title):
-        self.buffer.write(f"\n{'='*70}\n{title}\n{'='*70}\n")
-    
+        self.write(f"\n{'='*72}\n{title}\n{'='*72}")
+
     def section(self, title):
-        self.buffer.write(f"\n--- {title} ---\n")
-    
-    def info(self, text):
-        self.buffer.write(str(text) + "\n")
-    
-    def summary(self, title, data):
-        self.buffer.write(f"\n{title}:\n")
-        if isinstance(data, dict):
-            for k, v in data.items():
-                self.buffer.write(f"  • {k}: {v}\n")
-    
-    def table(self, title, rows, headers=None, widths=None):
-        self.buffer.write(f"\n{title}:\n")
-        if headers:
-            self.buffer.write("  " + " | ".join(str(h) for h in headers) + "\n")
-            self.buffer.write("  " + "-" * 50 + "\n")
-        if rows:
-            for row in rows:
-                self.buffer.write("  " + " | ".join(str(c) for c in row) + "\n")
-    
+        self.write(f"\n{self.indent}── {title} ──")
+
+    def kv(self, key, value, indent_lv=1):
+        pad = self.indent * indent_lv
+        self.write(f"{pad}{key:<22} = {value}")
+
+    def info(self, msg, indent_lv=1):
+        pad = self.indent * indent_lv
+        self.write(f"{pad}{msg}")
+
+    def summary(self, title, items, indent_lv=1):
+        pad = self.indent * indent_lv
+        if title: self.write(f"\n{pad}{title}")
+        for k, v in items.items():
+            self.write(f"{pad}{k:<22} {v}")
+
+    def table(self, title, rows, headers=None, widths=None, indent_lv=1):
+        pad = self.indent * indent_lv
+        if title: self.write(f"\n{pad}{title}")
+        if headers and widths:
+            self.write(pad + " ".join(f"{h:<{w}}" for h, w in zip(headers, widths)))
+            self.write(pad + "-" * (sum(widths) + len(widths) - 1))
+        for row in rows:
+            if widths:
+                self.write(pad + " ".join(f"{str(c):<{w}}" for c, w in zip(row, widths)))
+            else:
+                self.write(pad + " ".join(str(c) for c in row))
+
+    def flush(self):
+        pass
+
     def getvalue(self):
         return self.buffer.getvalue()

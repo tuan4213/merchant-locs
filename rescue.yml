@@ -1,0 +1,39 @@
+name: Rescue IDs
+
+on:
+  workflow_dispatch: # Chỉ chạy khi bạn bấm nút thủ công
+
+# ═══════════════════════════════════════════════════════════════════
+# DÒNG THẦN THÁNH: CẤP QUYỀN GHI ĐỂ VƯỢT QUA LỖI 403
+# ═══════════════════════════════════════════════════════════════════
+permissions:
+  contents: write
+
+jobs:
+  rescue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360 # Cho phép chạy tối đa 6 tiếng
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install discord.py-self pandas PyGithub requests
+
+      - name: Run Rescue Script
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: python rescue_ids.py

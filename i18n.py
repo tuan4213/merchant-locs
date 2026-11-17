@@ -104,3 +104,10 @@ def check_locales_errors():
 
 def detect_default_lang():
     return "vi"
+
+
+# --- Ported from old version ---
+VN_TIMEZONES = {
+    "Asia/Ho_Chi_Minh", "Asia/Saigon", "Asia/Bangkok",
+    "Asia/Phnom_Penh", "Asia/Vientiane", "Asia/Jakarta",
+}
