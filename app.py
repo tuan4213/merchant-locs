@@ -99,8 +99,13 @@ def _get_main_sha():
     try:
         try: token = st.secrets.get("GITHUB_TOKEN")
         except Exception: token = os.getenv("GITHUB_TOKEN")
-        url = (f"https://{token}@github.com/{REPO_NAME}.git" if token else f"https://github.com/{REPO_NAME}.git")
-        r = subprocess.run(["git", "ls-remote", url, f"refs/heads/{_DATA_BRANCH}"], capture_output=True, text=True, timeout=10)
+        git_url = f"https://github.com/{REPO_NAME}.git"
+        cmd = ["git"]
+        if token:
+            auth = base64.b64encode(f"x-access-token:{token}".encode()).decode()
+            cmd.extend(["-c", f"http.extraheader=AUTHORIZATION: basic {auth}"])
+        cmd.extend(["ls-remote", git_url, f"refs/heads/{_DATA_BRANCH}"])
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
         if r.returncode == 0 and r.stdout.strip(): return r.stdout.strip().split()[0]
     except Exception: pass
     return None
@@ -110,20 +115,16 @@ def _load_at_sha(sha):
     try:
         try: token = st.secrets.get("GITHUB_TOKEN")
         except Exception: token = os.getenv("GITHUB_TOKEN")
-        repo_url = (f"https://{token}@github.com/{REPO_NAME}.git" if token else f"https://github.com/{REPO_NAME}.git")
-        
+        git_url = f"https://github.com/{REPO_NAME}.git"
         target_dir = "/tmp/main_repo_data_v1220"
         if os.path.exists(target_dir): shutil.rmtree(target_dir, ignore_errors=True)
-        
         cmd = ["git"]
         if token:
             auth = base64.b64encode(f"x-access-token:{token}".encode()).decode()
             cmd.extend(["-c", f"http.extraheader=AUTHORIZATION: basic {auth}"])
-        cmd.extend(["clone", "--depth", "1", "-b", _DATA_BRANCH, repo_url, target_dir])
-        
+        cmd.extend(["clone", "--depth", "1", "-b", _DATA_BRANCH, git_url, target_dir])
         r = subprocess.run(cmd, capture_output=True, timeout=30)
         if r.returncode != 0: return None
-        
         csv_files = glob.glob(f"{target_dir}/**/*.csv", recursive=True)
         csv_files.sort(key=lambda x: x.endswith('data.csv'))
         rows, used_files = [], []
@@ -143,21 +144,45 @@ def _load_at_sha(sha):
                         n += 1
                     if n: used_files.append((os.path.basename(path), n))
             except Exception: pass
-        
         if not rows: return None
-        
         seen = {(r[0], r[2], r[1]): r for r in rows}
         rows = list(seen.values())
         dts = [r[0] for r in rows]
         return rows, min(dts), max(dts), used_files
     except Exception as e: return None
 
+def _load_local_csv_v1220():
+    files = list_default_files()
+    if not files: return [], None, None, []
+    rows, used_files = [], []
+    for path in files:
+        try:
+            with open(path, "r", encoding="utf-8-sig") as fh:
+                reader = csv.DictReader(fh)
+                if not reader.fieldnames: continue
+                cols = {c.strip().lower(): c for c in reader.fieldnames}
+                col_ts = cols.get("timestamp"); col_ct = cols.get("content"); col_us = cols.get("username")
+                if not col_ts: continue
+                n = 0
+                for row in reader:
+                    dt = predictor.parse_ts(row.get(col_ts, ""))
+                    if dt is None: continue
+                    rows.append((dt, row.get(col_ct, "") if col_ct else "", row.get(col_us, "?") if col_us else "?"))
+                    n += 1
+                if n: used_files.append((path, n))
+        except Exception: pass
+    if not rows: return [], None, None, used_files
+    seen = {(r[0], r[2], r[1]): r for r in rows}
+    rows = list(seen.values())
+    dts = [r[0] for r in rows]
+    return rows, min(dts), max(dts), used_files
+
 def load_default_csv():
     sha = _get_main_sha()
     if sha:
         result = _load_at_sha(sha)
         if result: return result
-    return [], None, None, []
+    return _load_local_csv_v1220()
 
 _detected_lang = detect_default_lang()
 if "app_lang" not in st.session_state: st.session_state.app_lang = _detected_lang
@@ -170,9 +195,25 @@ with col_vi:
     st.button("🇻🇳 Tiếng Việt", on_click=_set_lang, args=("vi",), use_container_width=True, type="primary" if st.session_state.app_lang == "vi" else "secondary")
 with col_en:
     st.button("🇺🇸 English", on_click=_set_lang, args=("en",), use_container_width=True, type="primary" if st.session_state.app_lang == "en" else "secondary")
+with col_other:
+    _other_langs = {k: v for k, v in LANG_OPTIONS.items() if v not in ("vi", "en")}
+    if _other_langs:
+        _options = [""] + list(_other_langs.keys())
+        _idx = _options.index(next((k for k, v in _other_langs.items() if v == st.session_state.app_lang), ""))
+        _sel = st.selectbox("🌐 Khác / Others", _options, index=_idx, label_visibility="collapsed")
+        if _sel and st.session_state.app_lang != _other_langs[_sel]: _set_lang(_other_langs[_sel])
 
 lang = st.session_state.app_lang
 T = get_translator(lang)
+
+if predictor._WIDGET_TEMPLATE is None:
+    st.error(T("err_widget_missing", default="⚠️ Không tìm thấy file `widget_template.html`."))
+    st.stop()
+
+_lang_errs = check_locales_errors()
+if _lang_errs:
+    st.error(T("err_lang_files", default="⚠️ Language files error:\n\n") + "\n\n".join(f"- {e}" for e in _lang_errs))
+    st.stop()
 
 try: predictor.set_secrets(dict(st.secrets))
 except Exception: pass
@@ -186,6 +227,62 @@ with st.sidebar:
     _current_sha = _get_main_sha()
     if _current_sha: st.caption(f"🟢 GitHub: `{_current_sha[:7]}`")
     else: st.caption("🔴 GitHub: Offline")
+    
+    trans_lookback_input = predictor.TRANS_ADAPTIVE_LOOKBACK
+    if SHOW_ADVANCED_UI:
+        st.markdown(T("trans_scan_title", default="#### 🔍 Quét TRANS"))
+        trans_lookback_input = st.number_input(
+            T("trans_scan_slots", default="Số slot quét ngược"), min_value=40, max_value=5000,
+            value=predictor.TRANS_ADAPTIVE_LOOKBACK, step=10, key="trans_lookback_input"
+        )
+        st.markdown("---")
+        trans_text_ss = st.session_state.get('trans_text', '')
+        if trans_text_ss:
+            with st.expander("📊 TRANS động", expanded=False):
+                stats = st.session_state.get('trans_stats', {})
+                _s_acc = stats.get('static_acc', 0); _a_acc = stats.get('adaptive_acc', 0); _delta = _a_acc - _s_acc
+                _d_icon = '🟢' if _delta > 0 else ('⚪' if _delta == 0 else '🔴')
+                st.caption(f'Static: **{_s_acc:.1f}%** | Adaptive: **{_a_acc:.1f}%** | Delta: {_d_icon} {_delta:+.1f}%')
+                _curr = predictor.get_adaptive_offset_state()
+                _tog = st.toggle('🚀 Bật Adaptive Offset (override TRANS)', value=_curr, key='adaptive_offset_toggle')
+                if _tog != _curr:
+                    predictor.set_adaptive_offset_state(_tog)
+                    st.success(T("adaptive_toggled", default="✅ Đã {status} adaptive offset", status="BẬT" if _tog else "TẮT"))
+                    st.rerun()
+                if stats.get('was_overridden', False): st.success(T('trans_overridden', default='🚀 Đã ghi đè TRANS tĩnh'))
+                else: st.info(T('trans_using_static', default='✅ Đang dùng TRANS tĩnh'))
+                st.caption(T('trans_scanned_caption', default="📥 Đã quét: **{used}** slot (yêu cầu: {req})", used=stats.get('lookback_used', 0), req=stats.get('lookback_requested', 0)))
+                st.caption(T('trans_train_test', default="📊 Train: {train} | Test: {test}", train=stats.get('train_size', 0), test=stats.get('test_size', 0)))
+                edited = st.text_area(T('trans_edit', default='Sửa nội dung:'), value=trans_text_ss, height=200, key='trans_editor_v5')
+                st.markdown("**🎯 Auto-detected Offsets:**")
+                _current_offsets = predictor.ADAPTIVE_CANDIDATE_OFFSETS
+                if _current_offsets: st.code(", ".join(map(str, _current_offsets)), language="text")
+                else: st.caption("Chưa có (bấm nút bên dưới để quét)")
+                if st.button("🔍 Chạy thử (Verify Offsets mới)", key="btn_verify_offsets", use_container_width=True):
+                    with st.spinner("Đang quét và tính toán..."):
+                        _old_offsets = list(predictor.ADAPTIVE_CANDIDATE_OFFSETS) if predictor.ADAPTIVE_CANDIDATE_OFFSETS else []
+                        _new_offsets, _old_acc, _new_acc = predictor._auto_detect_offsets()
+                        st.session_state['offset_verify_result'] = {'old_offsets': _old_offsets, 'new_offsets': _new_offsets, 'old_acc': _old_acc, 'new_acc': _new_acc}
+                    st.rerun()
+                if 'offset_verify_result' in st.session_state:
+                    res = st.session_state['offset_verify_result']
+                    st.markdown("**📊 Kết quả kiểm tra:**")
+                    st.write(f"- Bộ cũ: `Accuracy {res['old_acc']:.1f}%`")
+                    st.write(f"- Bộ mới: `Accuracy {res['new_acc']:.1f}%`")
+                    if res['new_acc'] >= res['old_acc']:
+                        st.success(f"✅ Bộ mới tốt hơn/ngang bằng (+{res['new_acc']-res['old_acc']:.1f}%)")
+                        if st.button("🚀 Áp dụng Bộ Mới", type="primary", key="btn_apply_new", use_container_width=True):
+                            predictor.ADAPTIVE_CANDIDATE_OFFSETS = res['new_offsets']
+                            predictor._build_context_offset_cache(); st.cache_data.clear(); del st.session_state['offset_verify_result']
+                            st.success("Đã áp dụng Offsets mới thành công!"); st.rerun()
+                    else:
+                        st.error(f"❌ Bộ mới KÉM HƠN ({res['new_acc']-res['old_acc']:.1f}%)")
+                        if st.button("⚠️ Vẫn áp dụng (Không khuyến khích)", key="btn_apply_force", use_container_width=True):
+                            predictor.ADAPTIVE_CANDIDATE_OFFSETS = res['new_offsets']
+                            predictor._build_context_offset_cache(); st.cache_data.clear(); del st.session_state['offset_verify_result']
+                            st.warning("Đã áp dụng Offsets mới (dù kém hơn)."); st.rerun()
+                    if st.button("🗑️ Bỏ qua / Hủy kết quả", key="btn_discard_verify", use_container_width=True):
+                        del st.session_state['offset_verify_result']; st.rerun()
 
 st.title(T("title", default="📍 Merchant Location"))
 _default_files = list_default_files()
@@ -194,12 +291,27 @@ if _default_files:
     try:
         _d_rows, _d_min, _d_max, _used = load_default_csv()
         if _d_rows:
-            info_text = T("info_header", default="📚 **Default baseline** ({n} file(s)):", n=len(_used)) + "\n\n"
-            info_text += T("info_total", default="- 📊 **Total:** `{n:,}` posts", n=len(_d_rows)) + "\n\n"
+            total_mb = sum(os.path.getsize(f) for f in _default_files) / 1024 / 1024
+            shown = ", ".join(f"`{f}` ({n:,})" for f, n in _used[:5]) + (f" … (+{len(_used)-5})" if len(_used) > 5 else "")
+            info_text = T("info_header", default="📚 **Default baseline** ({n} file(s)):", n=len(_used)) + "\n\n" + f"- 📁 {shown}\n"
+            info_text += T("info_from", default="- 🗓️ **From:** `{v}` (VN, UTC+7)", v=_d_min.strftime('%Y-%m-%d %H:%M')) + "\n"
+            info_text += T("info_to", default="- 🗓️ **To:** `{v}` (VN, UTC+7)", v=_d_max.strftime('%Y-%m-%d %H:%M')) + "\n"
+            info_text += T("info_total", default="- 📊 **Total:** `{n:,}` posts  ·  💾 `{mb:.1f} MB`", n=len(_d_rows), mb=total_mb) + "\n\n"
             st.info(info_text)
+        else: st.warning(T("no_valid", default="⚠️ No valid rows"))
     except Exception as e: st.warning(T("read_error", default="⚠️ Read error: `{e}`", e=e))
+else: st.caption(T("no_default", default="ℹ️ No baseline CSV"))
 
-if "utc_offset" not in st.session_state: st.session_state.utc_offset = 7.0
+try:
+    from zoneinfo import ZoneInfo
+    system_tz_name = st.context.timezone or "Asia/Ho_Chi_Minh"
+    vn_tz = ZoneInfo("Asia/Ho_Chi_Minh")
+    sample = datetime(2025, 1, 1, 12, 0, tzinfo=vn_tz).astimezone(ZoneInfo(system_tz_name))
+    system_offset = sample.utcoffset().total_seconds() / 3600
+except Exception: system_tz_name, system_offset = "Asia/Ho_Chi_Minh", 7.0
+
+if "utc_offset" not in st.session_state: st.session_state.utc_offset = system_offset
+def reset_utc(): st.session_state.utc_offset = system_offset
 if "time_travel_slider" not in st.session_state: st.session_state.time_travel_slider = 0
 def reset_time_travel(): st.session_state.time_travel_slider = 0
 
@@ -221,17 +333,74 @@ if _has_something:
         return predictor.run_pipeline(list(files_tuple), list(default_rows_tuple), list(used_files_tuple), offset, use_def, lang_code, utc_off, trans_lookback)
 
     widget_html, log_text, trans_text, trans_stats = _cached(
-        files_data, default_rows, used_files, offset_days, use_default, lang, st.session_state.utc_offset, predictor.TRANS_ADAPTIVE_LOOKBACK, predictor.get_adaptive_offset_state())
+        files_data, default_rows, used_files, offset_days, use_default, lang, st.session_state.utc_offset, trans_lookback_input, predictor.get_adaptive_offset_state()
+    )
+    
+    if SHOW_ADVANCED_UI and trans_text:
+        _stats_changed = st.session_state.get('trans_stats') != trans_stats
+        _text_changed = st.session_state.get('trans_text') != trans_text
+        st.session_state['trans_text'] = trans_text
+        st.session_state['trans_stats'] = trans_stats
+        if (_stats_changed or _text_changed) and not st.session_state.get('_skip_rerun_flag'):
+            st.session_state['_skip_rerun_flag'] = True; st.rerun()
+    else:
+        st.session_state.pop('_skip_rerun_flag', None)
 
     if widget_html is None:
         st.error(T("failed", default="❌ Pipeline failed")); st.code(log_text, language="text")
     else:
-        st.success(T("success", default="✅ Processed successfully!"))
+        parts = ([T("part_default", default="{n} baseline", n=len(_default_files))] if use_default else []) + ([T("part_upload", default="{n} uploaded", n=len(uploaded))] if uploaded else [])
+        st.success(T("success", default="✅ Processed: {parts}", parts=" + ".join(parts)))
         if trans_stats.get('total_missing_04', 0) > 0:
-            st.warning(T("gap_warning", default="⚠️ **Cảnh báo Gap:** Phát hiện **{n}** slot bị thiếu dữ liệu.", n=trans_stats['total_missing_04']))
+            c1, c2 = st.columns([4, 1])
+            with c1: st.warning(T("gap_warning", default="⚠️ **Cảnh báo Gap:** Phát hiện **{n}** slot bị thiếu dữ liệu.", n=trans_stats['total_missing_04']))
+            with c2:
+                with st.popover(T("gap_detail_btn", default="🔍 Chi tiết"), use_container_width=True):
+                    st.write(T("gap_list_title", default="**Các slot bị thiếu gần nhất:**"))
+                    missing_str = format_missing_slots(trans_stats['missing_04'], st.session_state.utc_offset)
+                    st.code(missing_str, language="text")
         components.html(widget_html, height=1100, scrolling=True)
         with st.expander(T("expander", default="📋 Log"), expanded=False):
-            st.download_button(T("log_download", default="💾 Tải log"), log_text, file_name=f"pipeline_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt", key="dl_log_btn")
+            col_log_a, col_log_b = st.columns([4, 1])
+            with col_log_b:
+                st.download_button(T("log_download", default="💾 Tải log"), log_text, file_name=f"pipeline_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt", key="dl_log_btn", use_container_width=True)
             st.code(log_text, language="text")
 else:
     st.info(T("upload_hint", default="👆 Upload CSV to start"))
+
+with st.expander(T("predict_settings_title", default=T("predict_settings_title", default="⚙️ Predict Settings")), expanded=False):
+    if lang == "vi": st.caption(f"🌍 Hệ thống tự nhận diện: **{system_tz_name}** (UTC{system_offset:+.1f})")
+    else: st.caption(f"🌍 System auto-detected: **{system_tz_name}** (UTC{system_offset:+.1f})")
+    col_tz, col_tz_btn = st.columns([3, 1])
+    with col_tz: utc_offset = st.slider(T("utc_offset_label", default="🌍 UTC Offset"), min_value=-12.0, max_value=14.0, step=0.5, key="utc_offset")
+    with col_tz_btn: st.write(""); st.write(""); st.button(T("utc_reset_btn", default="🔄 Reset"), on_click=reset_utc)
+
+    _now_local = datetime.now(timezone.utc) + timedelta(hours=utc_offset)
+    _now_str = _now_local.strftime('%Y-%m-%d %H:%M:%S')
+    if lang == "vi": st.caption(f"🕐 **Giờ hiện tại (theo offset trên):** `{_now_str}` — UTC{utc_offset:+.1f}")
+    else: st.caption(f"🕐 **Current time (per offset above):** `{_now_str}` — UTC{utc_offset:+.1f}")
+
+    def calc_local_time(vn_hour, user_offset):
+        local_hour = (vn_hour - 7) + user_offset
+        day_shift = 0
+        if local_hour < 0: local_hour += 24; day_shift = -1
+        elif local_hour >= 24: local_hour -= 24; day_shift = 1
+        hh, mm = int(local_hour), int((local_hour - int(local_hour)) * 60)
+        time_str = f"{hh:02d}:{mm:02d}"
+        if day_shift == -1: time_str += T("time_prev", default=" (Prev)")
+        elif day_shift == 1: time_str += T("time_next", default=" (Next)")
+        return time_str
+
+    local_times = {k: calc_local_time(int(k), utc_offset) for k in ["04", "10", "16", "22"]}
+    settings_text = T("predict_settings_md", default="")
+    for k, v in local_times.items(): settings_text = settings_text.replace(f"{{t_{k}}}", v)
+    st.markdown(settings_text)
+    st.warning(T("timezone_warning", default="⚠️ Times based on VN timezone"))
+    st.warning(T("gap_disabled_warning", default="⚠️ **Lưu ý:** Các tính năng xử lý gap (Bridge, Patch 1, Auto-Heal) đã bị vô hiệu hoá vĩnh viễn trong code để đảm bảo dữ liệu không bị nhiễu."))
+    if trans_stats.get('total_missing_04', 0) > 0:
+        st.error(T("gap_stats", default="⚠️ **Thống kê Gap:** {n} slot bị thiếu dữ liệu.", n=trans_stats['total_missing_04']))
+        with st.popover(T("gap_detail_btn_settings", default="🔍 Xem chi tiết các slot gần nhất")):
+            missing_str = format_missing_slots(trans_stats['missing_04'], st.session_state.utc_offset)
+            st.code(missing_str, language="text")
+    else:
+        st.success(T("gap_none", default="✅ Dữ liệu đầy đủ, không phát hiện gap nào."))
