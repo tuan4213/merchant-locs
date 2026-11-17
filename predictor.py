@@ -102,6 +102,51 @@ def _parse_known_line(line, cfg):
         if key in kmap: cfg[kmap[key]] = int(val) if '.' not in val else float(val); return
     raise ValueError(f'Unknown syntax: {line!r}')
 
+def load_known_patterns(path='known_patterns.txt'):
+    p = Path(path)
+    if not p.exists(): return None
+    cfg = {'BASE_TIME_STR': '2025-01-01 04:00:00', 'CYCLE': 119, 'JITTERS': {}, 'K_ACTIVE': {}, 'PATCH1_K': [],
+           'ANOMALY_STD_CFG': (116, 16, 15, 5), 'ANOMALY_04_CFG': (119, [12, 6, -6, -12], 10, 3),
+           'STD_ANOMALY_OFFSETS': {1: ('A', 4), 2: ('A', 3), 3: ('A', 2)},
+           'STD_ANOMALY_RISK_GAPS': [16, 116, 132],
+           'USE_MARKOV_B2': True, 'MARKOV_B2_MIN_SAMPLES': 3,
+           'MARKOV_A2_CFG': {}, 'MARKOV_A2_FALLBACK': {'C1': 0.55, 'A3': 0.45},
+           'MARKOV_BRANCH_OFFSETS': {}, 'AUTO_HEAL_THRESHOLD': 0.52, 'AUTO_HEAL_MIN_SAMPLES': 200,
+           'MIN_STABLE_SLOT': 0, 'MIN_MARKOV_SAMPLES': 20, 'TRANS_ADAPTIVE_LOOKBACK': 50}
+    errors = []
+    for lineno, raw in enumerate(p.read_text(encoding='utf-8').split('\n'), 1):
+        line = raw.split('#', 1)[0].strip()
+        if not line: continue
+        try: _parse_known_line(line, cfg)
+        except Exception as e: errors.append(f'  line {lineno}: `{raw.strip()}` — {e}')
+    if errors: raise ValueError('Error in **known_patterns.txt**:\n' + '\n'.join(errors))
+    return cfg
+
+def load_trans_history(path='trans_history.txt'):
+    p = Path(path)
+    if not p.exists(): return None
+    trans = {}; errors = []
+    for lineno, raw in enumerate(p.read_text(encoding='utf-8').split('\n'), 1):
+        line = raw.split('#', 1)[0].strip()
+        if not line: continue
+        try:
+            m = re.fullmatch(r'(\S+)\s*->\s*(\S+)(?:\s+(\S+))?', line)
+            if not m: raise ValueError('requires format `FROM_RL -> TO_K [PROB]`')
+            src, dst = _parse_phase_k(m.group(1)), _parse_phase_k(m.group(2))
+            trans.setdefault(src, []).append((dst[0], dst[1], _parse_prob(m.group(3)) if m.group(3) else 1.0))
+        except Exception as e: errors.append(f'  line {lineno}: `{raw.strip()}` — {e}')
+    if errors: raise ValueError('Error in **trans_history.txt**:\n' + '\n'.join(errors))
+    for key, entries in trans.items():
+        total = sum(p for _, _, p in entries)
+        if total > 0 and abs(total - 1.0) > 0.01: trans[key] = [(ph, k, p / total) for ph, k, p in entries]
+    return trans
+
+try:
+    _kp = load_known_patterns()
+    _th = load_trans_history()
+except ValueError as e:
+    raise RuntimeError(f"Config load failed: {e}")
+
 _DEFAULTS = {
     'BASE_TIME_STR': '2025-01-01 04:00:00', 'CYCLE': 119, 'JITTERS': {'A': 12, 'B': -6, 'C': 6}, 'K_ACTIVE': {'A': [1,2,3,4], 'B': [3], 'C': [7]},
     'PATCH1_K': [('A',2), ('A',3), ('A',4)], 'ANOMALY_STD_CFG': (116, 16, 15, 5), 'ANOMALY_04_CFG': (119, [12, 6, -6, -12], 10, 3),
@@ -121,14 +166,14 @@ _DEFAULT_TRANS = {
     ('A',3): [('B',3,0.565),('C',7,0.435)],
 }
 
-_kp = _DEFAULTS
+_kp = _kp or _DEFAULTS
 CYCLE, JITTERS, K_ACTIVE = _kp['CYCLE'], _kp['JITTERS'], _kp['K_ACTIVE']
 PATCH1_K, MARKOV_A2_CFG = _kp['PATCH1_K'], _kp['MARKOV_A2_CFG']
 MARKOV_A2_FALLBACK, MARKOV_BRANCH_OFFSETS = _kp['MARKOV_A2_FALLBACK'], _kp['MARKOV_BRANCH_OFFSETS']
 AUTO_HEAL_THRESHOLD, AUTO_HEAL_MIN_SAMPLES = _kp['AUTO_HEAL_THRESHOLD'], _kp['AUTO_HEAL_MIN_SAMPLES']
 MIN_STABLE_SLOT, MIN_MARKOV_SAMPLES = _kp['MIN_STABLE_SLOT'], _kp['MIN_MARKOV_SAMPLES']
 TRANS_ADAPTIVE_LOOKBACK = _kp.get('TRANS_ADAPTIVE_LOOKBACK', 50)
-TRANS_CFG = _DEFAULT_TRANS
+TRANS_CFG = _th or _DEFAULT_TRANS
 ANOMALY_STD_CFG, ANOMALY_04_CFG = _kp['ANOMALY_STD_CFG'], _kp['ANOMALY_04_CFG']
 STD_ANOMALY_OFFSETS, USE_MARKOV_B2, MARKOV_B2_MIN_SAMPLES = _kp['STD_ANOMALY_OFFSETS'], _kp['USE_MARKOV_B2'], _kp['MARKOV_B2_MIN_SAMPLES']
 STD_ANOMALY_RISK_GAPS = _kp.get('STD_ANOMALY_RISK_GAPS', [16, 116, 132])
