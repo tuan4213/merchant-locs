@@ -8,6 +8,12 @@ from i18n import (LANG_LABELS as LANG_OPTIONS, get_translator,
                   check_locales_errors, detect_default_lang)
 import predictor
 
+# === CONFIG FLAGS (was missing after refactor) ===
+# Bật/tắt UI nâng cao cho block 'Quét TRANS' (verify offsets động)
+SHOW_ADVANCED_UI = True
+# === END CONFIG FLAGS ===
+
+
 st.set_page_config(page_title="Merchant Location", layout="wide")
 
 components.html("""
