@@ -41,8 +41,5 @@ class PipelineLogger:
             else:
                 self.write(pad + " ".join(str(c) for c in row))
 
-    def flush(self):
-        pass
-
     def getvalue(self):
         return self.buffer.getvalue()
