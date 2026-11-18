@@ -484,8 +484,35 @@ _V12_KNOWN_PATTERNS = {
 }
 _CYCLE_OFFSET_RULES = {('B3', 1): 'A1', ('A1', 1): 'A1', ('A1', 2): 'C7', ('C7', 1): 'B3'}
 
-def _predict_04am_ext(target):
+def _predict_04am_ext(target, _depth=0):
     global MARKOV_B2, MARKOV_B2_2T
+    # [PATCH-VIRTUAL] Lấp tạm slot 04:00 trước nếu thiếu (để giữ nguyên Phase Matrix)
+    # Đây CHỈ là cầu nối input — logic dự đoán 04:00 KHÔNG dùng Cycle 119.
+    # Đệ quy tối đa 3 tầng, fallback cuối = Cycle 119 (đánh dấu rõ fill_method).
+    if _depth < 3:
+        _prev = target - 4
+        if _prev >= 0 and _prev not in slot_to_pat:
+            _fill_pat, _fill_method = None, None
+            try:
+                _sub = _predict_04am_ext(_prev, _depth=_depth + 1)
+                if _sub:
+                    _fill_pat = _sub[0]['pattern']
+                    _fill_method = '04am_recursive'
+            except Exception:
+                pass
+            if not _fill_pat and (_prev - 119) in slot_to_pat:
+                _fill_pat = slot_to_pat[_prev - 119]
+                _fill_method = 'cycle119_fallback'
+            if _fill_pat:
+                slot_to_pat[_prev] = _fill_pat
+                slot_to_meta[_prev] = {
+                    'dt': None, 'dt_raw': None, 'user': 'PREDICTED',
+                    'pattern_source': 'virtual',
+                    'is_virtual': True,
+                    'fill_method': _fill_method,
+                }
+                if _prev % 4 == 0 and _prev not in ANOMALY_SLOTS_BY_HOUR.get(0, []):
+                    ANOMALY_SLOTS_BY_HOUR.setdefault(0, []).append(_prev)
     phase, rl = _phase_of(target - 4); phase2, rl2 = _phase_of(target - 8)
     _v12_pred = _v12_predict_from_phase_chains_v2(target)
     if _v12_pred: return _v12_pred
@@ -788,6 +815,15 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
     
     log_lines.append(f"✅ Widget built ({len(widget_html)} chars)")
     
+    # Log các slot virtual (lấp tạm) để user biết
+    _virt = [(_s, _m.get('fill_method')) for _s, _m in slot_to_meta.items() if _m.get('is_virtual')]
+    if _virt:
+        log_lines.append(f"\n🔮 Nhét tạm {len(_virt)} slot 04:00 (input thiếu):")
+        for _s, _meth in _virt[:10]:
+            log_lines.append(f"   · Slot {_s} (method: {_meth})")
+        if len(_virt) > 10:
+            log_lines.append(f"   ... +{len(_virt)-10}")
+
     return widget_html, "\n".join(log_lines), "", {'total_missing_04': 0, 'static_acc': 100.0, 'adaptive_acc': 100.0}
 
 # ═══════════════════════════════════════════════════════════════
