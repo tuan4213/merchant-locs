@@ -332,7 +332,10 @@ def _get_anomaly_risk(target_slot):
     if diff in (116, 132): return True
     if diff == 16:
         predicted = _predict_next_gap(hour)
-        if predicted is None: return True
+        if predicted is None:
+            # [FIX] Không đủ lookback → mặc định KHÔNG Risk (tin 119)
+            # Trước đây return True → chọn Phase A → sai slot 495
+            return False
         return 16 in (predicted if isinstance(predicted, list) else [predicted])
     return False
 
