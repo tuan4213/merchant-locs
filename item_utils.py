@@ -1,72 +1,7 @@
-# item_utils.py — Pattern & Item utilities
+# item_utils.py — Item & Pattern recognition (no Streamlit dependency)
 import re
 
-STAGE_GROUPS = [(1,4), (5,8), (9,12), (13,16), (17,20), (21,24)]
-
-def get_first_2_pairs(pat):
-    if not pat: return ""
-    parts = [p.strip() for p in pat.split(" / ")]
-    return " / ".join(parts[:2])
-
-def extract_pattern(content):
-    if not content: return None
-    pairs = re.findall(r'\b(\d{1,2})-(\d{1,2})\b', content)
-    if len(pairs) < 3: return None
-    return " / ".join(f"{a}-{b}" for a, b in pairs[:6])
-
-def extract_items(content):
-    if not content: return {}
-    result = {}
-    for m in re.finditer(r'\[?(\d{1,2})-(\d{1,2})\]?\s*[:–-]\s*([^\n\[]+)', content):
-        pos = f"{m.group(1)}-{m.group(2)}"
-        items_str = m.group(3).strip()
-        items = [it.strip() for it in re.split(r'[,;]', items_str) if it.strip() and it.strip() != '-']
-        if items: result[pos] = items
-    return result
-
-def pattern_from_items(items):
-    if not items: return None
-    sorted_pos = sorted(items.keys(), key=lambda p: tuple(map(int, p.split('-'))))
-    return " / ".join(sorted_pos[:6])
-
-def parse_pairs(p):
-    if not p: return []
-    pairs = []
-    for m in re.finditer(r'(\d{1,2})-(\d{1,2})', p):
-        pairs.append((int(m.group(1)), int(m.group(2))))
-    return pairs
-
-def stage_group(stage_num):
-    for idx, (lo, hi) in enumerate(STAGE_GROUPS):
-        if lo <= stage_num <= hi: return idx
-    return -1
-
-def valid_position_groups():
-    return STAGE_GROUPS
-
-def find_slot_by_first_2_pairs(pattern, pair_to_slots, slot_to_items, slot_to_pat, target_slot=None):
-    if not pattern: return None
-    first2 = get_first_2_pairs(pattern)
-    if not first2: return None
-    candidates = None
-    for pair_str in first2.split(" / "):
-        slots = pair_to_slots.get(pair_str.strip())
-        if not slots: return None
-        if candidates is None: candidates = set(slots)
-        else: candidates &= slots
-        if not candidates: return None
-    if not candidates: return None
-    if target_slot is not None:
-        return min(candidates, key=lambda s: abs(s - target_slot))
-    return max(candidates)
-
-
-# ============================================================
-# LEGACY — ported from old Drive version
-# ============================================================
-
 DASH = r'[-–—−]'
-
 PAIR_POS = re.compile(rf'(\d{{1,2}})\s*{DASH}\s*(\d{{1,2}})')
 
 ITEM_CANON = [
@@ -142,19 +77,112 @@ def normalize_item(text):
     return text.strip()
 
 def normalize_pattern_order(pairs):
-    """Sort 6 pairs by (stage, wave) để position i luôn map về group i+1.
-
-    Game rule (RULES.md 1.5):
-      - position 1 → stage 1-4 (group 1)
-      - position 2 → stage 5-8 (group 2)
-      - ...
-      - position 6 → stage 21-24 (group 6)
-
-    User có thể post đảo thứ tự (toàn bộ hoặc 1 phần). Sort theo stage sẽ
-    tự sửa. Đây là patch a — thay logic cũ chỉ reverse khi fully reversed
-    (không xử lý được partial swap như `.../21-4/19-18` vs `.../19-18/21-4`).
-    """
     if len(pairs) != 6: return pairs
-    # ✅ PATCH A: full sort theo (stage, wave)
     return sorted(pairs, key=lambda p: (p[0], p[1]))
 
+def extract_pattern(content):
+    if not content: return None
+    content_clean = re.sub(r'<[a-zA-Z_]+:\d+>', '', content)
+    for line in content_clean.split('\n'):
+        line = line.strip()
+        if not line: continue
+        ms = list(PAIR_POS.finditer(line))
+        if len(ms) < 6: continue
+        for i in range(len(ms) - 5):
+            six = ms[i:i+6]
+            seps = [line[six[j].end():six[j+1].start()] for j in range(5)]
+            if not all(len(s) <= 20 for s in seps): continue
+            pairs = [(int(m.group(1)), int(m.group(2))) for m in six]
+            if all(1 <= a <= 24 and 1 <= b <= 20 for a, b in pairs):
+                return ' / '.join(f"{a}-{b}" for a, b in normalize_pattern_order(pairs))
+    pairs_seq = []
+    for line in content_clean.split('\n'):
+        line = line.strip()
+        if not line: continue
+        line_clean = re.sub(r"^[\s\*\-•>`\[\]|'\"`~_#]+", '', line)
+        m = re.match(rf'^(\d{{1,2}})\s*{DASH}\s*(\d{{1,2}})\b', line_clean)
+        if m:
+            a, b = int(m.group(1)), int(m.group(2))
+            if 1 <= a <= 24 and 1 <= b <= 20: pairs_seq.append((a, b))
+    if len(pairs_seq) >= 6:
+        for i in range(len(pairs_seq) - 5):
+            six = pairs_seq[i:i+6]
+            if len(set(six)) == 6:
+                return ' / '.join(f"{a}-{b}" for a, b in normalize_pattern_order(six))
+    return None
+
+def extract_items(content):
+    if not content: return None
+    content_clean = re.sub(r'<[a-zA-Z_]+:\d+>', '', content)
+    mapping = {}
+    for line in content_clean.split('\n'):
+        line = line.strip()
+        if not line: continue
+        line_clean = re.sub(r"^[\s\*\-•>`\[\]|'\"`~_#]+", '', line)
+        if not line_clean: continue
+        m = re.match(rf'^(\d{{1,2}})\s*{DASH}\s*(\d{{1,2}})\s*', line_clean)
+        if not m: continue
+        a, b = int(m.group(1)), int(m.group(2))
+        if not (1 <= a <= 24 and 1 <= b <= 20): continue
+        rest = line_clean[m.end():].strip()
+        rest = re.sub(r'^[\s:=→\-\|>*•`\[\]~_]+', '', rest)
+        rest = re.sub(r'[\s\|\*`\[\]>_~\-]+$', '', rest)
+        if not rest or len(rest) < 2: continue
+        if len(PAIR_POS.findall(rest)) >= 2: continue
+        if re.match(rf'^\d{{1,2}}\s*{DASH}\s*\d{{1,2}}$', rest): continue
+        raw_items = smart_split(rest)
+        raw_items = [re.sub(r'^[\s\*\-`\[\]|]+|[\s\*\-`\[\]|]+$', '', x) for x in raw_items]
+        normalized = []
+        for x in raw_items:
+            if not x or len(x) < 2 or x.lower() in ('nothing','-','none','empty','n/a'): continue
+            if re.match(rf'^\d{{1,2}}\s*{DASH}\s*\d{{1,2}}$', x): continue
+            norm = normalize_item(x)
+            if norm and norm not in normalized: normalized.append(norm)
+        if normalized: mapping[f"{a}-{b}"] = normalized
+    return mapping if len(mapping) >= 6 else None
+
+def pattern_from_items(items_map):
+    if not items_map or len(items_map) < 6: return None
+    try:
+        keys = sorted(items_map.keys(), key=lambda k: (int(k.split('-')[0]), int(k.split('-')[1])))
+    except Exception: return None
+    return ' / '.join(keys[:6])
+
+def parse_pairs(pattern):
+    pairs = []
+    for p in pattern.split(' / '):
+        p = p.strip()
+        m = re.fullmatch(r'(\d{1,2})-(\d{1,2})', p)
+        if m: pairs.append((int(m.group(1)), int(m.group(2))))
+        else: pairs.append(None)
+    return pairs
+
+def stage_group(stage):
+    if not (1 <= stage <= 24): return None
+    return (stage - 1) // 4 + 1
+
+def valid_position_groups(pairs):
+    if len(pairs) != 6 or any(p is None for p in pairs): return False
+    for i, (stage, _) in enumerate(pairs):
+        if stage_group(stage) != i + 1: return False
+    return True
+
+def find_slot_by_first_2_pairs(pattern, pair_to_slots, slot_to_items, slot_to_pat, target_slot=None):
+    target_pairs = parse_pairs(pattern)
+    if len(target_pairs) < 2 or target_pairs[0] is None or target_pairs[1] is None: return None
+    p0 = f"{target_pairs[0][0]}-{target_pairs[0][1]}"
+    p1 = f"{target_pairs[1][0]}-{target_pairs[1][1]}"
+    candidates = pair_to_slots.get(p0, set()) & pair_to_slots.get(p1, set())
+    if not candidates: return None
+    target_set = set(target_pairs)
+    valid = []
+    for s in candidates:
+        if s not in slot_to_items: continue
+        s_pairs = parse_pairs(slot_to_pat.get(s, ''))
+        if len(s_pairs) != 6 or any(p is None for p in s_pairs): continue
+        if set(s_pairs) == target_set: valid.append(s)
+    if not valid: return None
+    if target_slot is not None:
+        valid.sort(key=lambda s: abs(s - target_slot))
+        return valid[0]
+    return max(valid)
