@@ -1,3 +1,4 @@
+# [EXPERIMENTAL] predictor_2.py — logic thuần, không cần data.csv
 # predictor_2.py (AUTO-GEN BRANCH - FULL RULES)
 # Repo: tuan4213/merchant-locs
 import hashlib
