@@ -218,3 +218,20 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Backups
+*.bak
+*.old
+*.orig
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Colab
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
