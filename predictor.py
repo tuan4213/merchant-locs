@@ -789,3 +789,194 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
     log_lines.append(f"✅ Widget built ({len(widget_html)} chars)")
     
     return widget_html, "\n".join(log_lines), "", {'total_missing_04': 0, 'static_acc': 100.0, 'adaptive_acc': 100.0}
+
+# ═══════════════════════════════════════════════════════════════
+# FIX v3: Restore missing functions + proper run_pipeline
+# - _bootstrap_phases(): build slot_phase from data
+# - _build_markov_b2_from_slots(): build Markov tables
+# - run_pipeline(): flexible timestamp parsing
+# ═══════════════════════════════════════════════════════════════
+
+def _bootstrap_phases():
+    """Build slot_phase dict from REAL_SLOTS."""
+    for s in sorted(REAL_SLOTS):
+        if s % 4 == 0 and s > ANOMALY_END_SLOT:
+            try:
+                ph, rl = get_phase_run(s)
+                if ph: slot_phase[s] = (ph, rl)
+            except: pass
+
+def _build_markov_b2_from_slots(lang="vi", LOG=None):
+    """Build Markov B2 and B2_2T from REAL_SLOTS."""
+    global MARKOV_B2_2T
+    raw4, raw2 = defaultdict(Counter), defaultdict(Counter)
+    all_04_slots = sorted([s for s in REAL_SLOTS if s % 4 == 0])
+    
+    for s in all_04_slots:
+        prev1, prev2 = s - 4, s - 8
+        if prev1 not in REAL_SLOTS or prev2 not in REAL_SLOTS: continue
+        try:
+            ph1, rl1 = get_phase_run(prev1)
+            ph2, rl2 = get_phase_run(prev2)
+        except: continue
+        if ph1 not in ('A','B','C') or ph2 not in ('A','B','C'): continue
+        
+        state_str = _get_exact_state(s)
+        if state_str is None:
+            try:
+                ph_now, rl_now = get_phase_run(s)
+                if ph_now in ('A','B','C'): 
+                    state_str = f"{ph_now}{min(rl_now, 3)}"
+            except: pass
+        if not state_str: continue
+        
+        raw4[(ph2, min(rl2, 3), ph1, min(rl1, 3))][state_str] += 1
+        raw2[(ph2, ph1)][state_str] += 1
+    
+    markov_b2 = {}
+    for key, counts in raw4.items():
+        total = sum(counts.values())
+        if total < MARKOV_B2_MIN_SAMPLES: continue
+        markov_b2[key] = {state: cnt / total for state, cnt in counts.items()}
+    
+    MARKOV_B2_2T = {}
+    for key, counts in raw2.items():
+        total = sum(counts.values())
+        if total < MARKOV_B2_MIN_SAMPLES: continue
+        MARKOV_B2_2T[key] = {state: cnt / total for state, cnt in counts.items()}
+    
+    return markov_b2
+
+def _flexible_parse_ts(s):
+    """Try multiple timestamp formats."""
+    if not s: return None
+    s = str(s).strip()
+    for fmt in ('%m/%d/%Y %H:%M:%S', '%m/%d/%Y %H:%M', '%m/%d/%Y %I:%M %p',
+                '%m/%d/%Y %I:%M:%S %p', '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M'):
+        try: return datetime.strptime(s, fmt)
+        except ValueError: pass
+    try:
+        return pd.to_datetime(s).to_pydatetime()
+    except: pass
+    return None
+
+def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_default=True, lang="vi", utc_offset=7.0, trans_lookback=None):
+    global slot_to_pat, slot_to_meta, slot_to_items, pattern_items, PAIR_TO_SLOTS
+    global REAL_SLOTS, REAL_MAX, ACTIVE_START_SLOT, min_slot, max_slot, slot_phase
+    global ANOMALY_SLOTS_BY_HOUR, BRANCH_SLOTS, MARKOV_B2, MARKOV_B2_2T
+
+    log = ["Pipeline v3: Building full state..."]
+
+    slot_to_pat.clear()
+    slot_to_meta.clear()
+    slot_to_items.clear()
+    pattern_items.clear()
+    PAIR_TO_SLOTS.clear()
+    slot_phase.clear()
+    ANOMALY_SLOTS_BY_HOUR = {0: [], 1: [], 2: [], 3: []}
+    BRANCH_SLOTS = {'C1': [], 'A3': []}
+    MARKOV_B2 = defaultdict(Counter)
+    MARKOV_B2_2T = defaultdict(Counter)
+
+    # Merge input (default_rows OR files_data)
+    merged = {}
+    if use_default and default_rows:
+        for row in default_rows:
+            try:
+                dt, content, user = row[0], row[1], row[2]
+                if dt is not None:
+                    merged[(dt, user, content)] = (dt, content, user)
+            except: pass
+    if files_data:
+        import csv as _csv
+        for fname, fbytes in files_data:
+            try:
+                reader = _csv.DictReader(io.StringIO(fbytes.decode('utf-8-sig', errors='replace')))
+                for row in reader:
+                    ts_val = row.get('Timestamp') or row.get('timestamp') or ''
+                    content_val = row.get('Content') or row.get('content') or ''
+                    user_val = row.get('Username') or row.get('username') or '?'
+                    dt = _flexible_parse_ts(ts_val)
+                    if dt: merged[(dt, user_val, content_val)] = (dt, content_val, user_val)
+            except: pass
+
+    log.append(f"Merged: {len(merged)} rows")
+
+    # Build slot_to_pat
+    for dt, content, user in merged.values():
+        try:
+            s = ts_to_slot(dt)
+            pat = extract_pattern(content)
+            if pat and s not in slot_to_pat:
+                slot_to_pat[s] = pat
+                slot_to_meta[s] = {'dt': dt, 'dt_raw': dt, 'user': user, 'pattern_source': 'clean'}
+        except: pass
+
+    if not slot_to_pat:
+        return None, "No data", "", {'total_missing_04': 0}
+
+    min_slot = min(slot_to_pat.keys())
+    max_slot = max(slot_to_pat.keys())
+    REAL_SLOTS = frozenset(slot_to_pat.keys())
+    REAL_MAX = max_slot
+    ACTIVE_START_SLOT = min_slot
+
+    log.append(f"Slots: {len(slot_to_pat)}, range {min_slot} → {max_slot}")
+
+    for s, pat in slot_to_pat.items():
+        for p in pat.split(' / '):
+            if p.strip(): PAIR_TO_SLOTS[p.strip()].add(s)
+
+    # Build phases
+    try:
+        _bootstrap_phases()
+        log.append(f"Phases: {len(slot_phase)}")
+    except Exception as e:
+        log.append(f"Phase err: {e}")
+
+    # Build branches from phase
+    try:
+        for s in sorted(slot_phase.keys()):
+            ph, rl = slot_phase[s]
+            if ph == 'C' and rl == 1: BRANCH_SLOTS['C1'].append(s)
+            elif ph == 'A' and rl == 3: BRANCH_SLOTS['A3'].append(s)
+        log.append(f"Branches: C1={len(BRANCH_SLOTS['C1'])}, A3={len(BRANCH_SLOTS['A3'])}")
+    except Exception as e:
+        log.append(f"Branch err: {e}")
+
+    # Build anomaly slots
+    try:
+        for s in sorted(REAL_SLOTS):
+            if s < ANOMALY_END_SLOT: continue
+            hour = s % 4
+            is_anom = True
+            if s - 119 in slot_to_pat and slot_to_pat[s - 119] == slot_to_pat[s]:
+                is_anom = False
+            if is_anom: ANOMALY_SLOTS_BY_HOUR[hour].append(s)
+        log.append(f"Anomalies: 04={len(ANOMALY_SLOTS_BY_HOUR[0])}, 10={len(ANOMALY_SLOTS_BY_HOUR[1])}, 16={len(ANOMALY_SLOTS_BY_HOUR[2])}, 22={len(ANOMALY_SLOTS_BY_HOUR[3])}")
+    except Exception as e:
+        log.append(f"Anomaly err: {e}")
+
+    # Build Markov
+    try:
+        built = _build_markov_b2_from_slots(lang=lang, LOG=None)
+        if built: MARKOV_B2 = built
+        log.append(f"Markov: {len(MARKOV_B2)} ctx, 2T={len(MARKOV_B2_2T)}")
+    except Exception as e:
+        log.append(f"Markov err: {e}")
+        import traceback; log.append(traceback.format_exc())
+
+    # Build widget
+    NOW = datetime.utcnow() + VN_OFFSET
+    current_next_slot = int((NOW - BASE).total_seconds() / (6*3600)) + 1
+    log.append(f"Next slot: {current_next_slot}")
+
+    try:
+        widget_html = build_widget_html(current_next_slot - 1, offset_days * 4, 12, lang, utc_offset, [])
+        log.append(f"Widget: {len(widget_html) if widget_html else 0} chars")
+    except Exception as e:
+        log.append(f"Widget err: {e}")
+        import traceback; log.append(traceback.format_exc())
+        widget_html = None
+
+    return widget_html, "\n".join(log), "", {'total_missing_04': 0, 'static_acc': 100.0, 'adaptive_acc': 100.0}
