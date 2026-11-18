@@ -62,33 +62,26 @@
 <script>
 (function(){
   const payload=__P__,data=payload.slots,L=payload.L,utc_offset=payload.utc_offset;
-  const realNextIso=payload.real_next_iso,offsetSlots=payload.offset_slots||0;
-  const isTimeTravel=offsetSlots!==0;
   const bigEl=document.getElementById('mbig'),subEl=document.getElementById('msub'),rowEl=document.getElementById('mrow');
-  document.getElementById('mtitle').textContent = L.title || 'Merchant'; subEl.textContent = L.loading || 'Loading...';
+  document.getElementById('mtitle').textContent = L.title; subEl.textContent = L.loading;
   const pad=n=>String(n).padStart(2,'0');
-  let lastBigIdx = -1;
-
   const missingSlots = payload.missing_04 || [];
   const missingMap = {};
   missingSlots.forEach(m => missingMap[String(m.slot)] = m.iso);
-
   function getFullDateStr(isoString, offset) {
       const d = new Date(isoString);
       const localMs = d.getTime() + offset * 3600000;
       const localDate = new Date(localMs);
       return pad(localDate.getUTCFullYear()) + '/' + pad(localDate.getUTCMonth() + 1) + '/' + pad(localDate.getUTCDate());
   }
-
   function getTimeParts(isoString, offset) {
       const d = new Date(isoString);
       const localMs = d.getTime() + offset * 3600000;
       const localDate = new Date(localMs);
       return { timeStr: pad(localDate.getUTCHours()) + ':' + pad(localDate.getUTCMinutes()), dateStr: pad(localDate.getUTCMonth() + 1) + '/' + pad(localDate.getUTCDate()) };
   }
-
   function fmt(ms){
-    if(ms<0)return L.passed || 'Passed';
+    if(ms<0)return L.passed;
     const s=Math.floor(ms/1000);
     const d=Math.floor(s/86400),h=Math.floor(s%86400/3600), m=Math.floor(s%3600/60),sec=s%60;
     if(d>0)return d+'d '+pad(h)+'h '+pad(m)+'m';
@@ -97,7 +90,6 @@
     return sec+'s';
   }
   function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-
   async function copyToClipboard(text) {
     try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch(e) {}
     try {
@@ -108,7 +100,6 @@
       document.body.removeChild(ta); return ok;
     } catch(e) { return false; }
   }
-
   function compactPattern(pat){ return (pat||'').replace(/\s+/g,'').trim(); }
   function compactItems(positions){
     return positions.map(p => {
@@ -119,12 +110,10 @@
       return pos + ':' + items;
     }).join('|');
   }
-
   function mkBtn(text, orig, isFb) {
       const cls = isFb ? 'copy-fb-btn' : 'float-btn';
       return `<button class="${cls}" data-copy="${esc(text)}" data-orig="${orig}" type="button" title="Copy">${orig}</button>`;
   }
-
   rowEl.addEventListener('click', async (e) => {
     const btn = e.target.closest('.float-btn, .copy-fb-btn');
     if (btn) {
@@ -133,7 +122,7 @@
       const ok = await copyToClipboard(text);
       if (ok) {
           const orig = btn.getAttribute('data-orig');
-          btn.innerHTML = '✅ ' + (L.copied || L.copied);
+          btn.innerHTML = '✅ ' + (L.copied || 'Copied');
           btn.classList.add('copied');
           setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 1000);
       } else {
@@ -156,7 +145,6 @@
     else if (patRow && !isPatActive) patRow.classList.add('active');
     else if (itemsList && !isItemsActive) itemsList.classList.add('active');
   });
-
   function renderTopCol(top, patStr, itemStr, now){
     if(!top)return '<div class="fb-empty">'+esc(L.no_cand)+'</div>';
     let patCls = 'pat';
@@ -177,7 +165,6 @@
     if(top.type === 'actual') srcLabel = L.src_actual || '← actual slot';
     else if(top.type === 'bridge') srcLabel = L.src_bridge || '← bridge from';
     h += '<div class="src">'+esc(srcLabel)+' <b>'+top.source+'</b></div>';
-    
     const srcStr = String(top.source);
     if (missingMap[srcStr] && top.source !== 'history' && top.type !== 'actual' && top.type !== 'bridge') {
         const missTime = Date.parse(missingMap[srcStr]);
@@ -189,7 +176,6 @@
     }
     return h;
   }
-
   function renderFbCol(fallbacks, top, second){
     if(top && top.type === 'actual'){
       return '<div class="fb-title" style="color:#90ee90">✅ ACTUAL</div><div class="fb-empty" style="color:#90ee90;font-style:normal">'+esc(L.actual_hint||'Actual pattern from CSV')+'</div>';
@@ -209,7 +195,10 @@
       const itHtml = hasItem ? esc(checkPos.items) : '<span style="opacity:.35;font-style:italic">—</span>';
       const reasonTxt = second.reason || ('phase ' + (second.phases || []).join('/'));
       h += '<div class="fb-item top2">' + mkBtn(fbCopyStr, '📋', true) +
-           '<div class="fb-head"><span class="fb-prob">[' + esc(second.prob) + ']</span><span class="fb-reason">' + esc(reasonTxt) + '</span></div>' +
+           '<div class="fb-head">' +
+             '<span class="fb-prob">[' + esc(second.prob) + ']</span>' +
+             '<span class="fb-reason">' + esc(reasonTxt) + '</span>' +
+           '</div>' +
            '<div class="fb-pat">' + esc(second.pattern) + '</div>' +
            '<div class="fb-hint">' + esc(L.check) + ' <b>' + esc(checkPos.pos) + '</b>: ' + itHtml + '</div>' +
            '</div>';
@@ -224,7 +213,8 @@
         const hasItem = checkPos.items && checkPos.items !== '—';
         const itHtml = hasItem ? esc(checkPos.items) : '<span style="opacity:.35;font-style:italic">—</span>';
         h += '<div class="' + cls + '">' + mkBtn(fbCopyStr, '📋', true) +
-             '<div class="fb-head"><span class="fb-prob">[' + esc(f.prob) + ']</span><span class="fb-reason">' + esc(reason) + '</span></div><div class="fb-pat">' + esc(f.pattern) + '</div>' +
+             '<div class="fb-head"><span class="fb-prob">[' + esc(f.prob) + ']</span>' +
+             '<span class="fb-reason">' + esc(reason) + '</span></div><div class="fb-pat">' + esc(f.pattern) + '</div>' +
              '<div class="fb-hint">' + esc(L.check) + ' <b>' + esc(checkPos.pos) + '</b>: ' + itHtml + '</div></div>';
       }
     }
@@ -238,7 +228,6 @@
     }
     return h;
   }
-
   function render(){
     const now=Date.now();
     let nextIdx = -1;
@@ -246,16 +235,10 @@
       if(Date.parse(data[i].iso) > now){ nextIdx = i; break; }
     }
     const bigIdx = (nextIdx === -1) ? 0 : nextIdx;
-    lastBigIdx = bigIdx;
     const n = data[bigIdx];
     const t = Date.parse(n.iso);
     const d = t - now;
-    if(realNextIso && isTimeTravel){
-      const realD = Date.parse(realNextIso) - now;
-      bigEl.textContent='⏱ '+fmt(realD);
-      bigEl.style.color = realD<600000?'#ff6b6b':'#ffd166';
-    }
-    else if(n.is_actual){ bigEl.textContent = L.real_badge; bigEl.style.color = '#90ee90'; }
+    if(n.is_actual){ bigEl.textContent = L.real_badge; bigEl.style.color = '#90ee90'; }
     else if(n.is_bridge){ bigEl.textContent = L.bridge_badge; bigEl.style.color = '#8a7cff'; }
     else { bigEl.textContent='⏱ '+fmt(d); bigEl.style.color=d<600000?'#ff6b6b':'#ffd166'; }
     const top=n.top||{pattern:'?',positions:[],source:'?',type:'?'};
@@ -268,15 +251,9 @@
     subEl.innerHTML=icon+' <b>Slot '+n.slot+'</b> · <b>'+esc(nParts.timeStr)+' ('+esc(nParts.dateStr)+')</b>'+
       ' <span class="local">('+esc(n.hname)+' VN)</span>'+
       ' · '+esc(L.check)+' <span style="color:#ff9e64;font-weight:700">'+esc(checkPos)+'</span>';
-    if(isTimeTravel && realNextIso){
-      const realD = Date.parse(realNextIso) - now;
-      subEl.innerHTML += ' <span style="background:rgba(122,183,255,.25);color:#7ab7ff;padding:1px 6px;border-radius:3px;font-size:11px">'+esc(L.real_prefix||'⏱ Real: ')+fmt(realD)+'</span>';
-    }
-    
-    const startIdx = Math.max(0, bigIdx - 1);
-    const endIdx = Math.min(startIdx + 5, data.length);
+    const endIdx = Math.min(5, data.length);
     let html='';
-    for(let i=startIdx; i<endIdx; i++){
+    for(let i=0; i<endIdx; i++){
       const s=data[i], tt=Date.parse(s.iso), dd=tt-now;
       const isNext = (i === bigIdx);
       const isActual = s.is_actual;
@@ -296,7 +273,7 @@
       let tags='';
       if(s.phase)tags+='<span class="tag phase">'+esc(s.phase)+'</span>';
       if(top.prob){
-        if(top.prob === L.real_badge) tags+='<span class="tag actual">'+esc(L.real_badge)+'</span>';
+        if(top.prob === 'REAL') tags+='<span class="tag actual">'+esc(L.real_badge)+'</span>';
         else if(top.prob === 'BRIDGE') tags+='<span class="tag bridge">'+esc(L.bridge_badge)+'</span>';
         else tags+='<span class="tag">'+esc(top.prob)+'</span>';
       }
@@ -308,14 +285,12 @@
       let strItems = (top.positions && top.positions.length) ? compactItems(top.positions) : '';
       let strAll = strPat + (strItems ? '|' + strItems : '');
       let topHtml = renderTopCol(s.top, strPat, strItems, now);
-
       let second = null;
       let restFallbacks = s.fallbacks || [];
       if (restFallbacks.length > 0) {
           second = restFallbacks[0];
           restFallbacks = restFallbacks.slice(1);
       }
-
       let fbContent = renderFbCol(restFallbacks, s.top, second);
       let bodyHtml = '';
       if (fbContent) {
@@ -323,8 +298,7 @@
       } else {
           bodyHtml = '<div class="body single"><div class="top-col">'+topHtml+'</div></div>';
       }
-
-      html+='<div class="'+cardCls+'" data-iso="'+esc(s.iso)+'">' +
+      html+='<div class="'+cardCls+'">' +
         '<div class="ch">'+ mkBtn(strAll, 'T', false) +
         '<div class="left">'+
         '<span>'+ic+'</span><span class="slot">'+s.slot+'</span>'+
@@ -335,45 +309,6 @@
     }
     rowEl.innerHTML=html;
   }
-  
-  function tick(){
-    const now = Date.now();
-    let nextIdx = -1;
-    for(let i=0; i<data.length; i++){
-      if(Date.parse(data[i].iso) > now){ nextIdx = i; break; }
-    }
-    const bigIdx = (nextIdx === -1) ? 0 : nextIdx;
-    
-    if (bigIdx !== lastBigIdx) {
-        render();
-        return;
-    }
-    
-    const n = data[bigIdx];
-    const d = Date.parse(n.iso) - now;
-    if(realNextIso && isTimeTravel){
-      const realD = Date.parse(realNextIso) - now;
-      bigEl.textContent = '⏱ ' + fmt(realD);
-      bigEl.style.color = realD<600000 ? '#ff6b6b' : '#ffd166';
-    }
-    else if(!n.is_actual && !n.is_bridge){
-      bigEl.textContent = '⏱ ' + fmt(d);
-      bigEl.style.color = d<600000 ? '#ff6b6b' : '#ffd166';
-    }
-    
-    document.querySelectorAll('.card[data-iso]').forEach(card => {
-      const ms = Date.parse(card.dataset.iso) - now;
-      const cdEl = card.querySelector('.cd');
-      if(!cdEl) return;
-      if(card.classList.contains('actual') || card.classList.contains('bridge') || ms <= 0){
-        cdEl.textContent = '✓'; cdEl.className = 'cd past'; return;
-      }
-      cdEl.textContent = fmt(ms);
-      cdEl.className = 'cd' + (ms < 600000 ? ' soon' : '');
-    });
-  }
-
   render();
-  setInterval(tick, 1000);
 })();
 </script>
