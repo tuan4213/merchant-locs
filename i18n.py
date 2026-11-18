@@ -1,113 +1,109 @@
-# i18n.py — Language support
-LANG_LABELS = {
-    "Tiếng Việt": "vi",
-    "English": "en",
+# i18n.py
+import json
+import streamlit as st
+from pathlib import Path
+
+LOCALES_DIR = Path("locales")
+LANG_PREFIX = "lang_"
+
+def _file_path(code):
+    return LOCALES_DIR / f"{LANG_PREFIX}{code}.json"
+
+def _stem_to_code(stem):
+    if LANG_PREFIX and stem.startswith(LANG_PREFIX):
+        return stem[len(LANG_PREFIX):]
+    return stem
+
+LANG_NAMES = {
+    "vi": "Tiếng Việt 🇻🇳",
+    "en": "English 🇺🇸",
+    "ja": "日本語 🇯🇵",
+    "zh": "中文 🇨🇳",
+    "fr": "Français 🇫🇷",
 }
+DEFAULT_LANG = "vi"
 
-TRANSLATIONS_EN = {
-    "title": "📍 Merchant Location",
-    "loading": "Loading...",
-    "passed": "Passed",
-    "sidebar_config": "### ⚙️ Config",
-    "sidebar_reload": "🔄 Reload config files",
-    "sidebar_hint": "Edit config files → click Reload",
-    "uploader": "Upload CSV",
-    "use_default": "📚 Use default baseline",
-    "slider_label": "🕰️ Time travel (days)",
-    "reset_time_travel": "🔄 Reset Time Travel",
-    "upload_hint": "👆 Upload CSV to start",
-    "success": "✅ Processed: {parts}",
-    "failed": "❌ Pipeline failed",
-    "expander": "📋 Log",
-    "log_download": "💾 Download log",
-    "info_header": "📚 **Default baseline** ({n} file(s)):",
-    "info_from": "- 🗓️ **From:** `{v}` (VN, UTC+7)",
-    "info_to": "- 🗓️ **To:** `{v}` (VN, UTC+7)",
-    "info_total": "- 📊 **Total:** `{n:,}` posts  ·  💾 `{mb:.1f} MB`",
-    "no_valid": "⚠️ No valid rows",
-    "read_error": "⚠️ Read error: `{e}`",
-    "no_default": "ℹ️ No baseline CSV",
-    "part_default": "{n} baseline",
-    "part_upload": "{n} uploaded",
-    "gap_warning": "⚠️ **Gap Warning:** Found **{n}** missing slots.",
-    "gap_detail_btn": "🔍 Details",
-    "gap_list_title": "**Missing slots (most recent):**",
-    "err_widget_missing": "⚠️ Cannot find `widget_template.html`.",
-    "err_lang_files": "⚠️ Language files error:",
-    "predict_settings_title": "⚙️ Predict Settings",
-    "utc_offset_label": "🌍 UTC Offset",
-    "utc_reset_btn": "🔄 Reset",
-    "timezone_warning": "⚠️ Times based on VN timezone",
-    "gap_disabled_warning": "⚠️ **Note:** Gap handling features are disabled.",
-    "gap_stats": "⚠️ **Gap Stats:** {n} missing slots.",
-    "gap_detail_btn_settings": "🔍 Show recent missing slots",
-    "gap_none": "✅ Data complete, no gaps detected.",
-    "time_prev": " (Prev)",
-    "time_next": " (Next)",
-    "predict_settings_md": "",
-    "trans_scan_title": "#### 🔍 TRANS Scan",
-    "trans_scan_slots": "Slots to scan backwards",
-    "adaptive_toggled": "✅ {status} adaptive offset",
-    "trans_overridden": "🚀 Static TRANS overridden",
-    "trans_using_static": "✅ Using static TRANS",
-    "trans_scanned_caption": "📥 Scanned: **{used}** slots (requested: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
-    "trans_edit": "Edit content:",
-}
+def get_available_langs():
+    if not LOCALES_DIR.exists():
+        return []
+    pattern = f"{LANG_PREFIX}*.json" if LANG_PREFIX else "*.json"
+    return sorted([_stem_to_code(f.stem) for f in LOCALES_DIR.glob(pattern) if _stem_to_code(f.stem)])
 
-WIDGET_TEXT = {
-    "vi": {
-        "title": "Vị trí Merchant", "loading": "Đang tải...", "passed": "Đã qua",
-        "copied": "Đã sao chép", "copy_failed": "Lỗi",
-        "no_cand": "Không có dự đoán",
-        "src": "← nguồn", "src_actual": "← slot thật", "src_bridge": "← bridge từ",
-        "actual_hint": "Pattern thật từ CSV", "bridge_hint": "Pattern dự đoán (lấp gap)",
-        "fallback": "Dự phòng", "reinforced": "Được củng cố",
-        "dup_hint": "Được xác nhận bởi nguồn khác", "check": "Kiểm tra",
-        "real_badge": "THẬT", "bridge_badge": "BRIDGE",
-        "real_prefix": "⏱ Thực: ",
-        "missing_data_warn": "⚠️ <b>Dữ liệu gốc bị thiếu!</b> Dự đoán quy luật. Không có data tại ",
-    },
-    "en": {
-        "title": "Merchant Location", "loading": "Loading...", "passed": "Passed",
-        "copied": "Copied", "copy_failed": "Failed",
-        "no_cand": "No prediction",
-        "src": "← source", "src_actual": "← actual slot", "src_bridge": "← bridge from",
-        "actual_hint": "Actual pattern from CSV", "bridge_hint": "Predicted pattern (gap fill)",
-        "fallback": "Fallback", "reinforced": "Reinforced",
-        "dup_hint": "Confirmed by other sources", "check": "Check",
-        "real_badge": "ACTUAL", "bridge_badge": "BRIDGE",
-        "real_prefix": "⏱ Real: ",
-        "missing_data_warn": "⚠️ <b>Missing source data!</b> Predicting by rule. No data at ",
-    }
-}
+def _build_lang_labels():
+    available = set(get_available_langs())
+    if not available:
+        return {name: code for code, name in LANG_NAMES.items()}
+    labels = {name: code for code, name in LANG_NAMES.items() if code in available}
+    for code in sorted(available - set(LANG_NAMES.keys())):
+        labels[code] = code
+    return labels
 
-def get_translator(lang):
-    def translate(key, default=None, **kwargs):
-        if lang == "en" and key in TRANSLATIONS_EN:
-            text = TRANSLATIONS_EN[key]
-        elif default is not None:
-            text = default
-        else:
-            text = key
-        if kwargs:
-            try: text = text.format(**kwargs)
-            except (KeyError, ValueError, IndexError): pass
-        return text
-    return translate
+LANG_LABELS = _build_lang_labels()
 
-def get_widget_text(lang):
-    return WIDGET_TEXT.get(lang, WIDGET_TEXT["en"])
-
-def check_locales_errors():
-    return []
-
-def detect_default_lang():
-    return "vi"
-
-
-# --- Ported from old version ---
 VN_TIMEZONES = {
     "Asia/Ho_Chi_Minh", "Asia/Saigon", "Asia/Bangkok",
     "Asia/Phnom_Penh", "Asia/Vientiane", "Asia/Jakarta",
 }
+
+def detect_default_lang():
+    try:
+        tz = st.context.timezone or ""
+        if tz in VN_TIMEZONES:
+            return "vi"
+        return "en"
+    except Exception:
+        return "vi"
+
+def check_locales_errors():
+    errors = []
+    if not LOCALES_DIR.exists():
+        return [f"Thư mục '{LOCALES_DIR}' không tồn tại."]
+    pattern = f"{LANG_PREFIX}*.json" if LANG_PREFIX else "*.json"
+    files = sorted(LOCALES_DIR.glob(pattern))
+    if not files:
+        return [f"Không có file {LANG_PREFIX}*.json trong '{LOCALES_DIR}'."]
+    for f in files:
+        try:
+            with open(f, 'r', encoding='utf-8') as fh:
+                data = json.load(fh)
+        except json.JSONDecodeError as e:
+            errors.append(f"`{f.name}`: JSON lỗi — dòng {e.lineno}: {e.msg}")
+            continue
+        except Exception as e:
+            errors.append(f"`{f.name}`: {e}")
+            continue
+        if not isinstance(data, dict):
+            errors.append(f"`{f.name}`: root phải là dict")
+            continue
+        for key in ('ui', 'widget'):
+            if key in data and not isinstance(data[key], dict):
+                errors.append(f"`{f.name}`: '{key}' phải là dict")
+        if 'ui' not in data:
+            errors.append(f"`{f.name}`: thiếu key 'ui'")
+    return errors
+
+@st.cache_data(show_spinner=False)
+def _load_lang_file(lang_code):
+    file_path = _file_path(lang_code)
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        st.error(f"⚠️ Lỗi load ngôn ngữ {lang_code}: {e}")
+        return {"ui": {}, "widget": {}}
+
+def get_translator(lang):
+    data = _load_lang_file(lang)
+    lang_dict = data.get('ui', {})
+    def T(key, default=None, **kwargs):
+        text = lang_dict.get(key)
+        if text is None:
+            text = default if default is not None else f"[{key}]"
+        try:
+            return text.format(**kwargs) if kwargs else text
+        except KeyError:
+            return text
+    return T
+
+def get_widget_text(lang):
+    return _load_lang_file(lang).get('widget', {})
