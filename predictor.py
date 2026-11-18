@@ -233,13 +233,13 @@ def classify(slot):
         for off, phase in KEY_OFFSETS.items():
             if slot - off in slot_to_pat and not _is_bridge(slot-off) and slot_to_pat[slot-off] == pat: return phase, off
         return 'X', None
-    pat_first2 = get_first_2_pairs(pat)
+    pat_first2 = get_first_2_pairs(pat)  # [FIX] không dùng nữa
     for k in range(1, 25):
         prev = slot - 119 * k
-        if prev in slot_to_pat and not _is_bridge(prev) and get_first_2_pairs(slot_to_pat[prev]) == pat_first2: return '119', 119 * k
+        if prev in slot_to_pat and not _is_bridge(prev) and slot_to_pat[prev] == pat: return '119', 119 * k
     for off, phase in KEY_OFFSETS.items():
         prev = slot - off
-        if prev in slot_to_pat and not _is_bridge(prev) and get_first_2_pairs(slot_to_pat[prev]) == pat_first2: return phase, off
+        if prev in slot_to_pat and not _is_bridge(prev) and slot_to_pat[prev] == pat: return phase, off
     return 'X', None
 
 def _get_exact_state(s):
