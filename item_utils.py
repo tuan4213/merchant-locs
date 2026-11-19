@@ -118,30 +118,36 @@ def extract_items(content):
     import re as _re
     items = {}
     
-    # Strip emoji tags
     content = _re.sub(r'<a?:[a-zA-Z0-9_]+:\d+>', '', content)
-    # Strip URLs
     content = _re.sub(r'https?://\S+', '', content)
     content = content.replace('```', '')
     
-    pattern = _re.compile(r'\[?(\d{1,2}[-–—]\d{1,2})\]?\s*[:|]?\s*([^\n\r]+?)(?=\n|$|\d{1,2}[-–—]\d{1,2})')
+    # Match pair: N-M theo sau là : hoặc space + ít nhất 1 chữ cái
+    # Yêu cầu items có chữ cái thực, không chỉ số/dấu
+    pattern = _re.compile(
+        r'\[?(\d{1,2}[-–—]\d{1,2})\]?\s*[:|]\s*([^\n\r]+?)(?=\n|$|\d{1,2}[-–—]\d{1,2})'
+        r'|'
+        r'\[?(\d{1,2}[-–—]\d{1,2})\]?\s+([A-Za-z][^\n\r]*?)(?=\n|$|\d{1,2}[-–—]\d{1,2})',
+    )
     
     for match in pattern.finditer(content):
-        pair = match.group(1).replace('–', '-').replace('—', '-').strip()
-        raw_items = match.group(2).strip()
-        raw_items = raw_items.strip(':,|[]-  ')
-        if not raw_items:
+        # Group 1-2 (có `:` separator) hoặc 3-4 (có space + chữ cái)
+        pair = match.group(1) or match.group(3)
+        raw = match.group(2) or match.group(4) or ""
+        if not pair:
+            continue
+        pair = pair.replace('–', '-').replace('—', '-').strip()
+        raw = raw.strip().strip(':,|[]-  ')
+        if not raw:
             continue
         
-        # [PATCH-SKIP-PATTERN-ONLY] Skip nếu chỉ có ký tự đặc biệt (như "/", "|")
-        # Pattern-only content như "3-2 / 6-17 / 9-9" → items chỉ là "/"
-        if _re.fullmatch(r'[\s/\\|:;,.\-–—\[\](){}<>=+*&^%$#@!?~`\'"]*', raw_items):
+        # Skip nếu raw chỉ là ký tự đặc biệt
+        if _re.fullmatch(r'[\s/\\|:;,.\-–—\[\](){}<>=+*&^%$#@!?~`\'"]*', raw):
             continue
         
-        item_list = [s.strip() for s in _re.split(r'[,;]', raw_items) if s.strip()]
-        # [PATCH-SKIP-PATTERN-ONLY] Skip nếu sau split mỗi item chỉ là ký tự đặc biệt
-        item_list = [s for s in item_list 
-                     if not _re.fullmatch(r'[\s/\\|:;,.\-–—\[\](){}<>=+*&^%$#@!?~`\'"]*', s)]
+        item_list = [s.strip() for s in _re.split(r'[,;]', raw) if s.strip()]
+        # Yêu cầu có ít nhất 1 chữ cái
+        item_list = [s for s in item_list if _re.search(r'[A-Za-z]', s)]
         
         if item_list:
             items[pair] = item_list
