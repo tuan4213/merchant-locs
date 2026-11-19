@@ -715,9 +715,28 @@ def _slot_actual_candidates(slot):
     if slot not in REAL_SLOTS or slot not in slot_to_pat:
         return None
     real_pat = slot_to_pat[slot]
+    # [FIX] Lookup items thật từ slot_to_items[slot]
+    src_items = slot_to_items.get(slot) or {}
+    positions = []
+    for p in real_pat.split(' / '):
+        pair = p.strip()
+        vals = src_items.get(pair) if isinstance(src_items, dict) else None
+        if vals:
+            if isinstance(vals, (list, tuple)):
+                items_str = ', '.join(str(v) for v in vals if v)
+            else:
+                items_str = str(vals)
+        else:
+            # Fallback pattern_items aggregated
+            agg = pattern_items.get(pair) if pair in pattern_items else None
+            if agg:
+                items_str = ', '.join(str(v) for v in agg[:3] if v)
+            else:
+                items_str = '—'
+        positions.append({'pos': pair, 'items': items_str})
     return [{
         'pattern': real_pat,
-        'positions': [{'pos': p.strip(), 'items': '—'} for p in real_pat.split(' / ')],
+        'positions': positions,
         'prob': 'REAL',
         'source': slot,
         'reason': 'actual',
@@ -726,6 +745,7 @@ def _slot_actual_candidates(slot):
         'duplicates': [],
     }]
 
+
 def _slot_candidates(slot):
     actual = _slot_actual_candidates(slot)
     if actual:
@@ -733,17 +753,55 @@ def _slot_candidates(slot):
     cands = _predict_04am_ext(slot) if slot % 4 == 0 else _predict_std_ext(slot)
     out = []
     for c in (cands or []):
+        pat = c.get('pattern', '')
+        src = c.get('source', slot)
+        # [FIX] Lookup items theo thứ tự ưu tiên
+        items_map = {}
+        # 1. slot_to_items[source]
+        src_items = slot_to_items.get(src) if src != '?' else None
+        if src_items and isinstance(src_items, dict):
+            for pair, vals in src_items.items():
+                if vals:
+                    if isinstance(vals, (list, tuple)):
+                        items_map[pair.strip()] = ', '.join(str(v) for v in vals if v)
+                    else:
+                        items_map[pair.strip()] = str(vals)
+        # 2. pattern_items aggregated
+        if not items_map:
+            for pair in pat.split(' / '):
+                pair = pair.strip()
+                if pair in pattern_items:
+                    agg = pattern_items[pair]
+                    if agg:
+                        items_map[pair] = ', '.join(str(v) for v in agg[:3] if v)
+        # 3. Fallback slot - 119
+        if not items_map and (slot - 119) in slot_to_items:
+            fb_items = slot_to_items[slot - 119]
+            if isinstance(fb_items, dict):
+                for pair, vals in fb_items.items():
+                    if vals:
+                        if isinstance(vals, (list, tuple)):
+                            items_map[pair.strip()] = ', '.join(str(v) for v in vals if v)
+                        else:
+                            items_map[pair.strip()] = str(vals)
+        
+        positions = []
+        for p in pat.split(' / '):
+            pair = p.strip()
+            positions.append({'pos': pair, 'items': items_map.get(pair, '—')})
+        
         out.append({
-            'pattern': c['pattern'],
-            'positions': [{'pos': p.strip(), 'items': '—'} for p in c['pattern'].split(' / ')],
+            'pattern': pat,
+            'positions': positions,
             'prob': f"{c.get('prob', 0.0)*100:.1f}%",
-            'source': c.get('source', '?'),
+            'source': src,
             'reason': c.get('reason', ''),
             'phases': c.get('phases', []),
             'type': 'real' if c.get('source_type') == 'real' else 'pred',
             'duplicates': c.get('duplicates', []),
         })
     return out
+
 
 def build_widget_html(base_start_slot, offset_slots=0, n_ahead=12, lang="vi", utc_offset=7.0, missing_04=None):
     if _WIDGET_TEMPLATE is None:
