@@ -10,6 +10,7 @@ from github import Github, Auth
 
 _PIPELINE_LOCK = threading.RLock()
 
+from item_utils import order_rows_pattern_first
 from item_utils import (
     extract_pattern, extract_items, pattern_from_items,
     parse_pairs, stage_group, valid_position_groups,
@@ -771,8 +772,8 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
     PAIR_TO_SLOTS.clear()
     slot_phase.clear()
     
-    # Build slot_to_pat
-    for dt, content, user in merged.values():
+    # Build slot_to_pat (ưu tiên tin pattern; tin items chỉ là dự phòng)
+    for dt, content, user in order_rows_pattern_first(merged.values(), ts_to_slot):
         try:
             s = ts_to_slot(dt)
             pat = extract_pattern(content)
@@ -941,8 +942,8 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
 
     log.append(f"Merged: {len(merged)} rows")
 
-    # Build slot_to_pat
-    for dt, content, user in merged.values():
+    # Build slot_to_pat (ưu tiên tin pattern; tin items chỉ là dự phòng)
+    for dt, content, user in order_rows_pattern_first(merged.values(), ts_to_slot):
         try:
             s = ts_to_slot(dt)
             pat = extract_pattern(content)
