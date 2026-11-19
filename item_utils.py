@@ -82,7 +82,7 @@ def normalize_pattern_order(pairs):
 
 def extract_pattern(content):
     if not content: return None
-    content_clean = re.sub(r'<[a-zA-Z_]+:\d+>', '', content)
+    content_clean = re.sub(r'<a?:[a-zA-Z0-9_]+:\d+>', '', content)
     for line in content_clean.split('\n'):
         line = line.strip()
         if not line: continue
@@ -112,34 +112,41 @@ def extract_pattern(content):
     return None
 
 def extract_items(content):
-    if not content: return None
-    content_clean = re.sub(r'<[a-zA-Z_]+:\d+>', '', content)
-    mapping = {}
-    for line in content_clean.split('\n'):
-        line = line.strip()
-        if not line: continue
-        line_clean = re.sub(r"^[\s\*\-•>`\[\]|'\"`~_#]+", '', line)
-        if not line_clean: continue
-        m = re.match(rf'^(\d{{1,2}})\s*{DASH}\s*(\d{{1,2}})\s*', line_clean)
-        if not m: continue
-        a, b = int(m.group(1)), int(m.group(2))
-        if not (1 <= a <= 24 and 1 <= b <= 20): continue
-        rest = line_clean[m.end():].strip()
-        rest = re.sub(r'^[\s:=→\-\|>*•`\[\]~_]+', '', rest)
-        rest = re.sub(r'[\s\|\*`\[\]>_~\-]+$', '', rest)
-        if not rest or len(rest) < 2: continue
-        if len(PAIR_POS.findall(rest)) >= 2: continue
-        if re.match(rf'^\d{{1,2}}\s*{DASH}\s*\d{{1,2}}$', rest): continue
-        raw_items = smart_split(rest)
-        raw_items = [re.sub(r'^[\s\*\-`\[\]|]+|[\s\*\-`\[\]|]+$', '', x) for x in raw_items]
-        normalized = []
-        for x in raw_items:
-            if not x or len(x) < 2 or x.lower() in ('nothing','-','none','empty','n/a'): continue
-            if re.match(rf'^\d{{1,2}}\s*{DASH}\s*\d{{1,2}}$', x): continue
-            norm = normalize_item(x)
-            if norm and norm not in normalized: normalized.append(norm)
-        if normalized: mapping[f"{a}-{b}"] = normalized
-    return mapping if len(mapping) >= 6 else None
+    """Parse items từ Discord content."""
+    if not content:
+        return None
+    import re as _re
+    items = {}
+    
+    # Strip emoji tags
+    content = _re.sub(r'<a?:[a-zA-Z0-9_]+:\d+>', '', content)
+    # Strip URLs
+    content = _re.sub(r'https?://\S+', '', content)
+    content = content.replace('```', '')
+    
+    pattern = _re.compile(r'\[?(\d{1,2}[-–—]\d{1,2})\]?\s*[:|]?\s*([^\n\r]+?)(?=\n|$|\d{1,2}[-–—]\d{1,2})')
+    
+    for match in pattern.finditer(content):
+        pair = match.group(1).replace('–', '-').replace('—', '-').strip()
+        raw_items = match.group(2).strip()
+        raw_items = raw_items.strip(':,|[]-  ')
+        if not raw_items:
+            continue
+        
+        # [PATCH-SKIP-PATTERN-ONLY] Skip nếu chỉ có ký tự đặc biệt (như "/", "|")
+        # Pattern-only content như "3-2 / 6-17 / 9-9" → items chỉ là "/"
+        if _re.fullmatch(r'[\s/\\|:;,.\-–—\[\](){}<>=+*&^%$#@!?~`\'"]*', raw_items):
+            continue
+        
+        item_list = [s.strip() for s in _re.split(r'[,;]', raw_items) if s.strip()]
+        # [PATCH-SKIP-PATTERN-ONLY] Skip nếu sau split mỗi item chỉ là ký tự đặc biệt
+        item_list = [s for s in item_list 
+                     if not _re.fullmatch(r'[\s/\\|:;,.\-–—\[\](){}<>=+*&^%$#@!?~`\'"]*', s)]
+        
+        if item_list:
+            items[pair] = item_list
+    
+    return items if items else None
 
 def pattern_from_items(items_map):
     if not items_map or len(items_map) < 6: return None

@@ -672,7 +672,44 @@ def _hname_display(hour, lang):
     return {0: "🌅 Last", 1: "☀️ 1st", 2: "🌤️ 2nd", 3: "🌙 3rd"}[hour]
 
 def _get_pattern_items(pattern, source_slot, max_items=6, target_slot=None):
-    return {p.strip(): '—' for p in pattern.split(' / ')}
+    """Trả về dict {pair: items_str} từ slot_to_items hoặc pattern_items."""
+    if not pattern:
+        return {}
+    pairs = [p.strip() for p in pattern.split(' / ') if p.strip()]
+    out = {}
+    
+    # Ưu tiên 1: slot_to_items[source_slot]
+    src_items = slot_to_items.get(source_slot) if source_slot is not None else None
+    
+    for i, pair in enumerate(pairs[:max_items]):
+        vals = None
+        
+        if src_items:
+            if isinstance(src_items, dict):
+                vals = src_items.get(pair)
+            elif isinstance(src_items, (list, tuple)) and i < len(src_items):
+                vals = src_items[i]
+        
+        # Fallback: pattern_items[pair] (aggregated)
+        if not vals and pair in pattern_items:
+            vals = pattern_items[pair]
+        
+        # Format
+        if vals:
+            if isinstance(vals, (list, tuple)):
+                uniq = []
+                for v in vals:
+                    s = str(v).strip() if v else ''
+                    if s and s not in uniq:
+                        uniq.append(s)
+                out[pair] = ', '.join(uniq[:3]) if uniq else '—'
+            else:
+                s = str(vals).strip()
+                out[pair] = s if s else '—'
+        else:
+            out[pair] = '—'
+    
+    return out
 
 def _slot_actual_candidates(slot):
     if slot not in REAL_SLOTS or slot not in slot_to_pat:
@@ -747,88 +784,6 @@ def _validate_input(files_data, default_rows, use_default):
 
 def _reset_per_request_caches():
     pass
-
-def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_default=True, lang="vi", utc_offset=7.0, trans_lookback=None):
-    global slot_to_pat, slot_to_meta, slot_to_items, pattern_items, PAIR_TO_SLOTS
-    global REAL_SLOTS, REAL_MAX, ACTIVE_START_SLOT, min_slot, max_slot, slot_phase
-    
-    log_lines = ["AUTO-GEN MODE: Running pipeline"]
-    
-    # Parse input data (default_rows: tuples of (dt, content, user))
-    merged = {}
-    if use_default and default_rows:
-        for row in default_rows:
-            try:
-                dt, content, user = row[0], row[1], row[2]
-                if dt is not None:
-                    merged[(dt, user, content)] = (dt, content, user)
-            except: pass
-    
-    # Reset state
-    slot_to_pat.clear()
-    slot_to_meta.clear()
-    slot_to_items.clear()
-    pattern_items.clear()
-    PAIR_TO_SLOTS.clear()
-    slot_phase.clear()
-    
-    # Build slot_to_pat (ưu tiên tin pattern; tin items chỉ là dự phòng)
-    for dt, content, user in order_rows_pattern_first(merged.values(), ts_to_slot):
-        try:
-            s = ts_to_slot(dt)
-            pat = extract_pattern(content)
-            if pat and s not in slot_to_pat:
-                slot_to_pat[s] = pat
-                slot_to_meta[s] = {'dt': dt, 'dt_raw': dt, 'user': user, 'pattern_source': 'clean'}
-        except: pass
-    
-    if not slot_to_pat:
-        return None, "\n".join(log_lines + ["❌ No valid data"]), "", {'total_missing_04': 0}
-    
-    min_slot = min(slot_to_pat.keys())
-    max_slot = max(slot_to_pat.keys())
-    REAL_SLOTS = frozenset(slot_to_pat.keys())
-    REAL_MAX = max_slot
-    ACTIVE_START_SLOT = min_slot
-    
-    # Build phases
-    for s in sorted(REAL_SLOTS):
-        if s % 4 == 0:
-            try:
-                ph, rl = get_phase_run(s)
-                if ph: slot_phase[s] = (ph, rl)
-            except: pass
-    
-    # Build PAIR_TO_SLOTS
-    for s, pat in slot_to_pat.items():
-        for p in pat.split(' / '):
-            if p.strip(): PAIR_TO_SLOTS[p.strip()].add(s)
-    
-    # Current slot
-    NOW = datetime.utcnow() + VN_OFFSET
-    current_next_slot = int((NOW - BASE).total_seconds() / (6*3600)) + 1
-    
-    log_lines.append(f"✅ Loaded {len(slot_to_pat)} slots (range {min_slot} → {max_slot})")
-    log_lines.append(f"📍 Current next slot: {current_next_slot}")
-    
-    # Build widget
-    widget_html = build_widget_html(current_next_slot - 1, offset_days * 4, 12, lang, utc_offset, [])
-    
-    if widget_html is None:
-        return None, "\n".join(log_lines + ["❌ Widget build failed"]), "", {'total_missing_04': 0}
-    
-    log_lines.append(f"✅ Widget built ({len(widget_html)} chars)")
-    
-    # Log các slot virtual (lấp tạm) để user biết
-    _virt = [(_s, _m.get('fill_method')) for _s, _m in slot_to_meta.items() if _m.get('is_virtual')]
-    if _virt:
-        log_lines.append(f"\n🔮 Nhét tạm {len(_virt)} slot 04:00 (input thiếu):")
-        for _s, _meth in _virt[:10]:
-            log_lines.append(f"   · Slot {_s} (method: {_meth})")
-        if len(_virt) > 10:
-            log_lines.append(f"   ... +{len(_virt)-10}")
-
-    return widget_html, "\n".join(log_lines), "", {'total_missing_04': 0, 'static_acc': 100.0, 'adaptive_acc': 100.0}
 
 # ═══════════════════════════════════════════════════════════════
 # FIX v3: Restore missing functions + proper run_pipeline
@@ -949,6 +904,14 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
             pat = extract_pattern(content)
             if pat and s not in slot_to_pat:
                 slot_to_pat[s] = pat
+
+                # [PATCH-BUILD-SLOT-ITEMS] Build slot_to_items từ extract_items
+                try:
+                    _items = extract_items(content)
+                    if _items and s not in slot_to_items:
+                        slot_to_items[s] = _items
+                except Exception:
+                    pass
                 slot_to_meta[s] = {'dt': dt, 'dt_raw': dt, 'user': user, 'pattern_source': 'clean'}
         except: pass
 
