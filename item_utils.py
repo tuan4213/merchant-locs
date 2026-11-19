@@ -186,3 +186,39 @@ def find_slot_by_first_2_pairs(pattern, pair_to_slots, slot_to_items, slot_to_pa
         valid.sort(key=lambda s: abs(s - target_slot))
         return valid[0]
     return max(valid)
+
+
+# ===== [PATCH] Pattern lấy từ tin PATTERN; tin ITEMS chỉ là dự phòng (copy items nguyên văn ở chỗ khác) =====
+def post_kind(content):
+    """'I' = tin items (>=3 dòng 'X-Y <chữ>'), 'P' = tin pattern. Không dùng extract_items nên không bị lỗi dòng trống."""
+    import re as _re
+    line_re = _re.compile(r"^[\s\*\-•>`\[\]|'\"~_#]*(\d{1,2})\s*[-–—]\s*(\d{1,2})(.*)$")
+    n = 0
+    for ln in (content or "").split("\n"):
+        m = line_re.match(ln.strip())
+        if not m or not (1 <= int(m.group(1)) <= 24 and 1 <= int(m.group(2)) <= 20): continue
+        rest = _re.sub(r"^[\s:=→\-\|>*•`\[\]~_/]+|[\s\|\*`\[\]>_~\-/]+$", "", m.group(3))
+        if len(rest) >= 2 and not PAIR_POS.search(rest): n += 1
+    return 'I' if n >= 3 else 'P'
+
+def order_rows_pattern_first(rows, ts_to_slot):
+    """rows: (dt, content, user). Trả cùng các dòng đó, sắp theo slot rồi mức ưu tiên:
+    0 = tin pattern của người đăng cả pattern+items, 1 = tin pattern khác, 2 = tin items (dự phòng), 3 = không có pattern.
+    Trong cùng mức: tin sớm nhất trước. Pipeline lấy tin đầu tiên của mỗi slot."""
+    from collections import defaultdict
+    recs, kinds = [], defaultdict(lambda: defaultdict(set))
+    for r in rows:
+        dt, content, user = r[0], r[1], r[2]
+        try: s = ts_to_slot(dt)
+        except Exception: s = -10**9
+        pat = extract_pattern(content)
+        kind = post_kind(content) if pat else None
+        if pat: kinds[s][user].add(kind)
+        recs.append((r, s, kind, user, dt, content))
+    def key(t):
+        r, s, kind, user, dt, content = t
+        if kind is None: tier = 3
+        elif kind == 'P': tier = 0 if kinds[s][user] == {'I', 'P'} else 1
+        else: tier = 2
+        return (s, tier, dt, str(content))
+    return [t[0] for t in sorted(recs, key=key)]
