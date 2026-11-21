@@ -219,6 +219,19 @@ def parse_ts(s):
     return None
 
 def ts_to_slot(dt): return round((dt - BASE).total_seconds() / 3600 / 6)
+
+def get_chain(slot):
+    """[PATCH-CHAIN] Trả chain đầy đủ [slot, source, ..., real_root]."""
+    meta = slot_to_meta.get(slot, {})
+    chain = meta.get('chain')
+    if chain:
+        return chain
+    if meta.get('is_virtual'):
+        src = meta.get('source_slot')
+        if src is not None:
+            return [slot] + get_chain(src)
+    return [slot]
+
 def slot_to_ts(slot): return BASE + timedelta(hours=slot * 6)
 def _is_bridge(slot): return slot_to_meta.get(slot, {}).get('is_bridge', False)
 
@@ -758,24 +771,35 @@ def _slot_candidates(slot):
             _found_pat = slot_to_pat[slot]
             _found_src = slot_to_meta[slot].get('source_slot', slot - 4)
         elif slot not in slot_to_pat:
-            _walk = slot - 4
-            _max_walk = 500
-            while _walk >= 0 and _max_walk > 0:
-                if _walk in slot_to_pat and not slot_to_meta.get(_walk, {}).get('is_virtual'):
-                    _found_pat = slot_to_pat[_walk]
-                    _found_src = _walk
+            # [PATCH-CHAIN] Fill dần từ slot 04:00 liền trước (dù virtual hay real)
+            # Chain: [slot, slot-4, slot-8, ..., real_root]
+            _chain_back = []
+            _cur = slot
+            while _cur - 4 >= 0:
+                _chain_back.append(_cur)
+                _cur -= 4
+                if _cur in slot_to_pat:
                     break
-                _walk -= 4
-                _max_walk -= 1
-            if _found_pat:
-                slot_to_pat[slot] = _found_pat
-                slot_to_meta[slot] = {
-                    'dt': None, 'dt_raw': None, 'user': 'PREDICTED',
-                    'pattern_source': 'virtual',
-                    'is_virtual': True,
-                    'fill_method': '04am_carry_forward',
-                    'source_slot': _found_src,
-                }
+            else:
+                _cur = -1
+            if _cur >= 0 and _cur in slot_to_pat:
+                _prev = _cur
+                _prev_chain = slot_to_meta.get(_prev, {}).get('chain') or [_prev]
+                for _s in reversed(_chain_back):
+                    slot_to_pat[_s] = slot_to_pat[_prev]
+                    _new_chain = [_s] + _prev_chain
+                    slot_to_meta[_s] = {
+                        'dt': None, 'dt_raw': None, 'user': 'PREDICTED',
+                        'pattern_source': 'virtual',
+                        'is_virtual': True,
+                        'fill_method': '04am_carry_forward',
+                        'source_slot': _prev,
+                        'chain': _new_chain,
+                    }
+                    _prev = _s
+                    _prev_chain = _new_chain
+                _found_pat = slot_to_pat[slot]
+                _found_src = slot_to_meta[slot].get('source_slot')
         if _found_pat:
             _vitems = {}
             _src_items = slot_to_items.get(_found_src)
@@ -784,15 +808,17 @@ def _slot_candidates(slot):
                     if _vs:
                         _vitems[_p.strip()] = (', '.join(str(_v) for _v in _vs if _v)
                             if isinstance(_vs, (list, tuple)) else str(_vs))
-            # [PATCH-SIBLING-PRIORITY] Walk xuống, gần source nhất trước
-            # KHÔNG giới hạn distance — sibling xa chỉ dùng khi gần hơn thiếu
+            # [PATCH-SIBLING-2TIER] Ưu tiên cùng mốc giờ (khớp source rule 100%)
+            # Tier 1: cùng pattern + cùng mốc + < source, gần nhất trước
+            # Tier 2: cùng pattern + khác mốc + < source, gần nhất trước
             _pat_positions = [_p.strip() for _p in _found_pat.split(' / ')]
             _missing = [_p for _p in _pat_positions
                         if _p not in _vitems or not _vitems.get(_p) or _vitems.get(_p) == '—']
             if _missing and _found_src is not None:
-                _sib_list = []
+                _src_hour = _found_src % 4
+                _tier1, _tier2 = [], []
                 for _sib_s, _sib_pat in slot_to_pat.items():
-                    if _sib_s >= _found_src: continue  # chỉ sibling < source
+                    if _sib_s >= _found_src: continue
                     if _sib_pat != _found_pat: continue
                     if slot_to_meta.get(_sib_s, {}).get('is_virtual'): continue
                     _sib_items = slot_to_items.get(_sib_s) or {}
@@ -800,10 +826,15 @@ def _slot_candidates(slot):
                     _fillable = sum(1 for _p in _missing
                                     if _p in _sib_items and _sib_items[_p])
                     if _fillable <= 0: continue
-                    # Sort key: dist asc (gần trước), -fillable (nhiều trước)
-                    _sib_list.append((_found_src - _sib_s, -_fillable, _sib_s))
-                _sib_list.sort()
-                for _dist, _neg_f, _sib_s in _sib_list:
+                    _dist = _found_src - _sib_s
+                    _entry = (_dist, -_fillable, _sib_s)
+                    if _sib_s % 4 == _src_hour:
+                        _tier1.append(_entry)
+                    else:
+                        _tier2.append(_entry)
+                _tier1.sort()
+                _tier2.sort()
+                for _dist, _neg_f, _sib_s in (_tier1 + _tier2):
                     _sib_items = slot_to_items.get(_sib_s) or {}
                     for _p in list(_missing):
                         if _p in _sib_items and _sib_items[_p]:
@@ -817,12 +848,19 @@ def _slot_candidates(slot):
             for _p in _found_pat.split(' / '):
                 _p = _p.strip()
                 _vpos.append({'pos': _p, 'items': _vitems.get(_p, '—')})
+            _chain_full = slot_to_meta.get(slot, {}).get('chain') or [slot, _found_src]
+            _root = _chain_full[-1]
+            _depth = len(_chain_full) - 1
+            _reason = (f'Slot ảo 04:00 (gốc slot {_root}, {_depth} cấp)'
+                       if _depth > 1 else f'Slot ảo 04:00 (carry từ slot {_found_src})')
             return [{
                 'pattern': _found_pat,
                 'positions': _vpos,
                 'prob': '?',
                 'source': _found_src,
-                'reason': f'Slot ảo 04:00 (carry từ slot {_found_src})',
+                'source_root': _root,
+                'source_chain': _chain_full,
+                'reason': _reason,
                 'phases': [],
                 'type': 'virtual',
                 'duplicates': [],
