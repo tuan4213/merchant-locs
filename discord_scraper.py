@@ -32,22 +32,22 @@ async def fetch_latest_message():
     found = []
     vn_tz = timezone(timedelta(hours=7))
     now_vn = datetime.now(vn_tz)
-    target_dt = now_vn - timedelta(days=7)
+    target_dt = now_vn - timedelta(days=30)
 
     @client.event
     async def on_ready():
         print(f"[{datetime.now().strftime('%H:%M:%S')}] Đã kết nối Discord: {client.user}")
-        print(f"🎯 Quét ngược 7 ngày về mốc: {target_dt.strftime('%Y-%m-%d %H:%M:%S')} VN")
+        print(f"🎯 Quét ngược 30 ngày về mốc: {target_dt.strftime('%Y-%m-%d %H:%M:%S')} VN")
         try:
             channel = client.get_channel(CHANNEL_ID)
             if not channel:
                 print(f"❌ Không tìm thấy kênh ID={CHANNEL_ID}")
                 await client.close()
                 return
-            async for message in channel.history(limit=2000):
+            async for message in channel.history(limit=10000):
                 msg_vn = message.created_at.astimezone(vn_tz)
                 if msg_vn < target_dt:
-                    print(f"✅ Đã quét lùi tới mốc 7 ngày. Dừng quét.")
+                    print(f"✅ Đã quét lùi tới mốc 30 ngày. Dừng quét.")
                     break
                 if not message.content or not message.content.strip():
                     continue
@@ -188,7 +188,7 @@ def push_to_github(df_new):
         traceback.print_exc()
 
 if __name__ == "__main__":
-    print("🚀 Bắt đầu Scraper (Quét 7 ngày)...")
+    print("🚀 Bắt đầu Scraper (Quét 30 ngày)...")
     messages = asyncio.run(fetch_latest_message())
     if messages:
         push_to_github(pd.DataFrame(messages))

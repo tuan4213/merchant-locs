@@ -8,6 +8,10 @@ from i18n import (LANG_LABELS as LANG_OPTIONS, get_translator,
                   check_locales_errors, detect_default_lang)
 import predictor
 
+# [PATCH-LOCK] Serialize run_pipeline calls
+import threading as _threading
+_PIPELINE_LOCK = _threading.Lock()
+
 # === CONFIG FLAGS (was missing after refactor) ===
 # Bật/tắt UI nâng cao cho block 'Quét TRANS' (verify offsets động)
 SHOW_ADVANCED_UI = True
@@ -336,8 +340,13 @@ if _has_something:
 
     @st.cache_data(show_spinner=False)
     def _cached(files_tuple, default_rows_tuple, used_files_tuple, offset, use_def, lang_code, utc_off, trans_lookback, adaptive_state):
-        return predictor.run_pipeline(list(files_tuple), list(default_rows_tuple), list(used_files_tuple), offset, use_def, lang_code, utc_off, trans_lookback)
-
+        # [PATCH-ISOLATION-v2] Lock + reload + deepcopy tránh race
+        import importlib as _il
+        import copy as _cp
+        with _PIPELINE_LOCK:
+            _il.reload(predictor)
+            _res = predictor.run_pipeline(list(files_tuple), list(default_rows_tuple), list(used_files_tuple), offset, use_def, lang_code, utc_off, trans_lookback)
+            return (_res[0], _res[1], _res[2], _cp.deepcopy(_res[3]))
     widget_html, log_text, trans_text, trans_stats = _cached(
         files_data, default_rows, used_files, offset_days, use_default, lang, st.session_state.utc_offset, trans_lookback_input, predictor.get_adaptive_offset_state()
     )
