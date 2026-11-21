@@ -910,7 +910,7 @@ def _slot_candidates(slot):
             _virtual_cand = {
                 'pattern': _found_pat,
                 'positions': _vpos,
-                'prob': _est_prob,
+                'prob': f"{_est_prob * 100:.1f}%",
                 'source': _found_src,
                 'source_root': _root,
                 'source_chain': _chain_full,
