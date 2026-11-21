@@ -17,12 +17,3 @@ C3 -> B3 93.2%
 C3 -> C7 6.8%
 C7 -> B3 92% 
 C7 -> A1 8%  
-
-
---- TRANS HISTORY LOGIC ---
-- Trans History (Time Travel) cho phép user xem dự đoán ở các mốc thời gian trong quá khứ/tương lai.
-- Slider Time Travel: Nhận giá trị `offset_days` (-7 đến +30 ngày).
-- Mỗi ngày tương ứng với 4 slots (04:00, 10:00, 16:00, 22:00). Offset ngày sẽ tự động tính toán lại các slot ID hiện tại.
-- Logic xử lý Gap: Các slot bị thiếu dữ liệu (missing_04) sẽ được highlight trong popover "Chi tiết Gap".
-- Hàm liên quan: `format_missing_slots()`, `get_adaptive_offset_state()`.
-- Timezone: `offset_days` phải được tính toán dựa trên giờ UTC+7 cố định của server, không bị ảnh hưởng bởi Timezone Slider của user.

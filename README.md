@@ -37,3 +37,8 @@ just a tool for calculating where the merchant is ingame
 | `8abce4f` | 2026-11-18 22:04:52 | Patch v2: Lấp tạm 04:00 thiếu (is_virtual flag), KHÔNG dùng 119 cho logic dự đoán |
 | `6a0a772` | 2026-11-18 21:41:23 | Docs: mark predictor_2.py as experimental (logic-only, no CSV) |
 | `01a11bc` | 2026-11-18 21:41:21 | Arch: classify dùng full-string (verify: 17 fails vs 17 current) |
+
+
+### 6. Data Processing & Predictor Logic
+- **Trans History (Time Travel):** Cho phép user xem dự đoán ở các mốc thời gian trong quá khứ/tương lai. Slider nhận giá trị `offset_days` (-7 đến +30 ngày). Mỗi ngày tương ứng 4 slots (04:00, 10:00, 16:00, 22:00). Các slot bị thiếu dữ liệu (missing_04) sẽ được highlight trong popover.
+- **Known Patterns & Mapping:** Dữ liệu đầu vào là các chuỗi kèo (vd: "3-15"). Sử dụng `item_utils.py` để dịch ID thành tên item. Cơ chế dự đoán phân tích tần suất xuất hiện của các cặp Item trong 30 slots gần nhất. **Lưu ý:** Tuyệt đối không sửa đổi cấu trúc file `known_patterns.txt` và `trans_history.txt` bằng tay, vì Predictor sẽ parse lỗi và crash app.

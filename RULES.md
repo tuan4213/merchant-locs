@@ -100,3 +100,7 @@ Mốc 04:00 **TÁCH BIỆT HOÀN TOÀN** khỏi chu kỳ 119. Nó không dùng 1
 
 ### 4. Quy tắc Code Patching
 - **Cấm dùng Regex để patch file:** Tuyệt đối không dùng Regex tự động cắt/dán code. Phải sửa tay hoặc dùng logic line-by-line kiểm tra index cẩn thận để tránh `IndentationError`.
+
+### 6. Data Processing & Predictor Logic
+- **Trans History (Time Travel):** Cho phép user xem dự đoán ở các mốc thời gian trong quá khứ/tương lai. Slider nhận giá trị `offset_days` (-7 đến +30 ngày). Mỗi ngày tương ứng 4 slots (04:00, 10:00, 16:00, 22:00). Các slot bị thiếu dữ liệu (missing_04) sẽ được highlight trong popover.
+- **Known Patterns & Mapping:** Dữ liệu đầu vào là các chuỗi kèo (vd: "3-15"). Sử dụng `item_utils.py` để dịch ID thành tên item. Cơ chế dự đoán phân tích tần suất xuất hiện của các cặp Item trong 30 slots gần nhất. **Lưu ý:** Tuyệt đối không sửa đổi cấu trúc file `known_patterns.txt` và `trans_history.txt` bằng tay, vì Predictor sẽ parse lỗi và crash app.
