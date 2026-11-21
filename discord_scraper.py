@@ -1,4 +1,5 @@
 import discord
+import hmac
 import hashlib
 from discord.ext import commands
 import pandas as pd
@@ -11,14 +12,33 @@ from datetime import datetime, timedelta, timezone
 from github import Github, Auth
 
 
+def _get_hash_key():
+    """Đọc key: hash_key.txt ưu tiên, fallback HASH_SECRET env. Fail nếu thiếu."""
+    # 1. File (local + CI nếu workflow tạo)
+    try:
+        k = open("hash_key.txt", encoding='utf-8').read().strip()
+        if k:
+            return k
+    except FileNotFoundError:
+        pass
+    # 2. Env (CI convenience — GitHub Secret HASH_SECRET)
+    k = os.environ.get("HASH_SECRET", "").strip()
+    if k:
+        return k
+    raise RuntimeError(
+        "Thiếu hash key: cần hash_key.txt HOẶC env HASH_SECRET. "
+        "Local: echo '4213' > hash_key.txt. CI: set GitHub Secret HASH_SECRET."
+    )
+
+
 def hash_user(username):
-    """Hash username — deterministic, không reverse.
-    Prefix 'u_' + 12 hex chars = 48 bits."""
+    """HMAC-SHA256(username, key). Deterministic, cần key để reverse."""
     if not username:
         return 'u_unknown'
-    h = hashlib.sha256(username.lower().strip().encode('utf-8')).hexdigest()[:12]
+    key = _get_hash_key()
+    msg = username.lower().strip().encode('utf-8')
+    h = hmac.new(key.encode('utf-8'), msg, hashlib.sha256).hexdigest()[:12]
     return f'u_{h}'
-
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID", "0"))
