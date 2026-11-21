@@ -12,30 +12,11 @@ from datetime import datetime, timedelta, timezone
 from github import Github, Auth
 
 
-def _get_hash_key():
-    """Đọc key: hash_key.txt ưu tiên, fallback HASH_SECRET env. Fail nếu thiếu."""
-    # 1. File (local + CI nếu workflow tạo)
-    try:
-        k = open("hash_key.txt", encoding='utf-8').read().strip()
-        if k:
-            return k
-    except FileNotFoundError:
-        pass
-    # 2. Env (CI convenience — GitHub Secret HASH_SECRET)
-    k = os.environ.get("HASH_SECRET", "").strip()
-    if k:
-        return k
-    raise RuntimeError(
-        "Thiếu hash key: cần hash_key.txt HOẶC env HASH_SECRET. "
-        "Local: echo '4213' > hash_key.txt. CI: set GitHub Secret HASH_SECRET."
-    )
-
-
 def hash_user(username):
-    """HMAC-SHA256(username, key). Deterministic, cần key để reverse."""
+    """HMAC-SHA256(username, key từ hash_key.txt)."""
     if not username:
         return 'u_unknown'
-    key = _get_hash_key()
+    key = open("hash_key.txt", encoding='utf-8').read().strip()
     msg = username.lower().strip().encode('utf-8')
     h = hmac.new(key.encode('utf-8'), msg, hashlib.sha256).hexdigest()[:12]
     return f'u_{h}'
