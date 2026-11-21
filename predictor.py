@@ -761,9 +761,9 @@ def _slot_candidates(slot):
     actual = _slot_actual_candidates(slot)
     if actual:
         return actual
-    # [PATCH-04AM-VIRTUAL] 04:00 KHÔNG dùng 119
-    # Fill carry-forward từ slot 04:00 THẬT gần nhất trong csv
-    if slot % 4 == 0:
+    # [PATCH-04AM-VIRTUAL-FIX] 04:00 dùng _predict_04am_ext TRƯỚC
+    # Chỉ fill virtual KHI predictor trả rỗng (slot tương lai không data)
+    if slot % 4 == 0 and slot not in slot_to_pat:
         _is_virtual = slot_to_meta.get(slot, {}).get('is_virtual', False)
         _found_pat = None
         _found_src = None
@@ -853,7 +853,7 @@ def _slot_candidates(slot):
             _depth = len(_chain_full) - 1
             _reason = (f'Slot ảo 04:00 (gốc slot {_root}, {_depth} cấp)'
                        if _depth > 1 else f'Slot ảo 04:00 (carry từ slot {_found_src})')
-            return [{
+            _virtual_cand = {
                 'pattern': _found_pat,
                 'positions': _vpos,
                 'prob': '?',
@@ -864,8 +864,16 @@ def _slot_candidates(slot):
                 'phases': [],
                 'type': 'virtual',
                 'duplicates': [],
-            }]
+            }
+            # Không return sớm — tiếp tục thử _predict_04am_ext
+            # Nếu predictor có kết quả → dùng nó (chính xác hơn)
+            # Nếu không → dùng virtual candidate
+            _vc_fallback = _virtual_cand
+    _vc_fallback = locals().get('_vc_fallback')
     cands = _predict_04am_ext(slot) if slot % 4 == 0 else _predict_std_ext(slot)
+    # [PATCH-04AM-VIRTUAL-FIX] Nếu _predict_04am_ext rỗng → dùng virtual fallback
+    if not cands and _vc_fallback is not None:
+        return [_vc_fallback]
     out = []
     for c in (cands or []):
         pat = c.get('pattern', '')
