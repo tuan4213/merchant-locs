@@ -112,18 +112,20 @@ def extract_pattern(content):
     return None
 
 def extract_items(content):
-    """Parse items từ Discord content."""
+    """Parse items từ Discord content. Không yêu cầu số lượng tối thiểu."""
     if not content:
         return None
     import re as _re
     items = {}
     
+    # Strip emoji tags <:name:id> và <a:name:id>
     content = _re.sub(r'<a?:[a-zA-Z0-9_]+:\d+>', '', content)
+    # Strip URLs
     content = _re.sub(r'https?://\S+', '', content)
+    # Strip markdown code blocks
     content = content.replace('```', '')
     
-    # Match pair: N-M theo sau là : hoặc space + ít nhất 1 chữ cái
-    # Yêu cầu items có chữ cái thực, không chỉ số/dấu
+    # Match: [N-M] hoặc N-M, sau đó : hoặc space + chữ cái
     pattern = _re.compile(
         r'\[?(\d{1,2}[-–—]\d{1,2})\]?\s*[:|]\s*([^\n\r]+?)(?=\n|$|\d{1,2}[-–—]\d{1,2})'
         r'|'
@@ -131,7 +133,6 @@ def extract_items(content):
     )
     
     for match in pattern.finditer(content):
-        # Group 1-2 (có `:` separator) hoặc 3-4 (có space + chữ cái)
         pair = match.group(1) or match.group(3)
         raw = match.group(2) or match.group(4) or ""
         if not pair:
@@ -141,7 +142,7 @@ def extract_items(content):
         if not raw:
             continue
         
-        # Skip nếu raw chỉ là ký tự đặc biệt
+        # Skip nếu chỉ là ký tự đặc biệt
         if _re.fullmatch(r'[\s/\\|:;,.\-–—\[\](){}<>=+*&^%$#@!?~`\'"]*', raw):
             continue
         
