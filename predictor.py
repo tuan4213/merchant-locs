@@ -1,3 +1,5 @@
+import math
+from collections import defaultdict
 # predictor.py — Prediction logic (Markov, TRANS, run_pipeline)
 import csv, re, io, json, os, glob, subprocess, time
 import hashlib
@@ -555,7 +557,56 @@ def _fill_04am_step(slot_to_fill, fill_pat, source_slot, method):
     if slot_to_fill % 4 == 0 and slot_to_fill not in ANOMALY_SLOTS_BY_HOUR.get(0, []):
         ANOMALY_SLOTS_BY_HOUR.setdefault(0, []).append(slot_to_fill)
 
+
+_REAL_PAT_SNAPSHOT = {}
+_REAL_META_SNAPSHOT = {}
+
+def _ensure_virtual_04am_chain(target, max_steps=300, _active=None):
+    return
+
+    floor = max(0, min_slot if 'min_slot' in globals() else 0)
+    anchor = target - 4
+    steps = 0
+    while anchor >= floor and anchor not in slot_to_pat and steps < max_steps:
+        anchor -= 4
+        steps += 1
+    if anchor < floor or anchor not in slot_to_pat:
+        return
+
+    cur = anchor + 4
+    while cur <= target:
+        if cur not in slot_to_pat and cur not in _active:
+            _active.add(cur)
+            try:
+                preds = _predict_04am_ext(cur, _depth=1, _visited=set(_active))
+            except TypeError:
+                preds = _predict_04am_ext(cur)
+            except Exception:
+                preds = []
+            _active.discard(cur)
+
+            if preds and preds[0].get('pattern'):
+                top0 = preds[0]
+                src_s = top0.get('source', cur - 4)
+                prev_chain = slot_to_meta.get(src_s, {}).get('chain') or [src_s]
+                slot_to_pat[cur] = top0['pattern']
+                slot_to_meta[cur] = {
+                    'dt': None,
+                    'dt_raw': None,
+                    'user': 'PREDICTED',
+                    'pattern_source': 'virtual',
+                    'is_virtual': True,
+                    'fill_method': '04am_pred_step',
+                    'source_slot': src_s,
+                    'chain': [cur] + prev_chain,
+                }
+                if cur % 4 == 0 and cur not in ANOMALY_SLOTS_BY_HOUR.get(0, []):
+                    ANOMALY_SLOTS_BY_HOUR.setdefault(0, []).append(cur)
+        cur += 4
+
 def _predict_04am_ext(target, _depth=0, _visited=None):
+    if _depth == 0:
+        _ensure_virtual_04am_chain(target)
     global MARKOV_B2, MARKOV_B2_2T
     if _visited is None:
         _visited = set()
@@ -810,124 +861,57 @@ def _slot_actual_candidates(slot):
     }]
 
 
+_ROLLING_SLOTS = set()
+
+def _ensure_rolled_forward(target_slot):
+    if not REAL_SLOTS or target_slot <= max(REAL_SLOTS):
+        return
+    if target_slot in _ROLLING_SLOTS:
+        return
+    _ROLLING_SLOTS.add(target_slot)
+    try:
+        start_s = max(REAL_SLOTS) + 1
+        for s in range(start_s, target_slot + 1):
+            if s in slot_to_pat:
+                if s not in slot_phase:
+                    ph, rl = get_phase_run(s)
+                    if ph:
+                        slot_phase[s] = (ph, rl)
+                continue
+            if s in _ROLLING_SLOTS and s != target_slot:
+                continue
+            _ROLLING_SLOTS.add(s)
+            try:
+                cands_s = _predict_04am_ext(s) if s % 4 == 0 else _predict_std_ext(s)
+            finally:
+                _ROLLING_SLOTS.discard(s)
+            if cands_s:
+                top = cands_s[0]
+                slot_to_pat[s] = top['pattern']
+                slot_to_meta.setdefault(s, {
+                    'dt': slot_to_ts(s) if 'slot_to_ts' in globals() else None,
+                    'dt_raw': None,
+                    'user': 'PREDICTED',
+                    'pattern_source': 'rolled_forward',
+                    'is_virtual': False,
+                    'source': top.get('source'),
+                    'reason': top.get('reason'),
+                })
+                ph, rl = get_phase_run(s)
+                if ph:
+                    slot_phase[s] = (ph, rl)
+    finally:
+        _ROLLING_SLOTS.discard(target_slot)
 def _slot_candidates(slot):
     actual = _slot_actual_candidates(slot)
     if actual:
         return actual
+    _ensure_rolled_forward(slot)
     # [PATCH-04AM-VIRTUAL-FIX] 04:00 dùng _predict_04am_ext TRƯỚC
     # Chỉ fill virtual KHI predictor trả rỗng (slot tương lai không data)
     if slot % 4 == 0 and slot not in slot_to_pat:
-        _is_virtual = slot_to_meta.get(slot, {}).get('is_virtual', False)
-        _found_pat = None
-        _found_src = None
-        if _is_virtual and slot in slot_to_pat:
-            _found_pat = slot_to_pat[slot]
-            _found_src = slot_to_meta[slot].get('source_slot', slot - 4)
-        elif slot not in slot_to_pat:
-            # [PATCH-CHAIN] Fill dần từ slot 04:00 liền trước (dù virtual hay real)
-            # Chain: [slot, slot-4, slot-8, ..., real_root]
-            _chain_back = []
-            _cur = slot
-            while _cur - 4 >= 0:
-                _chain_back.append(_cur)
-                _cur -= 4
-                if _cur in slot_to_pat:
-                    break
-            else:
-                _cur = -1
-            if _cur >= 0 and _cur in slot_to_pat:
-                _prev = _cur
-                _prev_chain = slot_to_meta.get(_prev, {}).get('chain') or [_prev]
-                for _s in reversed(_chain_back):
-                    slot_to_pat[_s] = slot_to_pat[_prev]
-                    _new_chain = [_s] + _prev_chain
-                    slot_to_meta[_s] = {
-                        'dt': None, 'dt_raw': None, 'user': 'PREDICTED',
-                        'pattern_source': 'virtual',
-                        'is_virtual': True,
-                        'fill_method': '04am_carry_forward',
-                        'source_slot': _prev,
-                        'chain': _new_chain,
-                    }
-                    _prev = _s
-                    _prev_chain = _new_chain
-                _found_pat = slot_to_pat[slot]
-                _found_src = slot_to_meta[slot].get('source_slot')
-        if _found_pat:
-            _vitems = {}
-            _src_items = slot_to_items.get(_found_src)
-            if isinstance(_src_items, dict):
-                for _p, _vs in _src_items.items():
-                    if _vs:
-                        _vitems[_p.strip()] = (', '.join(str(_v) for _v in _vs if _v)
-                            if isinstance(_vs, (list, tuple)) else str(_vs))
-            # [PATCH-SIBLING-2TIER] Ưu tiên cùng mốc giờ (khớp source rule 100%)
-            # Tier 1: cùng pattern + cùng mốc + < source, gần nhất trước
-            # Tier 2: cùng pattern + khác mốc + < source, gần nhất trước
-            _pat_positions = [_p.strip() for _p in _found_pat.split(' / ')]
-            _missing = [_p for _p in _pat_positions
-                        if _p not in _vitems or not _vitems.get(_p) or _vitems.get(_p) == '—']
-            if _missing and _found_src is not None:
-                _src_hour = _found_src % 4
-                _tier1, _tier2 = [], []
-                for _sib_s, _sib_pat in slot_to_pat.items():
-                    if _sib_s >= _found_src: continue
-                    if _sib_pat != _found_pat: continue
-                    if slot_to_meta.get(_sib_s, {}).get('is_virtual'): continue
-                    _sib_items = slot_to_items.get(_sib_s) or {}
-                    if not isinstance(_sib_items, dict): continue
-                    _fillable = sum(1 for _p in _missing
-                                    if _p in _sib_items and _sib_items[_p])
-                    if _fillable <= 0: continue
-                    _dist = _found_src - _sib_s
-                    _entry = (_dist, -_fillable, _sib_s)
-                    if _sib_s % 4 == _src_hour:
-                        _tier1.append(_entry)
-                    else:
-                        _tier2.append(_entry)
-                _tier1.sort()
-                _tier2.sort()
-                for _dist, _neg_f, _sib_s in (_tier1 + _tier2):
-                    _sib_items = slot_to_items.get(_sib_s) or {}
-                    for _p in list(_missing):
-                        if _p in _sib_items and _sib_items[_p]:
-                            _vs = _sib_items[_p]
-                            _vitems[_p] = (', '.join(str(_v) for _v in _vs if _v)
-                                if isinstance(_vs, (list, tuple)) else str(_vs))
-                            _missing.remove(_p)
-                    if not _missing:
-                        break
-            _vpos = []
-            for _p in _found_pat.split(' / '):
-                _p = _p.strip()
-                _vpos.append({'pos': _p, 'items': _vitems.get(_p, '—')})
-            _chain_full = slot_to_meta.get(slot, {}).get('chain') or [slot, _found_src]
-            _root = _chain_full[-1]
-            _depth = len(_chain_full) - 1
-            _reason = (f'Slot ảo 04:00 (gốc slot {_root}, {_depth} cấp)'
-                       if _depth > 1 else f'Slot ảo 04:00 (carry từ slot {_found_src})')
-            _est_prob = max(0.15, round(0.85 * (0.85 ** max(0, _depth - 1)), 4))
-            _virtual_cand = {
-                'pattern': _found_pat,
-                'positions': _vpos,
-                'prob': f"{_est_prob * 100:.1f}%",
-                'source': _found_src,
-                'source_root': _root,
-                'source_chain': _chain_full,
-                'reason': _reason,
-                'phases': [],
-                'type': 'virtual',
-                'duplicates': [],
-            }
-            # Không return sớm — tiếp tục thử _predict_04am_ext
-            # Nếu predictor có kết quả → dùng nó (chính xác hơn)
-            # Nếu không → dùng virtual candidate
-            _vc_fallback = _virtual_cand
-    _vc_fallback = locals().get('_vc_fallback')
+        pass
     cands = _predict_04am_ext(slot) if slot % 4 == 0 else _predict_std_ext(slot)
-    # [PATCH-04AM-VIRTUAL-FIX] Nếu _predict_04am_ext rỗng → dùng virtual fallback
-    if not cands and _vc_fallback is not None:
-        return [_vc_fallback]
     out = []
     for c in (cands or []):
         pat = c.get('pattern', '')
@@ -980,6 +964,24 @@ def _slot_candidates(slot):
     return out
 
 
+    # Tổng hợp pattern_items theo từng cặp vị trí (pair -> danh sách item gần nhất/phổ biến)
+    _pair_counts = defaultdict(lambda: defaultdict(int))
+    for _s_item, _d_item in slot_to_items.items():
+        if isinstance(_d_item, dict):
+            for _pr, _vals in _d_item.items():
+                if not _pr:
+                    continue
+                _pr_key = _pr.strip()
+                if isinstance(_vals, (list, tuple)):
+                    for _v in _vals:
+                        if _v:
+                            _pair_counts[_pr_key][str(_v).strip()] += 1
+                elif _vals:
+                    _pair_counts[_pr_key][str(_vals).strip()] += 1
+    for _pr_key, _cnt_map in _pair_counts.items():
+        _sorted_vals = [k for k, _ in sorted(_cnt_map.items(), key=lambda kv: -kv[1])]
+        if _sorted_vals:
+            pattern_items[_pr_key] = _sorted_vals
 def build_widget_html(base_start_slot, offset_slots=0, n_ahead=12, lang="vi", utc_offset=7.0, missing_04=None):
     if _WIDGET_TEMPLATE is None:
         return None
@@ -1103,6 +1105,8 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
     pattern_items.clear()
     PAIR_TO_SLOTS.clear()
     slot_phase.clear()
+    if '_ROLLING_SLOTS' in globals():
+        _ROLLING_SLOTS.clear()
     ANOMALY_SLOTS_BY_HOUR = {0: [], 1: [], 2: [], 3: []}
     BRANCH_SLOTS = {'C1': [], 'A3': []}
     MARKOV_B2 = defaultdict(Counter)
@@ -1158,6 +1162,9 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
     min_slot = min(slot_to_pat.keys())
     max_slot = max(slot_to_pat.keys())
     REAL_SLOTS = frozenset(slot_to_pat.keys())
+    global _REAL_PAT_SNAPSHOT, _REAL_META_SNAPSHOT
+    _REAL_PAT_SNAPSHOT = dict(slot_to_pat)
+    _REAL_META_SNAPSHOT = {k: dict(v) for k, v in slot_to_meta.items()}
     REAL_MAX = max_slot
     ACTIVE_START_SLOT = min_slot
 
@@ -1219,4 +1226,27 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
         import traceback; log.append(traceback.format_exc())
         widget_html = None
 
+    # Tổng hợp pattern_items theo từng cặp vị trí có ưu tiên trọng số slot gần hơn
+    _recency_scores = defaultdict(lambda: defaultdict(float))
+    _max_item_slot = max((k for k in slot_to_items if isinstance(k, int)), default=0)
+    _half_life = 200.0
+    for _s_item, _d_item in slot_to_items.items():
+        if not isinstance(_d_item, dict):
+            continue
+        _dist = max(0, _max_item_slot - _s_item) if isinstance(_s_item, int) else 0
+        _w = math.exp(-math.log(2) * _dist / _half_life)
+        for _pr, _vals in _d_item.items():
+            if not _pr:
+                continue
+            _pr_key = _pr.strip()
+            if isinstance(_vals, (list, tuple)):
+                for _v in _vals:
+                    if _v:
+                        _recency_scores[_pr_key][str(_v).strip()] += _w
+            elif _vals:
+                _recency_scores[_pr_key][str(_vals).strip()] += _w
+    for _pr_key, _sc_map in _recency_scores.items():
+        _sorted_vals = [k for k, _ in sorted(_sc_map.items(), key=lambda kv: -kv[1])]
+        if _sorted_vals:
+            pattern_items[_pr_key] = _sorted_vals
     return widget_html, "\n".join(log), "", {'total_missing_04': 0, 'static_acc': 100.0, 'adaptive_acc': 100.0}
