@@ -906,10 +906,11 @@ def _slot_candidates(slot):
             _depth = len(_chain_full) - 1
             _reason = (f'Slot ảo 04:00 (gốc slot {_root}, {_depth} cấp)'
                        if _depth > 1 else f'Slot ảo 04:00 (carry từ slot {_found_src})')
+            _est_prob = max(0.15, round(0.85 * (0.85 ** max(0, _depth - 1)), 4))
             _virtual_cand = {
                 'pattern': _found_pat,
                 'positions': _vpos,
-                'prob': '?',
+                'prob': _est_prob,
                 'source': _found_src,
                 'source_root': _root,
                 'source_chain': _chain_full,
