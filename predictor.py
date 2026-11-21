@@ -962,23 +962,15 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
             pat = extract_pattern(content)
             if pat and s not in slot_to_pat:
                 slot_to_pat[s] = pat
-
-                # [PATCH-BUILD-ITEMS] Build slot_to_items từ extract_items
-                try:
-                    _items = extract_items(content)
-                    if _items and s not in slot_to_items:
-                        slot_to_items[s] = _items
-                except Exception:
-                    pass
-
-                # [PATCH-BUILD-SLOT-ITEMS] Build slot_to_items từ extract_items
-                try:
-                    _items = extract_items(content)
-                    if _items and s not in slot_to_items:
-                        slot_to_items[s] = _items
-                except Exception:
-                    pass
                 slot_to_meta[s] = {'dt': dt, 'dt_raw': dt, 'user': user, 'pattern_source': 'clean'}
+
+            # [PATCH-BUILD-ITEMS] extract_items NGOÀI if
+            try:
+                _items = extract_items(content)
+                if _items and s not in slot_to_items:
+                    slot_to_items[s] = _items
+            except Exception:
+                pass
         except: pass
 
     if not slot_to_pat:
