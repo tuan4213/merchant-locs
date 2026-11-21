@@ -555,7 +555,44 @@ def _fill_04am_step(slot_to_fill, fill_pat, source_slot, method):
     if slot_to_fill % 4 == 0 and slot_to_fill not in ANOMALY_SLOTS_BY_HOUR.get(0, []):
         ANOMALY_SLOTS_BY_HOUR.setdefault(0, []).append(slot_to_fill)
 
+
+_REAL_PAT_SNAPSHOT = {}
+_REAL_META_SNAPSHOT = {}
+
+def _ensure_virtual_04am_chain(target, max_steps=300):
+    """Chi lap slot 04:00 ao khi thieu du lieu de giu chuoi phan doan lien mach."""
+    if target % 4 != 0:
+        return
+    floor = max(0, min_slot if 'min_slot' in globals() else 0)
+    anchor = target - 4
+    steps = 0
+    while anchor >= floor and anchor not in slot_to_pat and steps < max_steps:
+        anchor -= 4
+        steps += 1
+    if anchor < floor or anchor not in slot_to_pat:
+        return
+    cur = anchor + 4
+    while cur <= target:
+        if cur not in slot_to_pat:
+            prev_s = cur - 4
+            prev_chain = slot_to_meta.get(prev_s, {}).get('chain') or [prev_s]
+            slot_to_pat[cur] = slot_to_pat[prev_s]
+            slot_to_meta[cur] = {
+                'dt': None,
+                'dt_raw': None,
+                'user': 'PREDICTED',
+                'pattern_source': 'virtual',
+                'is_virtual': True,
+                'fill_method': '04am_lazy_fill',
+                'source_slot': prev_s,
+                'chain': [cur] + prev_chain,
+            }
+            if cur % 4 == 0 and cur not in ANOMALY_SLOTS_BY_HOUR.get(0, []):
+                ANOMALY_SLOTS_BY_HOUR.setdefault(0, []).append(cur)
+        cur += 4
+
 def _predict_04am_ext(target, _depth=0, _visited=None):
+    _ensure_virtual_04am_chain(target)
     global MARKOV_B2, MARKOV_B2_2T
     if _visited is None:
         _visited = set()
@@ -1158,6 +1195,9 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
     min_slot = min(slot_to_pat.keys())
     max_slot = max(slot_to_pat.keys())
     REAL_SLOTS = frozenset(slot_to_pat.keys())
+    global _REAL_PAT_SNAPSHOT, _REAL_META_SNAPSHOT
+    _REAL_PAT_SNAPSHOT = dict(slot_to_pat)
+    _REAL_META_SNAPSHOT = {k: dict(v) for k, v in slot_to_meta.items()}
     REAL_MAX = max_slot
     ACTIVE_START_SLOT = min_slot
 
