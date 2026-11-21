@@ -559,10 +559,16 @@ def _fill_04am_step(slot_to_fill, fill_pat, source_slot, method):
 _REAL_PAT_SNAPSHOT = {}
 _REAL_META_SNAPSHOT = {}
 
-def _ensure_virtual_04am_chain(target, max_steps=300):
-    """Chi lap slot 04:00 ao khi thieu du lieu de giu chuoi phan doan lien mach."""
+def _ensure_virtual_04am_chain(target, max_steps=300, _active=None):
+    """Doi voi slot 04:00 thieu du lieu: dien tien dan tung buoc +4 bang _predict_04am_ext,
+    KHONG copy thang pattern cua slot 04:00 truoc do."""
     if target % 4 != 0:
         return
+    if _active is None:
+        _active = set()
+    if target in _active:
+        return
+
     floor = max(0, min_slot if 'min_slot' in globals() else 0)
     anchor = target - 4
     steps = 0
@@ -571,28 +577,41 @@ def _ensure_virtual_04am_chain(target, max_steps=300):
         steps += 1
     if anchor < floor or anchor not in slot_to_pat:
         return
+
     cur = anchor + 4
     while cur <= target:
-        if cur not in slot_to_pat:
-            prev_s = cur - 4
-            prev_chain = slot_to_meta.get(prev_s, {}).get('chain') or [prev_s]
-            slot_to_pat[cur] = slot_to_pat[prev_s]
-            slot_to_meta[cur] = {
-                'dt': None,
-                'dt_raw': None,
-                'user': 'PREDICTED',
-                'pattern_source': 'virtual',
-                'is_virtual': True,
-                'fill_method': '04am_lazy_fill',
-                'source_slot': prev_s,
-                'chain': [cur] + prev_chain,
-            }
-            if cur % 4 == 0 and cur not in ANOMALY_SLOTS_BY_HOUR.get(0, []):
-                ANOMALY_SLOTS_BY_HOUR.setdefault(0, []).append(cur)
+        if cur not in slot_to_pat and cur not in _active:
+            _active.add(cur)
+            try:
+                preds = _predict_04am_ext(cur, _depth=1, _visited=set(_active))
+            except TypeError:
+                preds = _predict_04am_ext(cur)
+            except Exception:
+                preds = []
+            _active.discard(cur)
+
+            if preds and preds[0].get('pattern'):
+                top0 = preds[0]
+                src_s = top0.get('source', cur - 4)
+                prev_chain = slot_to_meta.get(src_s, {}).get('chain') or [src_s]
+                slot_to_pat[cur] = top0['pattern']
+                slot_to_meta[cur] = {
+                    'dt': None,
+                    'dt_raw': None,
+                    'user': 'PREDICTED',
+                    'pattern_source': 'virtual',
+                    'is_virtual': True,
+                    'fill_method': '04am_pred_step',
+                    'source_slot': src_s,
+                    'chain': [cur] + prev_chain,
+                }
+                if cur % 4 == 0 and cur not in ANOMALY_SLOTS_BY_HOUR.get(0, []):
+                    ANOMALY_SLOTS_BY_HOUR.setdefault(0, []).append(cur)
         cur += 4
 
 def _predict_04am_ext(target, _depth=0, _visited=None):
-    _ensure_virtual_04am_chain(target)
+    if _depth == 0:
+        _ensure_virtual_04am_chain(target)
     global MARKOV_B2, MARKOV_B2_2T
     if _visited is None:
         _visited = set()
