@@ -320,7 +320,7 @@ def get_phase_run(slot):
 
 def _phase_of(slot):
     if slot in slot_phase: return slot_phase[slot]
-    if slot in REAL_SLOTS:
+    if slot in slot_to_pat:
         ph, rl = get_phase_run(slot)
         if ph: slot_phase[slot] = (ph, rl); return ph, rl
     return None, 0
@@ -795,14 +795,24 @@ def _slot_actual_candidates(slot):
     }]
 
 
+def _lookup_items(slot):
+    """[FIX] Resolve items qua chain: virtual → items real root."""
+    if slot is None: return None
+    meta = slot_to_meta.get(slot, {})
+    if meta.get('is_virtual'):
+        chain = get_chain(slot)
+        root = chain[-1] if chain else slot
+        return slot_to_items.get(root)
+    return slot_to_items.get(slot)
+
 def _slot_candidates(slot):
     actual = _slot_actual_candidates(slot)
     if actual:
         return actual
     # [PATCH-04AM-VIRTUAL-FIX] 04:00 dùng _predict_04am_ext TRƯỚC
     # Chỉ fill virtual KHI predictor trả rỗng (slot tương lai không data)
-    if slot % 4 == 0 and slot not in slot_to_pat:
-        _is_virtual = slot_to_meta.get(slot, {}).get('is_virtual', False)
+    _is_virtual = slot_to_meta.get(slot, {}).get('is_virtual', False)
+    if slot % 4 == 0 and (slot not in slot_to_pat or _is_virtual):
         _found_pat = None
         _found_src = None
         if _is_virtual and slot in slot_to_pat:
@@ -886,6 +896,8 @@ def _slot_candidates(slot):
             for _p in _found_pat.split(' / '):
                 _p = _p.strip()
                 _vpos.append({'pos': _p, 'items': _vitems.get(_p, '—')})
+            if _vitems and slot not in slot_to_items:
+                slot_to_items[slot] = dict(_vitems)
             _chain_full = slot_to_meta.get(slot, {}).get('chain') or [slot, _found_src]
             _root = _chain_full[-1]
             _depth = len(_chain_full) - 1
@@ -919,7 +931,7 @@ def _slot_candidates(slot):
         # [FIX] Lookup items theo thứ tự ưu tiên
         items_map = {}
         # 1. slot_to_items[source]
-        src_items = slot_to_items.get(src) if src != '?' else None
+        src_items = _lookup_items(src) if src != '?' else None
         if src_items and isinstance(src_items, dict):
             for pair, vals in src_items.items():
                 if vals:
@@ -1135,6 +1147,22 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
             except Exception:
                 pass
         except: pass
+
+    from collections import defaultdict as _dd_agg
+    _agg = _dd_agg(list)
+    for _s, _items in slot_to_items.items():
+        if isinstance(_items, dict):
+            for _p, _vs in _items.items():
+                if _vs:
+                    if isinstance(_vs, (list, tuple)):
+                        _agg[_p.strip()].extend(str(v) for v in _vs if v)
+                    else:
+                        _agg[_p.strip()].append(str(_vs))
+    for _p, _vs in _agg.items():
+        _seen = []
+        for _v in _vs:
+            if _v not in _seen: _seen.append(_v)
+        pattern_items[_p] = _seen
 
     if not slot_to_pat:
         return None, "No data", "", {'total_missing_04': 0}

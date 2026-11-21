@@ -8,6 +8,9 @@
 #mwidget .card.past{opacity:.5}
 #mwidget .card.actual{background:rgba(144,238,144,.06);border-left-color:#90ee90;opacity:1}
 #mwidget .card.bridge{background:rgba(138,124,255,.06);border-left-color:#8a7cff;opacity:.85}
+#mwidget .card.virtual{background:rgba(150,150,200,.06);border-left-color:#8888cc;opacity:1}
+#mwidget .pat.virtual{color:#aab0e0;background:rgba(150,150,200,.08)}
+#mwidget .ch .tag.virtual{background:rgba(150,150,200,.25);color:#aab0e0;font-weight:700}
 #mwidget .ch, #mwidget .pat-row, #mwidget .items-list, #mwidget .fb-item {position: relative; transition: padding-left 0.2s ease;}
 #mwidget .ch { padding-left: 0; display:flex; justify-content:space-between; align-items:center; font-size:14px; margin-bottom:8px; gap:12px; flex-wrap:wrap; }
 #mwidget .ch.active { padding-left: 32px; }
@@ -150,6 +153,7 @@
     let patCls = 'pat';
     if(top.type === 'actual') patCls = 'pat actual';
     else if(top.type === 'bridge') patCls = 'pat bridge';
+    else if(top.type === 'virtual') patCls = 'pat virtual';
     let h = '<div class="pat-row">' + mkBtn(patStr, 'S', false) +
             '<div class="'+patCls+'">'+esc(top.pattern)+'</div></div>';
     if (top.positions && top.positions.length) {
@@ -164,7 +168,15 @@
     let srcLabel = L.src;
     if(top.type === 'actual') srcLabel = L.src_actual || '← actual slot';
     else if(top.type === 'bridge') srcLabel = L.src_bridge || '← bridge from';
-    h += '<div class="src">'+esc(srcLabel)+' <b>'+top.source+'</b></div>';
+    else if(top.type === 'virtual') srcLabel = L.src_virtual || '🧩 virtual từ';
+    let chainHtml = '';
+    if(top.type === 'virtual' && Array.isArray(top.source_chain) && top.source_chain.length > 1){
+      const chainArr = top.source_chain;
+      const rootSlot = chainArr[chainArr.length - 1];
+      const depth = chainArr.length - 1;
+      chainHtml = ' <span style="color:#8888cc;font-size:11px">(gốc <b>'+esc(String(rootSlot))+'</b> · '+depth+' cấp)</span>';
+    }
+    h += '<div class="src">'+esc(srcLabel)+' <b>'+top.source+'</b>'+chainHtml+'</div>';
     const srcStr = String(top.source);
     if (missingMap[srcStr] && top.source !== 'history' && top.type !== 'actual' && top.type !== 'bridge') {
         const missTime = Date.parse(missingMap[srcStr]);
@@ -240,12 +252,14 @@
     const d = t - now;
     if(n.is_actual){ bigEl.textContent = L.real_badge; bigEl.style.color = '#90ee90'; }
     else if(n.is_bridge){ bigEl.textContent = L.bridge_badge; bigEl.style.color = '#8a7cff'; }
+    else if(n.top && n.top.type === 'virtual'){ bigEl.textContent = '🧩 '+(L.virtual_badge||'VIRTUAL'); bigEl.style.color = '#8888cc'; }
     else { bigEl.textContent='⏱ '+fmt(d); bigEl.style.color=d<600000?'#ff6b6b':'#ffd166'; }
     const top=n.top||{pattern:'?',positions:[],source:'?',type:'?'};
     let icon = '🟡';
     if(top.type === 'actual') icon = '✅';
     else if(top.type === 'real') icon = '🟢';
     else if(top.type === 'bridge') icon = '🌉';
+    else if(top.type === 'virtual') icon = '🧩';
     const checkPos=top.positions.length?top.positions[0].pos:'?';
     const nParts = getTimeParts(n.iso, utc_offset);
     subEl.innerHTML=icon+' <b>Slot '+n.slot+'</b> · <b>'+esc(nParts.timeStr)+' ('+esc(nParts.dateStr)+')</b>'+
@@ -261,18 +275,21 @@
       let cardCls='card'+(isNext?' next':'')+(dd<0?' past':'');
       if(isActual) cardCls += ' actual';
       else if(isBridge) cardCls += ' bridge';
+      else if(top.type === 'virtual') cardCls += ' virtual';
       const cdCls='cd'+(dd<0?' past':(dd<600000?' soon':''));
       const top=s.top||{type:'?'};
       let ic;
       if(top.type === 'actual') ic = '✅';
       else if(top.type === 'real') ic = '🟢';
       else if(top.type === 'bridge') ic = '🌉';
+      else if(top.type === 'virtual') ic = '🧩';
       else if(top.type === 'pred') ic = '🟡';
       else ic = '⚪';
       const sParts = getTimeParts(s.iso, utc_offset);
       let tags='';
       if(s.phase)tags+='<span class="tag phase">'+esc(s.phase)+'</span>';
-      if(top.prob){
+      if(top.type === 'virtual') tags+='<span class="tag virtual">🧩 '+(L.virtual_badge||'VIRTUAL')+'</span>';
+      else if(top.prob){
         if(top.prob === 'REAL') tags+='<span class="tag actual">'+esc(L.real_badge)+'</span>';
         else if(top.prob === 'BRIDGE') tags+='<span class="tag bridge">'+esc(L.bridge_badge)+'</span>';
         else tags+='<span class="tag">'+esc(top.prob)+'</span>';
