@@ -13,7 +13,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install
-        run: pip install --quiet pandas requests python-dateutil
+        run: pip install --quiet pandas requests python-dateutil PyGithub
       - name: Syntax check
         run: |
           python -c "import ast; ast.parse(open('app.py').read()); print('app.py OK')"
