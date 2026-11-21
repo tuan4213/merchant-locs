@@ -8,6 +8,44 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from github import Github, Auth
 
+# --- TIMEZONE HELPERS ---
+from zoneinfo import ZoneInfo
+import re as _re
+from datetime import datetime as _dt, timedelta as _td
+
+def _detect_and_convert_timezone(ts_str, user_offset):
+    if not ts_str: return ts_str, False, "unknown"
+    ts_str = str(ts_str).strip()
+    iso_tz_match = _re.search(r'(Z|[+-]\d{2}:?\d{2})$', ts_str)
+    if iso_tz_match:
+        try:
+            clean_ts = ts_str.replace("Z", "+00:00")
+            dt = _dt.fromisoformat(clean_ts)
+            vn_tz = ZoneInfo("Asia/Ho_Chi_Minh")
+            dt_vn = dt.astimezone(vn_tz).replace(tzinfo=None)
+            return dt_vn.strftime("%Y-%m-%d %H:%M:%S"), True, "ISO-Timezone"
+        except Exception:
+            pass
+    try:
+        clean_ts = ts_str.split(".")[0] 
+        dt = _dt.strptime(clean_ts, "%Y-%m-%d %H:%M:%S")
+        delta_hours = 7.0 - float(user_offset)
+        dt_vn = dt + _td(hours=delta_hours)
+        return dt_vn.strftime("%Y-%m-%d %H:%M:%S"), True, f"User-Slider (UTC+{user_offset})"
+    except Exception:
+        return ts_str, False, "Parse Error"
+
+def _check_mixed_timezones(ts_list):
+    tz_formats = set()
+    for ts in ts_list:
+        if not ts: continue
+        if _re.search(r'Z$', ts): tz_formats.add("UTC (Z)")
+        elif _re.search(r'\+07:?00$', ts): tz_formats.add("UTC+7")
+        elif _re.search(r'[+-]\d{2}:?\d{2}$', ts): tz_formats.add("Khác")
+        else: tz_formats.add("Naive")
+    return list(tz_formats)
+
+
 _PIPELINE_LOCK = threading.RLock()
 
 from item_utils import order_rows_pattern_first
@@ -1069,7 +1107,9 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
             try:
                 reader = _csv.DictReader(io.StringIO(fbytes.decode('utf-8-sig', errors='replace')))
                 for row in reader:
-                    ts_val = row.get('Timestamp') or row.get('timestamp') or ''
+                    ts_val = row.get('Timestamp') or row.get('timestamp')
+                    # Convert timezone
+                    ts_val, _converted, _tz_type = _detect_and_convert_timezone(ts_val, utc_offset) or ''
                     content_val = row.get('Content') or row.get('content') or ''
                     user_val = row.get('Username') or row.get('username') or '?'
                     dt = _flexible_parse_ts(ts_val)

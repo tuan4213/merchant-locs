@@ -216,6 +216,10 @@ with col_other:
 lang = st.session_state.app_lang
 
 # ==========================================
+
+T = get_translator(lang)
+
+# ==========================================
 # TIMEZONE SETTINGS (TOP)
 # ==========================================
 try:
@@ -250,7 +254,6 @@ if lang == "vi": st.caption(f"🕐 **Giờ hiện tại (theo offset trên):** `
 else: st.caption(f"🕐 **Current time (per offset above):** `{_now_str}` — UTC{utc_offset:+.1f}")
 # ==========================================
 
-T = get_translator(lang)
 
 if predictor._WIDGET_TEMPLATE is None:
     st.error(T("err_widget_missing", default="⚠️ Không tìm thấy file `widget_template.html`."))
