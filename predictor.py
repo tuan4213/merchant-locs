@@ -344,8 +344,9 @@ SESSION_START_OFFSET = {}
 MACRO_CYCLE = 1072
 EXTRA_ANOMALY_POSITIONS = {1: [157], 2: [814], 3: [399]}
 
-def _predict_next_gap(hour):
-    anoms = ANOMALY_SLOTS_BY_HOUR.get(hour, [])
+def _predict_next_gap(hour, cutoff_slot=None):
+    raw_anoms = ANOMALY_SLOTS_BY_HOUR.get(hour, [])
+    anoms = [a for a in raw_anoms if cutoff_slot is None or a < cutoff_slot]
     if len(anoms) < 2: return None
     recent = [anoms[i+1] - anoms[i] for i in range(max(0, len(anoms) - 15), len(anoms) - 1)]
     n = len(recent)
@@ -376,7 +377,7 @@ def _predict_next_gap(hour):
 def _get_anomaly_risk(target_slot):
     hour = target_slot % 4
     if hour == 0: return False
-    anoms = ANOMALY_SLOTS_BY_HOUR.get(hour, [])
+    anoms = [a for a in ANOMALY_SLOTS_BY_HOUR.get(hour, []) if a < target_slot]
     if not anoms: return False
     if hour in EXTRA_ANOMALY_POSITIONS:
         pos = target_slot % MACRO_CYCLE
@@ -385,7 +386,7 @@ def _get_anomaly_risk(target_slot):
     if diff <= 0: return False
     if diff in (116, 132): return True
     if diff == 16:
-        predicted = _predict_next_gap(hour)
+        predicted = _predict_next_gap(hour, target_slot)
         if predicted is None:
             # [FIX] Không đủ lookback → mặc định KHÔNG Risk (tin 119)
             # Trước đây return True → chọn Phase A → sai slot 495
