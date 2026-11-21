@@ -214,6 +214,42 @@ with col_other:
         if _sel and st.session_state.app_lang != _other_langs[_sel]: _set_lang(_other_langs[_sel])
 
 lang = st.session_state.app_lang
+
+# ==========================================
+# TIMEZONE SETTINGS (TOP)
+# ==========================================
+try:
+    from zoneinfo import ZoneInfo
+    system_tz_name = st.context.timezone or "Asia/Ho_Chi_Minh"
+    vn_tz = ZoneInfo("Asia/Ho_Chi_Minh")
+    sample = datetime(2025, 1, 1, 12, 0, tzinfo=vn_tz).astimezone(ZoneInfo(system_tz_name))
+    system_offset = sample.utcoffset().total_seconds() / 3600
+except Exception:
+    system_tz_name, system_offset = "Asia/Ho_Chi_Minh", 7.0
+
+if "utc_offset" not in st.session_state:
+    st.session_state.utc_offset = system_offset
+
+def reset_utc():
+    st.session_state.utc_offset = system_offset
+
+if lang == "vi": st.caption(f"🌍 Hệ thống tự nhận diện: **{system_tz_name}** (UTC{system_offset:+.1f})")
+else: st.caption(f"🌍 System auto-detected: **{system_tz_name}** (UTC{system_offset:+.1f})")
+
+col_tz, col_tz_btn = st.columns([3, 1])
+with col_tz: 
+    utc_offset = st.slider(T("utc_offset_label", default="🌍 UTC Offset"), min_value=-12.0, max_value=14.0, step=0.5, key="utc_offset")
+with col_tz_btn: 
+    st.write("")
+    st.write("")
+    st.button(T("utc_reset_btn", default="🔄 Reset"), on_click=reset_utc)
+
+_now_local = datetime.now(timezone.utc) + timedelta(hours=utc_offset)
+_now_str = _now_local.strftime('%Y-%m-%d %H:%M:%S')
+if lang == "vi": st.caption(f"🕐 **Giờ hiện tại (theo offset trên):** `{_now_str}` — UTC{utc_offset:+.1f}")
+else: st.caption(f"🕐 **Current time (per offset above):** `{_now_str}` — UTC{utc_offset:+.1f}")
+# ==========================================
+
 T = get_translator(lang)
 
 if predictor._WIDGET_TEMPLATE is None:
@@ -312,16 +348,6 @@ if _default_files:
     except Exception as e: st.warning(T("read_error", default="⚠️ Read error: `{e}`", e=e))
 else: st.caption(T("no_default", default="ℹ️ No baseline CSV"))
 
-try:
-    from zoneinfo import ZoneInfo
-    system_tz_name = st.context.timezone or "Asia/Ho_Chi_Minh"
-    vn_tz = ZoneInfo("Asia/Ho_Chi_Minh")
-    sample = datetime(2025, 1, 1, 12, 0, tzinfo=vn_tz).astimezone(ZoneInfo(system_tz_name))
-    system_offset = sample.utcoffset().total_seconds() / 3600
-except Exception: system_tz_name, system_offset = "Asia/Ho_Chi_Minh", 7.0
-
-if "utc_offset" not in st.session_state: st.session_state.utc_offset = system_offset
-def reset_utc(): st.session_state.utc_offset = system_offset
 if "time_travel_slider" not in st.session_state: st.session_state.time_travel_slider = 0
 def reset_time_travel(): st.session_state.time_travel_slider = 0
 
@@ -330,6 +356,25 @@ st.button(T("reset_time_travel", default="🔄 Reset Time Travel"), on_click=res
 
 use_default = st.checkbox(T("use_default", default="📚 Use default baseline"), value=True)
 uploaded = st.file_uploader(T("uploader", default="Upload CSV"), type=["csv"], accept_multiple_files=True)
+
+# --- CẢNH BÁO TIMEZONE CSV ---
+if uploaded:
+    try:
+        import io as _io, csv as _csv
+        _sample_ts = []
+        for _row in list(_csv.DictReader(_io.StringIO(uploaded[0].getvalue().decode('utf-8-sig', errors='replace'))))[:50]:
+            _t = _row.get('Timestamp') or _row.get('timestamp') or ''
+            if _t: _sample_ts.append(_t)
+        _tz_formats = predictor._check_mixed_timezones(_sample_ts)
+        if len(_tz_formats) > 1:
+            st.warning(f"⚠️ **Cảnh báo:** File CSV chứa nhiều định dạng timezone: `{_tz_formats}`. App sẽ tự động convert.")
+        elif _tz_formats and "Naive" not in _tz_formats:
+            st.info(f"ℹ️ **Timezone:** File CSV đã có sẵn timezone `{_tz_formats[0]}`. App đã tự động convert về UTC+7.")
+        else:
+            st.info(f"ℹ️ **Timezone:** File CSV không có timezone. App giả định file đang ở **UTC+{st.session_state.utc_offset}** và tự động convert về UTC+7.")
+    except Exception:
+        pass
+
 _has_something = uploaded or (use_default and bool(_default_files))
 
 if _has_something:
@@ -384,16 +429,6 @@ else:
     st.info(T("upload_hint", default="👆 Upload CSV to start"))
 
 with st.expander(T("predict_settings_title", default=T("predict_settings_title", default="⚙️ Predict Settings")), expanded=False):
-    if lang == "vi": st.caption(f"🌍 Hệ thống tự nhận diện: **{system_tz_name}** (UTC{system_offset:+.1f})")
-    else: st.caption(f"🌍 System auto-detected: **{system_tz_name}** (UTC{system_offset:+.1f})")
-    col_tz, col_tz_btn = st.columns([3, 1])
-    with col_tz: utc_offset = st.slider(T("utc_offset_label", default="🌍 UTC Offset"), min_value=-12.0, max_value=14.0, step=0.5, key="utc_offset")
-    with col_tz_btn: st.write(""); st.write(""); st.button(T("utc_reset_btn", default="🔄 Reset"), on_click=reset_utc)
-
-    _now_local = datetime.now(timezone.utc) + timedelta(hours=utc_offset)
-    _now_str = _now_local.strftime('%Y-%m-%d %H:%M:%S')
-    if lang == "vi": st.caption(f"🕐 **Giờ hiện tại (theo offset trên):** `{_now_str}` — UTC{utc_offset:+.1f}")
-    else: st.caption(f"🕐 **Current time (per offset above):** `{_now_str}` — UTC{utc_offset:+.1f}")
 
     def calc_local_time(vn_hour, user_offset):
         local_hour = (vn_hour - 7) + user_offset
