@@ -52,7 +52,7 @@ async def fetch_latest_message():
                     break
                 if not message.content or not message.content.strip():
                     continue
-                time_str = msg_vn.strftime('%m/%d/%Y %H:%M:%S')
+                time_str = msg_vn.strftime('%Y-%m-%d %H:%M:%S')
                 author = message.author
                 found.append({
                     'ID': str(message.id),
