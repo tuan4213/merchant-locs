@@ -1,4 +1,5 @@
 import discord
+import hashlib
 from discord.ext import commands
 import pandas as pd
 import os
@@ -8,6 +9,16 @@ import io
 import requests
 from datetime import datetime, timedelta, timezone
 from github import Github, Auth
+
+
+def hash_user(username):
+    """Hash username — deterministic, không reverse.
+    Prefix 'u_' + 12 hex chars = 48 bits."""
+    if not username:
+        return 'u_unknown'
+    h = hashlib.sha256(username.lower().strip().encode('utf-8')).hexdigest()[:12]
+    return f'u_{h}'
+
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID", "0"))
@@ -45,9 +56,7 @@ async def fetch_latest_message():
                 found.append({
                     'ID': str(message.id),
                     'Timestamp': time_str,
-                    'Username': author.name,
-                    'Display Name': getattr(author, 'display_name', author.name),
-                    'Server Nickname': getattr(author, 'nick', '') or '',
+                    'Username': hash_user(author.name),
                     'Content': message.content,
                     'Forwarded Content': '',
                     'Attachments': len(message.attachments),
