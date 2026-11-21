@@ -81,3 +81,22 @@ Mốc 04:00 **TÁCH BIỆT HOÀN TOÀN** khỏi chu kỳ 119. Nó không dùng 1
 ## PHẦN 5: CẤU TRÚC MERCH (PATTERN)
 - 6 cặp `stage-wave`. 6 nhóm stage: 1-4, 5-8, 9-12, 13-16, 17-20, 21-24.
 - Vị trí thứ mấy thì luôn thuộc nhóm đó.
+
+
+## 🛠️ Lịch Sử Cập Nhật & Quy Tắc Cốt Lõi (Cập nhật)
+
+### 1. Quy tắc Timezone & Timestamp
+- **Snowflake là Ground Truth:** `(ID >> 22) + 1420070400000` là nguồn thời gian chính xác nhất. Dùng để verify hoặc fallback.
+- **Format bắt buộc:** Mọi timestamp phải là ISO 8601 (`%Y-%m-%d %H:%M:%S`). Cấm dùng `%m/%d/%Y` (gây lỗi đảo ngày/tháng). Múi giờ chuẩn là UTC+7 (VN).
+- **Upload CSV:** Không tự động detect được timezone nếu CSV thiếu `Z` hoặc `+07:00`. Phải dùng thanh trượt UTC Offset của User để convert dữ liệu "Naive" về UTC+7.
+
+### 2. Quy tắc Privacy & Hashing
+- **HMAC-SHA256:** Username phải được hash bằng HMAC kết hợp key bí mật (chống reverse).
+- **Key Management:** Key lưu ở `hash_key.txt`. File này bắt buộc phải commit lên Git để CI/CD đọc được.
+
+### 3. Quy tắc UI Streamlit
+- **Vị trí Slider:** Thanh trượt Timezone phải nằm trên cùng. Bắt buộc chèn **sau** khi biến `lang` và hàm dịch `T()` được khởi tạo (tránh `NameError`).
+- **Cảnh báo Timezone:** Phải hiển thị ngay dưới `st.file_uploader`.
+
+### 4. Quy tắc Code Patching
+- **Cấm dùng Regex để patch file:** Tuyệt đối không dùng Regex tự động cắt/dán code. Phải sửa tay hoặc dùng logic line-by-line kiểm tra index cẩn thận để tránh `IndentationError`.

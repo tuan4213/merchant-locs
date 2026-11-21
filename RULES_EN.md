@@ -67,3 +67,22 @@ The Last Merch is **COMPLETELY SEPARATED** from Cycle 119. It does NOT use 119 o
 ## PART 4: BOT OPERATIONS
 - Bot runs 4 times/day. Auto-handles >1MB files and prevents data loss.
 - 6 `stage-wave` pairs. Positions strictly map to stage groups.
+
+
+## 🛠️ Update History & Core Rules (Updated)
+
+### 1. Timezone & Timestamp Rules
+- **Snowflake Ground Truth:** `(ID >> 22) + 1420070400000` is the most accurate time source. Use it to verify or fallback.
+- **Mandatory Format:** All timestamps must be ISO 8601 (`%Y-%m-%d %H:%M:%S`). NEVER use `%m/%d/%Y` (causes day/month swap). Standard timezone is UTC+7 (VN).
+- **Upload CSV:** Cannot auto-detect timezone if CSV lacks `Z` or `+07:00`. Must use User's UTC Offset slider to convert "Naive" data to UTC+7.
+
+### 2. Privacy & Hashing Rules
+- **HMAC-SHA256:** Usernames must be hashed using HMAC with a secret key (prevent reverse).
+- **Key Management:** Key stored in `hash_key.txt`. This file MUST be committed to Git for CI/CD.
+
+### 3. Streamlit UI Rules
+- **Slider Position:** Timezone slider must be at the top. MUST be inserted **after** `lang` variable and `T()` translation function initialization (avoid `NameError`).
+- **Timezone Warning:** Must be displayed directly below `st.file_uploader`.
+
+### 4. Code Patching Rules
+- **NEVER use Regex to patch files:** Absolutely do not use Regex to automatically cut/paste code. Use manual edit or strict line-by-line index logic to avoid `IndentationError`.

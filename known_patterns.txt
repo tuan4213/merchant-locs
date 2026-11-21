@@ -26,3 +26,13 @@ auto_heal_threshold = 0.52
 auto_heal_min_samples = 200
 min_stable_slot = 0
 min_markov_samples = 20
+
+
+--- KNOWN PATTERNS & ITEM MAPPING LOGIC ---
+- Dữ liệu đầu vào là các chuỗi kèo: "3-15", "8-4", "10-10" (đại diện cho vị trí X-Y).
+- Mapping item: Sử dụng file `item_utils.py` để dịch ID (vd: 3-15) thành tên item (vd: Libo, Free Gems).
+- Cơ chế dự đoán (Predictor):
+  + Phân tích tần suất xuất hiện của các cặp Item (X-Y) dựa trên các slot gần nhất.
+  + Nếu chuỗi kèo có format ``` [3-4] Free Hero... ```, cần parse chính xác các item được đề cập để tăng trọng số dự đoán.
+  + Độ tự tin (Confidence) tính dựa trên sự trùng lặp của pattern quá khứ (Window: 30 slots).
+- Trạng thái Adaptive Offset: `get_adaptive_offset_state()` dùng để điều chỉnh độ lệch nếu data bị trễ so với giờ hiện tại.
