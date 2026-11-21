@@ -504,9 +504,7 @@ def _predict_04am_ext(target, _depth=0):
                     _fill_method = '04am_recursive'
             except Exception:
                 pass
-            if not _fill_pat and (_prev - 119) in slot_to_pat:
-                _fill_pat = slot_to_pat[_prev - 119]
-                _fill_method = 'cycle119_fallback'
+            # [PATCH-NO-119-04AM] 04:00 KHÔNG dùng cycle 119
             if _fill_pat:
                 slot_to_pat[_prev] = _fill_pat
                 slot_to_meta[_prev] = {
@@ -750,6 +748,85 @@ def _slot_candidates(slot):
     actual = _slot_actual_candidates(slot)
     if actual:
         return actual
+    # [PATCH-04AM-VIRTUAL] 04:00 KHÔNG dùng 119
+    # Fill carry-forward từ slot 04:00 THẬT gần nhất trong csv
+    if slot % 4 == 0:
+        _is_virtual = slot_to_meta.get(slot, {}).get('is_virtual', False)
+        _found_pat = None
+        _found_src = None
+        if _is_virtual and slot in slot_to_pat:
+            _found_pat = slot_to_pat[slot]
+            _found_src = slot_to_meta[slot].get('source_slot', slot - 4)
+        elif slot not in slot_to_pat:
+            _walk = slot - 4
+            _max_walk = 500
+            while _walk >= 0 and _max_walk > 0:
+                if _walk in slot_to_pat and not slot_to_meta.get(_walk, {}).get('is_virtual'):
+                    _found_pat = slot_to_pat[_walk]
+                    _found_src = _walk
+                    break
+                _walk -= 4
+                _max_walk -= 1
+            if _found_pat:
+                slot_to_pat[slot] = _found_pat
+                slot_to_meta[slot] = {
+                    'dt': None, 'dt_raw': None, 'user': 'PREDICTED',
+                    'pattern_source': 'virtual',
+                    'is_virtual': True,
+                    'fill_method': '04am_carry_forward',
+                    'source_slot': _found_src,
+                }
+        if _found_pat:
+            _vitems = {}
+            _src_items = slot_to_items.get(_found_src)
+            if isinstance(_src_items, dict):
+                for _p, _vs in _src_items.items():
+                    if _vs:
+                        _vitems[_p.strip()] = (', '.join(str(_v) for _v in _vs if _v)
+                            if isinstance(_vs, (list, tuple)) else str(_vs))
+            # [PATCH-SIBLING-PRIORITY] Walk xuống, gần source nhất trước
+            # KHÔNG giới hạn distance — sibling xa chỉ dùng khi gần hơn thiếu
+            _pat_positions = [_p.strip() for _p in _found_pat.split(' / ')]
+            _missing = [_p for _p in _pat_positions
+                        if _p not in _vitems or not _vitems.get(_p) or _vitems.get(_p) == '—']
+            if _missing and _found_src is not None:
+                _sib_list = []
+                for _sib_s, _sib_pat in slot_to_pat.items():
+                    if _sib_s >= _found_src: continue  # chỉ sibling < source
+                    if _sib_pat != _found_pat: continue
+                    if slot_to_meta.get(_sib_s, {}).get('is_virtual'): continue
+                    _sib_items = slot_to_items.get(_sib_s) or {}
+                    if not isinstance(_sib_items, dict): continue
+                    _fillable = sum(1 for _p in _missing
+                                    if _p in _sib_items and _sib_items[_p])
+                    if _fillable <= 0: continue
+                    # Sort key: dist asc (gần trước), -fillable (nhiều trước)
+                    _sib_list.append((_found_src - _sib_s, -_fillable, _sib_s))
+                _sib_list.sort()
+                for _dist, _neg_f, _sib_s in _sib_list:
+                    _sib_items = slot_to_items.get(_sib_s) or {}
+                    for _p in list(_missing):
+                        if _p in _sib_items and _sib_items[_p]:
+                            _vs = _sib_items[_p]
+                            _vitems[_p] = (', '.join(str(_v) for _v in _vs if _v)
+                                if isinstance(_vs, (list, tuple)) else str(_vs))
+                            _missing.remove(_p)
+                    if not _missing:
+                        break
+            _vpos = []
+            for _p in _found_pat.split(' / '):
+                _p = _p.strip()
+                _vpos.append({'pos': _p, 'items': _vitems.get(_p, '—')})
+            return [{
+                'pattern': _found_pat,
+                'positions': _vpos,
+                'prob': '?',
+                'source': _found_src,
+                'reason': f'Slot ảo 04:00 (carry từ slot {_found_src})',
+                'phases': [],
+                'type': 'virtual',
+                'duplicates': [],
+            }]
     cands = _predict_04am_ext(slot) if slot % 4 == 0 else _predict_std_ext(slot)
     out = []
     for c in (cands or []):
