@@ -539,33 +539,48 @@ _V12_KNOWN_PATTERNS = {
 }
 _CYCLE_OFFSET_RULES = {('B3', 1): 'A1', ('A1', 1): 'A1', ('A1', 2): 'C7', ('C7', 1): 'B3'}
 
-def _predict_04am_ext(target, _depth=0):
+def _fill_04am_step(slot_to_fill, fill_pat, source_slot, method):
+    prev_chain = slot_to_meta.get(source_slot, {}).get('chain') or [source_slot]
+    slot_to_pat[slot_to_fill] = fill_pat
+    slot_to_meta[slot_to_fill] = {
+        'dt': None,
+        'dt_raw': None,
+        'user': 'PREDICTED',
+        'pattern_source': 'virtual',
+        'is_virtual': True,
+        'fill_method': method,
+        'source_slot': source_slot,
+        'chain': [slot_to_fill] + prev_chain,
+    }
+    if slot_to_fill % 4 == 0 and slot_to_fill not in ANOMALY_SLOTS_BY_HOUR.get(0, []):
+        ANOMALY_SLOTS_BY_HOUR.setdefault(0, []).append(slot_to_fill)
+
+def _predict_04am_ext(target, _depth=0, _visited=None):
     global MARKOV_B2, MARKOV_B2_2T
-    # [PATCH-VIRTUAL] Lấp tạm slot 04:00 trước nếu thiếu (để giữ nguyên Phase Matrix)
-    # Đây CHỈ là cầu nối input — logic dự đoán 04:00 KHÔNG dùng Cycle 119.
-    # Đệ quy tối đa 3 tầng, fallback cuối = Cycle 119 (đánh dấu rõ fill_method).
-    if _depth < 3:
-        _prev = target - 4
-        if _prev >= 0 and _prev not in slot_to_pat:
-            _fill_pat, _fill_method = None, None
-            try:
-                _sub = _predict_04am_ext(_prev, _depth=_depth + 1)
-                if _sub:
-                    _fill_pat = _sub[0]['pattern']
-                    _fill_method = '04am_recursive'
-            except Exception:
-                pass
-            # [PATCH-NO-119-04AM] 04:00 KHÔNG dùng cycle 119
-            if _fill_pat:
-                slot_to_pat[_prev] = _fill_pat
-                slot_to_meta[_prev] = {
-                    'dt': None, 'dt_raw': None, 'user': 'PREDICTED',
-                    'pattern_source': 'virtual',
-                    'is_virtual': True,
-                    'fill_method': _fill_method,
-                }
-                if _prev % 4 == 0 and _prev not in ANOMALY_SLOTS_BY_HOUR.get(0, []):
-                    ANOMALY_SLOTS_BY_HOUR.setdefault(0, []).append(_prev)
+    if _visited is None:
+        _visited = set()
+    if target in _visited or _depth > 300:
+        return []
+    _visited.add(target)
+
+    # Thụt lùi từng bước -4 để tìm mốc đã có dữ liệu, rồi điền tiến dần từng bước +4 lên tới sát target
+    _prev = target - 4
+    _floor = max(0, min_slot if 'min_slot' in globals() else 0)
+    if _prev >= _floor and _prev not in slot_to_pat:
+        _anchor = _prev - 4
+        _steps_back = 1
+        while _anchor >= _floor and _anchor not in slot_to_pat and _steps_back <= 300:
+            _anchor -= 4
+            _steps_back += 1
+
+        if _anchor >= _floor and _anchor in slot_to_pat:
+            _cur = _anchor + 4
+            while _cur < target and _cur not in _visited:
+                if _cur not in slot_to_pat:
+                    _sub = _predict_04am_ext(_cur, _depth=_depth + 1, _visited=(_visited | {_cur}))
+                    if _sub and _sub[0].get('pattern'):
+                        _fill_04am_step(_cur, _sub[0]['pattern'], _cur - 4, f'04am_forward_d{_depth + 1}')
+                _cur += 4
     phase, rl = _phase_of(target - 4); phase2, rl2 = _phase_of(target - 8)
     _v12_pred = _v12_predict_from_phase_chains_v2(target)
     if _v12_pred: return _v12_pred
