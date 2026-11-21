@@ -431,6 +431,11 @@ def _predict_std_ext(target):
     for r in raw_out:
         if r['pattern'] not in grouped: grouped[r['pattern']] = {'main': r, 'dups': []}
         else: grouped[r['pattern']]['main']['prob'] += r['prob']; grouped[r['pattern']]['dups'].append(r)
+
+    if target in set(ANOMALY_SLOTS_BY_HOUR.get(hour, [])):
+        for r in raw_out:
+            if "Phase A" in str(r.get("reason", "")):
+                r["prob"] = 1.0
     return sorted([{**data['main'], 'prob': min(data['main']['prob'], 1.0), 'duplicates': data['dups']} for pat, data in grouped.items()], key=lambda x: -x['prob'])[:3]
 
 def _find_04_cluster(target):
