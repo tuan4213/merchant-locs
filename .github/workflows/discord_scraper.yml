@@ -1,7 +1,7 @@
 name: Discord Scraper
 on:
   schedule:
-    - cron: '0 */6 * * *'   # mỗi 6 giờ
+    - cron: '5,15 3,9,15,21 * * *'  # 04:05/04:15, 10:05/10:15, 16:05/16:15, 22:05/22:15 VN (+07)
   workflow_dispatch:
 
 jobs:
