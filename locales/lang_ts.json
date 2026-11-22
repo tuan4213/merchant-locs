@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Vuxokoxoko bya masiku byi kayela!</b> Ku profetiwa hi milawu. Ku hava data laha "
   },
-  "other_languages_placeholder": "🌐 Tindimi tin’wani"
+  "other_languages_placeholder": "🌐 Tindimi tin’wani",
+  "default_baseline_summary": "Loko u tirhisa datha ya xisekelo leyi vekiwileke: App yi landza datha leyintshwa ku suka eka xihlovo lexi nga kule; loko yi nga ri eka inthanete kumbe yi nga kumeki, yi tlhelela eka tifayili ta CSV ta laha kaya, yi lulamisa nkarhi, naswona yi susa mintila leyi phindhakeleke.",
+  "default_loader_summary": "Nkatsakanyo wo koka datha: Yi sikana tifayili ta CSV leti lulameke, yi kambela leswintshwa, yi hlanganisa switifiketi, naswona yi susamintshamo leyi phindhakeleke emahlweni ko profeta (hi ku tirhisa caching leswaku swi vuyela ku khuluka hi ku hatlisa)."
 }

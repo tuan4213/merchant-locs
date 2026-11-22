@@ -85,5 +85,7 @@
     "bridge_badge": "DARAJA",
     "missing_data_warn": "⚠️ <b>Data ya asili imekosekana!</b> Inatabiri sheria. Hakuna data katika "
   },
-  "other_languages_placeholder": "🌐 Lugha zingine"
+  "other_languages_placeholder": "🌐 Lugha zingine",
+  "default_baseline_summary": "Unapotumia data chaguomsingi ya msingi: Programu hurejesha seti ya hivi karibuni ya data ya kawaida kutoka kwa chanzo cha mbali; ikiwa iko nje ya mtandao au haipatikani, inarudi kwenye faili za CSV za ndani, husawazisha kanda za wakati, na huondoa safu wima zinazorudiwa.",
+  "default_loader_summary": "Muhtasari wa upakiaji wa data: Inachanganua faili halali za CSV, hukagua masasisho, huunganisha rekodi, na huondoa maingizo yanayorudiwa kabla ya utabiri (kwa kutumia kashe kwa upakiaji upya wa haraka)."
 }

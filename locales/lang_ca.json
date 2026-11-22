@@ -85,5 +85,7 @@
     "bridge_badge": "PONT",
     "missing_data_warn": "⚠️ <b>Falten dades originals!</b> S'està predint el patró. No hi ha dades a"
   },
-  "other_languages_placeholder": "🌐 Altres llengües"
+  "other_languages_placeholder": "🌐 Altres llengües",
+  "default_baseline_summary": "Quan s'utilitzen les dades de referència predeterminades: l'aplicació recupera el conjunt de dades estàndard més recent de la font remota; si està offline, utilitza fitxers CSV locals, normalitza zones horàries i elimina duplicats.",
+  "default_loader_summary": "Resum de càrrega de dades: escaneja fitxers CSV vàlids, comprova actualitzacions, fusiona registres i elimina duplicats abans de la predicció (amb memòria cau)."
 }

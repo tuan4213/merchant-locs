@@ -354,5 +354,7 @@
       "missing_data_warn": "⚠️ <b>¡Faltan datos originales!</b> Predicción basada en patrones. Sin datos en "
     }
   },
-  "other_languages_placeholder": "🌐 Other languages"
+  "other_languages_placeholder": "🌐 Other languages",
+  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
+  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
 }

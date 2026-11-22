@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Suhgyau mbouj miz!</b> Singxnyied pattern. Mbouj miz suhgyau daengz "
   },
-  "other_languages_placeholder": "🌐 Vunz guekhoz lai"
+  "other_languages_placeholder": "🌐 Vunz guekhoz lai",
+  "default_baseline_summary": "Saw ha yongz gaeuqbae gvaq miz: App daeuj dawq gvaq byuy byungz singhgaih raemx yenz; mbouj miz internet laj gvaq mbouj ndaej, dienq fanuj CSV biengz, gvaq yenz baengh byungz, caeuq byungz byum byungz.",
+  "default_loader_summary": "Gvaq byuj yenz: Saenq fanuj CSV doiq, raeuz yenz mboq, haenx yenz daeuj, caeuq byungz byum byungz couh byungz (loq caching byungz baenz daeuj gaengh)."
 }

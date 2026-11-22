@@ -85,5 +85,7 @@
     "bridge_badge": "PON",
     "missing_data_warn": "⚠️ <b>Done orijinal yo manke!</b> Prediksyon modèl. Pa gen done nan"
   },
-  "other_languages_placeholder": "🌐 Lòt lang yo"
+  "other_languages_placeholder": "🌐 Lòt lang yo",
+  "default_baseline_summary": "Lè w ap itilize done debaz default yo: Aplikasyon an ap chache dènye seri done estanda ki soti nan sous adistans lan; si li offline, li itilize fichye CSV lokal yo, nòmalize zòn tan yo, epi retire doublon yo.",
+  "default_loader_summary": "Rezime chajman done: Scan fichye CSV valab yo, tcheke pou mizajou, rantre dosye yo, epi retire doublon anvan prediksyon an."
 }

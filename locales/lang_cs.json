@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Původní data chybí!</b> Předpověď vzoru. Žádná data na"
   },
-  "other_languages_placeholder": "🌐 Další jazyky"
+  "other_languages_placeholder": "🌐 Další jazyky",
+  "default_baseline_summary": "Při použití výchozích základních dat: Aplikace načte nejnovější standardní datovou sadu ze vzdáleného zdroje; pokud je offline, použije místní soubory CSV, normalizuje časová pásma a odstraní duplicity.",
+  "default_loader_summary": "Souhrn načítání dat: Prohledá platné soubory CSV, zkontroluje aktualizace, sloučí záznamy a před predikcí odstraní duplicity (s mezipamětí pro rychlejší opětovné načtení)."
 }

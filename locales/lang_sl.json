@@ -85,5 +85,7 @@
     "bridge_badge": "MOST",
     "missing_data_warn": "⚠️ <b>Prvotni podatki manjkajo!</b> Napovedovanje pravila. Ni podatkov ob "
   },
-  "other_languages_placeholder": "🌐 Drugi jeziki"
+  "other_languages_placeholder": "🌐 Drugi jeziki",
+  "default_baseline_summary": "Pri uporabi privzetih osnovnih podatkov: Aplikacija pridobi najnovejšejši standardni nabor podatkov iz oddaljenega vira; če ni povezave ali vir ni na voljo, uporabi lokalne datoteke CSV, normalizira časovne pasove in odstrani podvojene vrstice.",
+  "default_loader_summary": "Povzetek nalaganja podatkov: Preveri veljavne datoteke CSV, preveri posodobitve, združi zapise in odstrani podvojene vnose pred napovedovanjem (s predpomnjenjem za hitrejše ponovno nalaganje)."
 }

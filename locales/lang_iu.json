@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>ᖃᐅᔨᒪᔾᔪᑎᑦ ᐱᑕᖃᙱᑦᑐᑦ!</b> ᓇᓚᐅᑦᑖᕈᑎ. Data ᐱᑕᖃᙱᑦᑐᖅ "
   },
-  "other_languages_placeholder": "🌐 ᐅᖃᐅᓰᑦ ᐊᖏᔪᖅ ᐅᖃᐅᓰᑦ"
+  "other_languages_placeholder": "🌐 ᐅᖃᐅᓰᑦ ᐊᖏᔪᖅ ᐅᖃᐅᓰᑦ",
+  "default_baseline_summary": "Atuliruni baseline data: App-iga titiraqtuq nutaanik data-nik remote source-mit; offline-uvatluunniit unavailable-uvatluunniit, utiqtuq local CSV-nut, normalize-tlugu timezones, unalu deduplicate-tlugu rows.",
+  "default_loader_summary": "Data loading summary: Misigsuqtut CSV files, uqaqtut update-nut, katitirutit records, unalu deduplicate-tlugu entries prediction-atinnagu (cache-qaqhuni)."
 }

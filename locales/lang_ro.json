@@ -85,5 +85,7 @@
     "bridge_badge": "PUNTE",
     "missing_data_warn": "⚠️ <b>Datele originale lipsesc!</b> Predicție de model. Fără date la"
   },
-  "other_languages_placeholder": "🌐 Alte limbi"
+  "other_languages_placeholder": "🌐 Alte limbi",
+  "default_baseline_summary": "Când se utilizează datele de referință implicite: Aplicația preia cel mai recent set de date standard de la sursa la distanță; dacă este offline sau indisponibil, utilizează fișiere CSV locale, normalizează fusurile orare și elimină rândurile duplicate.",
+  "default_loader_summary": "Rezumatul încărcării datelor: Scanează fișierele CSV valide, verifică actualizările, unește înregistrările și elimină intrările duplicate înainte de predicție (cu stocare în cache pentru reîncărcări mai rapide)."
 }

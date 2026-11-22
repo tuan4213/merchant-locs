@@ -85,5 +85,7 @@
     "bridge_badge": "PONTE",
     "missing_data_warn": "⚠️ <b>Dnêyes di båze mancantès!</b> Règles di prédivnaedje. Nou data a"
   },
-  "other_languages_placeholder": "🌐 Ôtes langues"
+  "other_languages_placeholder": "🌐 Ôtes langues",
+  "default_baseline_summary": "Cwand nou eploye les dnêyes di båze: Li programe ttcheye li pus nouvresse hagnon di dnêyes normåle dispu li sourdant å lon; s' il est hors-ligna ou nén disponibe, i si raptroufe so les fitchîs CSV locås, normålize les zones di tins eyet oistêye les royes ki s' répètèt.",
+  "default_loader_summary": "Boket do dischaedjaedje des dnêyes: Sidine les bons fitchîs CSV, контрол s' gn a des noveles, assoûte les dnêyes eyet oistêye les dobes intrêyes divant l' prognose (avou do cache po skepyî pus rade)."
 }

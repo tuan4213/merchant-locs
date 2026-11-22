@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Melele eo etto ejjelok!</b> Kakien pattern. Ejjelok data ioon "
   },
-  "other_languages_placeholder": "🌐 Kajin ko jet"
+  "other_languages_placeholder": "🌐 Kajin ko jet",
+  "default_baseline_summary": "Ñan ke ej jerbal koba in baseline data: App in ej l̦ook dataset eo emakitkit tata jen remote source; elañe ejel̦o̦k internet ak ejjel̦o̦k, ej bar oktok ñan local CSV files, normalize-i timezone, im deduplicate-i rows.",
+  "default_loader_summary": "Data loading summary: Scan-i valid CSV files, lale update-ko, jikin records, im deduplicate-i entries mjen prediction (kobela caching ñan reloaded elañe emakitkit)."
 }

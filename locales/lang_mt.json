@@ -85,5 +85,7 @@
     "bridge_badge": "PURTIERA",
     "missing_data_warn": "⚠️ <b>Id-dejta oriġinali nieqsa!</b> Tbassir tar-regolarità. L-ebda dejta fi"
   },
-  "other_languages_placeholder": "🌐 Lingwi oħra"
+  "other_languages_placeholder": "🌐 Lingwi oħra",
+  "default_baseline_summary": "Meta tuża d-data bażika predefinita: L-app tirkupra l-aħħar sett ta' data standard mis-sors remot; jekk offline jew mhux disponibbli, taqa' lura fuq fajls CSV lokali, normalizes żoni ta' ħin, u tneħħi d-duplikati.",
+  "default_loader_summary": "Sommarju tat-tagħbija tad-data: Tiskennja fajls CSV validi, tiċċekkja għal aġġornamenti, tgħaqqad ir-rekords, u tneħħi d-duplikati qabel it-tbassir (b'caching għal tagħbija mill-ġdid aktar mgħaġġla)."
 }

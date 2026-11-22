@@ -85,5 +85,7 @@
     "bridge_badge": "MOST",
     "missing_data_warn": "⚠️ <b>Izvorni podaci nedostaju!</b> Predviđanje pravila. Nema podataka na"
   },
-  "other_languages_placeholder": "🌐 Други језици"
+  "other_languages_placeholder": "🌐 Други језици",
+  "default_baseline_summary": "Kada se koriste podrazumevani osnovni podaci: Aplikacija preuzima najnoviji standardni skup podataka sa udaljenog izvora; ako je van mreže ili nedostupan, vraća se na lokalne CSV datoteke, normalizuje vremenske zone i uklanja duplikate redova.",
+  "default_loader_summary": "Rezime učitavanja podataka: Skenira važeće CSV datoteke, proverava ažuriranja, spaja zapise i uklanja duplikate pre predviđanja (sa keširanjem za brže ponovno učitavanje)."
 }

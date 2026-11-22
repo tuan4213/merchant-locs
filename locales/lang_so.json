@@ -85,5 +85,7 @@
     "bridge_badge": "BUUNDADA",
     "missing_data_warn": "⚠️ <b>Xogta asalka ah waa tusaale ahaan maqan!</b> Mantaqadda la rooday. Ma jirto xog lagu "
   },
-  "other_languages_placeholder": "🌐 Luuqadaha kale"
+  "other_languages_placeholder": "🌐 Luuqadaha kale",
+  "default_baseline_summary": "Marka la isticmaalo xogta asaasiga ah ee caadiga ah: Abka wuxuu ka soo qaataa xogta ugu dambeysa ee caadiga ah isha fog; haddii uu ka maqan yahay internet-ka ama aan la heli karin, wuxuu ku noqdaa faylalka CSV ee maxaliga ah, wuxuu habaynayaa aagagga wakhtiga, wuxuuna tirtirayaa safafka soo noqnoqda.",
+  "default_loader_summary": "Soo koobidda soo dejinta xogta: Waxay baartaa faylalka CSV ee saxda ah, waxay hubisaa wixii ku kordhay, waxay midaymaysaa diiwaannada, waxayna tirtiraysaa gelitaannada soo noqnoqda ka hor intaan la saadaalin (iyadoo la isticmaalayo kaydinta si dib loogu soo dejiyo si dhakhso leh)."
 }

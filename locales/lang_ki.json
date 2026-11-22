@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Ũhoro wa kīambīrīria nĩ mwaga!</b> Kūratha mūhianīre. Gũtirĩ ūhoro harī"
   },
-  "other_languages_placeholder": "🌐 Njoki ingĩ"
+  "other_languages_placeholder": "🌐 Njoki ingĩ",
+  "default_baseline_summary": "Riria ugoretie data ya mbere: App irathii ikoya data njeru kuuma handu ha kure; kana iri offline kana tiyaoneka, iracooka kuri faili cia CSV cia ku handu, ikahunjia mahinda, na ikoruo na uthaka wa kurugamira.",
+  "default_loader_summary": "Uritanirio wa data: Igathaka faili cia CSV iria njeru, ikarieki maũndũ mameru, ikahaarania mbica, na ikoruo na uthaka wa kurugamira mbere ya utabiri (na caching niguo gwikira ihenya)."
 }

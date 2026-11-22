@@ -85,5 +85,7 @@
     "bridge_badge": "BOROA",
     "missing_data_warn": "⚠️ <b>Dintlha tsa qalo di haella!</b> Ho inahaneloa mokgwa. Ha ho dintlha ho "
   },
-  "other_languages_placeholder": "🌐 Lipuo tse ling"
+  "other_languages_placeholder": "🌐 Lipuo tse ling",
+  "default_baseline_summary": "Ha o sebedisa data ea mantlha e tloaelehileng: Sesebelisoa se lata sehlopha sa data sa morao-rao se tsoang mohloling o hole; haeba e le offline kapa ha e fumanehe, e khutlela theong ea lifaele tsa CSV tsa lehae, e hlophisa libaka tsa nako, mme e tlosa mela e pheta-phetoang.",
+  "default_loader_summary": "Kakaretso ea ho kenya data: E hlahloba lifaele tsa CSV tse nepahetseng, e hlahloba lintlafatso, e kopanya litlaleho, le ho tlosa tse pheta-phetoang pele ho bolela esale pele (ka caching bakeng sa ho jarolla kapele hape)."
 }

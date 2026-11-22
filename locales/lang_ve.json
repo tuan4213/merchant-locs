@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Data ya vhubvo yo shaya!</b> Mulayo wa uvhulela. A hu na data kha "
   },
-  "other_languages_placeholder": "🌐 Dzinwe dzekha"
+  "other_languages_placeholder": "🌐 Dzinwe dzekha",
+  "default_baseline_summary": "U shumisa data ya fhasi yoowelaho: App i dzhia data ntswa yo katelwaho kha ḓivhazwo ya kule; arali i sa shumisi inthanete kana i sa wanali, i vhuyela kha faela dza CSV dza hafha hayani, ya lulamisa zwifhinga, ya dovha ya bvisa miṱa yo pfullaho.",
+  "default_loader_summary": "Tshipidzi tsha u loda data: I sekisika faela dza CSV dzo tea, i sedza zwine zwa khou khwinifhadzwa, i tanganya maṅwalo, ya dovha ya bvisa miṅwalo yo pfullaho phanḓa ha uvhikelela (i tshi shumisa caching uri u lode hafhu zwi ende nga uavhela)."
 }

@@ -85,5 +85,7 @@
     "bridge_badge": "PONTO",
     "missing_data_warn": "⚠️ <b>Originaj datumoj mankas!</b> Prognozo de reguleco. Neniuj datumoj ĉe "
   },
-  "other_languages_placeholder": "🌐 Aliaj lingvoj"
+  "other_languages_placeholder": "🌐 Aliaj lingvoj",
+  "default_baseline_summary": "Kiam oni uzas defaŭltajn bazajn datumojn: La apo prenas la plej novan norman datumaron de la fora fonto; se eksterrete, ĝi uzas lokajn CSV-dosierojn, normigas horzonojn kaj forigas duobligojn.",
+  "default_loader_summary": "Resumo de ŝargado de datumoj: Skanasvalidajn CSV-dosierojn, kontrolas ĝisdatigojn, kunfandas rekordojn kaj forigas duobligojn antaŭ antaŭdiro (kun kaŝmemorigo)."
 }

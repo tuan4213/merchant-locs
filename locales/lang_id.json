@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Data sumber hilang!</b> Prediksi pola. Tidak ada data pada "
   },
-  "other_languages_placeholder": "🌐 Bahasa lain"
+  "other_languages_placeholder": "🌐 Bahasa lain",
+  "default_baseline_summary": "Saat menggunakan data dasar bawaan: Aplikasi mengambil kumpulan data standar terbaru dari sumber jarak jauh; jika luring, aplikasi beralih ke file CSV lokal, menormalkan zona waktu, dan menghapus duplikat baris.",
+  "default_loader_summary": "Ringkasan pemuatan data: Memindai file CSV valid, memeriksa pembaruan, menggabungkan catatan, dan menghapus entri duplikat sebelum prediksi (dengan penembolokan agar muat ulang lebih cepat)."
 }

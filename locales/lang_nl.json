@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Brongegevens ontbreken!</b> Patroon wordt voorspeld. Geen gegevens op "
   },
-  "other_languages_placeholder": "🌐 Andere talen"
+  "other_languages_placeholder": "🌐 Andere talen",
+  "default_baseline_summary": "Bij gebruik van standaard basisgegevens: De app haalt de nieuwste standaard dataset op van de externe bron; indien offline of niet beschikbaar, valt deze terug op lokale CSV-bestanden, normaliseert tijdzones en verwijdert dubbele rijen.",
+  "default_loader_summary": "Gegevenslaadsamenvatting: Scant geldige CSV-bestanden, controleert op updates, voegt records samen en verwijdert dubbele invoer vóór voorspelling (met caching voor snellere herlaadbeurten)."
 }

@@ -85,5 +85,7 @@
     "bridge_badge": "МОСТ",
     "missing_data_warn": "⚠️ <b>Тöдöмлунъяс абу!</b> Веськöдöм. Абу тöдöмлун тані "
   },
-  "other_languages_placeholder": "🌐 Mukа kyvӣjas"
+  "other_languages_placeholder": "🌐 Mukа kyvӣjas",
+  "default_baseline_summary": "Standard base-data curöni: App ötleas sljodaj stendart dataset distantisno övüvö; ezh offline libo edisjija, so vetli local CSV fayljo, normirujit tz-sjo, i ubirit dublikato.",
+  "default_loader_summary": "Data jüjöm samari: Pervirit sljodaj CSV fayljo, ucit svejic, so otdelja zapisjo, i ubirit dublikato pred prognozom (cachingke blistöri vodövön)."
 }

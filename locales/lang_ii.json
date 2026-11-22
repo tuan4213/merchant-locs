@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>ꌋꆀ ꄉꌠ!</b> ꄌꌠ. ꌋꆀ ꀋꏦ "
   },
-  "other_languages_placeholder": "🌐 ꌠꄷꂱ"
+  "other_languages_placeholder": "🌐 ꌠꄷꂱ",
+  "default_baseline_summary": "ꑊꇩ ꃔꇩ ꌠꇁꌠ ꌅ ꇓ: ꀕꇩꌠ ꃘ ꌠꇁꌠ ꌅ ꄉ ꌷ ꉪ ꃚ ꌠꇁ ꌕ ꉬ; ꃅ ꉪ ꄉ ꃬ ꌠ ꌋ ꍏ ꌠꇁꌠ ꌅ, ꃀ ꁱ ꌠ ꇁꌠ, ꃲ ꉠ ꊭ ꄮ ꌠ.",
+  "default_loader_summary": "ꌠꇁ ꎭ ꄮ: ꎭ CSV ꌠꇁꌠ ꌅ, ꋫ ꃅ ꉪ, ꃜ ꊿ ꄮ, ꃲ ꉠ ꊭ ꄮ (ꎩ ꉪ ꃰ ꌠ ꌋ)."
 }

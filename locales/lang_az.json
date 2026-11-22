@@ -85,5 +85,7 @@
     "bridge_badge": "KÖRPÜ",
     "missing_data_warn": "⚠️ <b>Orijinal məlumat çatışmır!</b> Qanunauyğunluq proqnozlaşdırılır. Burada məlumat yoxdur "
   },
-  "other_languages_placeholder": "🌐 Digər dillər"
+  "other_languages_placeholder": "🌐 Digər dillər",
+  "default_baseline_summary": "Standart baza məlumatlarından istifadə edildikdə: Tətbiq uzaq mənbədən ən son standart verilənlər dəstini əldə edir; əgər offline olarsa, yerli CSV fayllarına keçir, saat qurşaqlarını normallaşdırır və dublikatları silir.",
+  "default_loader_summary": "Məlumat yükləmə xülasəsi: Etibarlı CSV fayllarını skan edir, yeniləmələri yoxlayır, qeydləri birləşdirir və proqnozdanam əvvəl dublikatları təmizləyir."
 }

@@ -85,5 +85,7 @@
     "bridge_badge": "CHAKA",
     "missing_data_warn": "⚠️ <b>Qallariy datos pisichkan!</b> Kamachiy watuy. Mana datos kanchu "
   },
-  "other_languages_placeholder": "🌐 Huk simikuna"
+  "other_languages_placeholder": "🌐 Huk simikuna",
+  "default_baseline_summary": "Sapaq baseline datukuna apasqa kaptinqa: Appqa karu pukyumanta musuq standard datukuna apamun; mana internet kaptinqa otaq mana tarikuptinqa, local CSV archiwukunamanmi kutin, horukunatataq tupachin, iskaylla kaq rafikunatataq qullun.",
+  "default_loader_summary": "Datukuna apamuy pisichiy: Allin CSV archiwukunata maskhan, musuqchasqakunata qawarin, huñun, manaraq willachkaspa iskaylla kaqkunata qullun (khuyaylla kaq cache nisqawan)."
 }

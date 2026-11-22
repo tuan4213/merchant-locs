@@ -85,5 +85,7 @@
     "bridge_badge": "IBRIDJI",
     "missing_data_warn": "⚠️ <b>Iinkcukacha zokuqala azikho!</b> Uqikelelo lweepateni. Azikho iinkcukacha kwi "
   },
-  "other_languages_placeholder": "🌐 Ezinye iilwimi"
+  "other_languages_placeholder": "🌐 Ezinye iilwimi",
+  "default_baseline_summary": "Xa usebenzisa idatha esisiseko ezenzekelayo: Usetyenziso lufumana idatha entsha esemgangathweni kumthombo okude; ukuba ayikho kwi-intanethi okanye ayifumaneki, ibuyela kwiifayile zasekhaya ze-CSV, ilungelelana namaxesha, kwaye isuse imigqa ephindaphindiweyo.",
+  "default_loader_summary": "Isishwankathelo sokulayishwa kwedatha: Skena iifayile ze-CSV ezisebenzayo, sijonge uhlaziyo, sidibane iirekhodi, kwaye sisuse amagama aphindaphindiweyo ngaphambi koqikelelo (kunye nokugcinwa kwakhona ukuze kulayishwe ngokukhawuleza)."
 }

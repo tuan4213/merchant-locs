@@ -85,5 +85,7 @@
     "bridge_badge": "桥接",
     "missing_data_warn": "⚠️ <b>原始数据缺失！</b>正在预测规律。此处无数据："
   },
-  "other_languages_placeholder": "🌐 其他语言"
+  "other_languages_placeholder": "🌐 其他语言",
+  "default_baseline_summary": "使用默认基准数据时：应用会从远程源获取最新的标准数据集；如果处于离线状态或不可用，则会回退到本地 CSV 文件、规范化时区并对行进行去重。",
+  "default_loader_summary": "数据加载摘要：在预测前扫描有效的 CSV 文件、检查更新、合并记录并去除重复条目（附带缓存以加快重新加载速度）。"
 }

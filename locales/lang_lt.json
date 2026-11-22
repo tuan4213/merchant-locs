@@ -85,5 +85,7 @@
     "bridge_badge": "TILTAS",
     "missing_data_warn": "⚠️ <b>Trūksta pradinių duomenų!</b> Prognozuojamas dėsningumas. Nėra duomenų adresu "
   },
-  "other_languages_placeholder": "🌐 Kitos kalbos"
+  "other_languages_placeholder": "🌐 Kitos kalbos",
+  "default_baseline_summary": "Naudojant numatytuosius bazinius duomenis: programėlė gauna naujausią standartinį duomenų rinkinį iš nuotolinio šaltinio; jei neprisijungta arba jo nėra, grįžtama prie vietinių CSV failų, suvienodinamos laiko juostos ir pašalinami dublikatai.",
+  "default_loader_summary": "Duomenų įkėlimo suvestinė: nuskaito galiojančius CSV failus, patikrina, ar yra atnaujinimų, sujungia įrašus ir prieš prognozę pašalina dublikatus (su kaupinimu spartesniam pakartotiniam įkėlimui)."
 }

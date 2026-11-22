@@ -85,5 +85,7 @@
     "bridge_badge": "BRÉCK",
     "missing_data_warn": "⚠️ <b>Originaldonnéeën feelen!</b> Virausgesot Muster. Keng Donnéeën um"
   },
-  "other_languages_placeholder": "🌐 Aner Sproochen"
+  "other_languages_placeholder": "🌐 Aner Sproochen",
+  "default_baseline_summary": "Wann Standard-Basisdaten benotzt ginn: D'App kréckt de leschte Standard-Dateset vun der Fernquell; wa se offline oder net verfügbar ass, fält se op lokal CSV-Dateien zréck, normaliséiert Zäitzonen a läscht Duplikater.",
+  "default_loader_summary": "Zesummefaassung vum Datelueden: Scannt gëlteg CSV-Dateien, kontrolléiert op Updates, fusionéiert records a läscht Duplikater virun der Viraussoo (mat Caching fir méi séier nei ze lueden)."
 }

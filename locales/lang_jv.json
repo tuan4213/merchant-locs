@@ -85,5 +85,7 @@
     "bridge_badge": "JEMBATAN",
     "missing_data_warn": "⚠️ <b>Data asli kurang!</b> Prediksi aturan. Ora ana data ing "
   },
-  "other_languages_placeholder": "🌐 Basa liyane"
+  "other_languages_placeholder": "🌐 Basa liyane",
+  "default_baseline_summary": "Nalika nggunakake data baseline standar: Aplikasi njupuk dataset standar paling anyar saka sumber jarak adoh; yen offline utawa ora kasedhiya, aplikasi bakal bali menyang file CSV lokal, nyelarasake zona wektu, lan ngilangi duplikat baris.",
+  "default_loader_summary": "Ringkesan muat data: Ngundhuh file CSV sing sah, mriksa nganyari, nggabungake cathetan, lan ngilangi duplikat sadurunge prediksi (kanthi caching supaya muat ulang luwih cepet)."
 }

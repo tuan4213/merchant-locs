@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Oprindelige data mangler!</b> Mønsterforudsigelse. Ingen data ved "
   },
-  "other_languages_placeholder": "🌐 Andre sprog"
+  "other_languages_placeholder": "🌐 Andre sprog",
+  "default_baseline_summary": "Ved brug af standardbaselinesdata: Appen henter det nyeste standardsæt fra fjernkilden; hvis den er offline, bruges lokale CSV-filer, tidszoner normaliseres, og dubletter fjernes.",
+  "default_loader_summary": "Dataindlæsningsresumé: Scanner gyldige CSV-filer, tjekker for opdateringer, fletter poster og fjerner dubletter før forudsigelse (med caching for hurtigere genindlæsning)."
 }

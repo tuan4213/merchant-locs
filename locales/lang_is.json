@@ -85,5 +85,7 @@
     "bridge_badge": "BRÚ",
     "missing_data_warn": "⚠️ <b>Upprunaleg gögn vantar!</b> Spái fyrir um mynstur. Engin gögn við"
   },
-  "other_languages_placeholder": "🌐 Önnur tungumál"
+  "other_languages_placeholder": "🌐 Önnur tungumál",
+  "default_baseline_summary": "Þegar sjálfgefnum grunngögnum er beitt: Forritið sækir nýjasta staðlaða gagnasafnið frá fjartengdri heimild; ef það er ótengt eða ekki tiltækt fellur það aftur á staðræn CSV-skjöl, staðlar tímabelti og hreinsar tvítekningar.",
+  "default_loader_summary": "Samantekt á gagnaflutningi: Skannar gild CSV-skjöl, athugar með uppfærslur, sameinar færslur og fjarlægir tvítekningar fyrir spá (meðskyggingu fyrir hraðari endurhleðslu)."
 }

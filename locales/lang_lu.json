@@ -85,5 +85,7 @@
     "bridge_badge": "KABUMBA",
     "missing_data_warn": "⚠️ <b>Mianda ya kumpala mminyike!</b> Diakula malu. Kakuena mianda ku "
   },
-  "other_languages_placeholder": "🌐 Ngovulu ya miakulu"
+  "other_languages_placeholder": "🌐 Ngovulu ya miakulu",
+  "default_baseline_summary": "Pà kù zangà data ya baseline ya luyantiku: App ke baka dataset ya kuswaswisa ya mpa ya kule; kana kele te na ntango to kele te, e vutukila ba fyele ya CSV ya pano, e songisa ba zone ya ntango, mpe e katula ba lendi.",
+  "default_loader_summary": "Kufina ya kuluta ya data: E tala ba fyele ya CSV ya mbote, e tala ba nsokolo, e vukisa ba nzila, mpe e katula ba lendi na ntuala ya kusakula (na cache sambu na kuluta nswalu)."
 }

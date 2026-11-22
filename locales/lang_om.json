@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Daataan jalqabaa hin jiru!</b> Raaga pattern. Daataan hin jiru "
   },
-  "other_languages_placeholder": "🌐 Afaanota biroo"
+  "other_languages_placeholder": "🌐 Afaanota biroo",
+  "default_baseline_summary": "Yeroo data bu'uuraa durtii fayyadamtu: Appichi dataa dizaayinii isa dhumaa madda fagoorraa fida; yoo offline ta'e ykn hin argamne, gara faayileetti CSV naannawaatti deebi'a, yeroo sirreessa, sararoota wal fakkaatan balleessa.",
+  "default_loader_summary": "Cuunfaa fe'umsa dataa: Faayilesii CSV sirrii ta'an skani godha, haaromsa ilaala, galmeewwan walitti madaala, tilmaama dura galmeewwan wal fakkaatan balleessa (cache fayyadamuun saffisaan deebisee fe'uuf)."
 }

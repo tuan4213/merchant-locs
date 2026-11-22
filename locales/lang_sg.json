@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Sango ti lândö ayeke pëpë!</b> Bängö kekereke ti ndia. Sango ayeke pëpë na"
   },
-  "other_languages_placeholder": "🌐 Ambeni yango nde"
+  "other_languages_placeholder": "🌐 Ambeni yango nde",
+  "default_baseline_summary": "Na ndoni ti kode ti bätï ti kozo: Program ni akpe gbɛta ti fä ti kete teti fäti tɛnɛ tɛ kozo tɛ ndo ti mbeni ndo; wala yeke na nzo wala yeke pëpe, lo kpe kozo ti fäti tɛnɛ CSV ti ndo, lo ke fäti tɛnɛ ti ngoi, na lo zi fäti tɛnɛ ti kete.",
+  "default_loader_summary": "Mbeni kete tënë ti gue na fäti tɛnɛ: Lo ke fäti tɛnë CSV ti nzo, lo bi lê na tɛnë ti fini, lo kpala mbeni fäti tɛnɛ, na lo zi kete tënë ti kozo ti tene fini fäti tɛnë (na kete gbu teti fäti tɛnë ti pango vuko)."
 }

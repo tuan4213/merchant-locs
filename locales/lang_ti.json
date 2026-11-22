@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>መሰረታዊ ሓበሬታ ጠፊኡ!</b> ብሕጊ ይትንበ። ኣብዚ ሓበሬታ የለን "
   },
-  "other_languages_placeholder": "🌐 ካልኦት ភាሳት"
+  "other_languages_placeholder": "🌐 ካልኦት ភាሳት",
+  "default_baseline_summary": "ነባሪ መሰረታዊ ሓበሬታ (baseline data) ክትጥቀም кеለኻ፡ እቲ ኣፕ ካብቲረሓቕ ምንጪ ሓድሽ መደብ ሓበሬታ የውርድ፤ ኦፍላይን እንተደኣ ኲኑ ወይ እንተዘይተረኺቡ፡ ናብ ከባብታዊ CSV ፋይላት ይመ'ለስ፡ ግዜ ንምዕራይ ይሕግዝ፡ ተደራራቢ መስመራት ድማ የጥፍእ።",
+  "default_loader_summary": "ጽሟቕ ጽዕነት ሓበሬታ፡ ቅድሚ ትንበያ ምግባሩ ንቁኑሳት CSV ፋይላት ይቃኝ፡ ሓድሽ ሓበሬታ ኣሎዶ ይምርመር፡ መዝገባት የራኽብ፡ ተደራራቢ እታዎት ድማ የጥፍእ (ንቅልጡፍ እንደገና ንምጽዕን መኽዘን - caching ብምጥቃም።)"
 }

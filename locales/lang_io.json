@@ -85,5 +85,7 @@
     "bridge_badge": "PONTO",
     "missing_data_warn": "⚠️ <b>Origina datumo mankas!</b> Prediko di patrono. Nula datumo che "
   },
-  "other_languages_placeholder": "🌐 Altra lingui"
+  "other_languages_placeholder": "🌐 Altra lingui",
+  "default_baseline_summary": "Kande uzanta defulta basline-dateni: L'apliko prenas la maxim nova normala dateni de la urbeta fonto; se ekzistas ne-konektita o ne-disponebla, ol uzas lokala CSV-arkivi, normaligas horzono-zoneti, e deduplikigas linieti.",
+  "default_loader_summary": "Datena shargado-resumo: Skanas valida CSV-arkivi, kontrolas aktualigaji, kombinas arkivi, e deduplikigas enskribaji ante prediko (kun kachado por plu rapida ri-shargadi)."
 }

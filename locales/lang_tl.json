@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Nawawala ang original data!</b> Hinuhulaan ang pattern. Walang data sa "
   },
-  "other_languages_placeholder": "🌐 Iba pang wika"
+  "other_languages_placeholder": "🌐 Iba pang wika",
+  "default_baseline_summary": "Kapit ginagamit ang default baseline data: Kinukuha ng app ang pinakabagong karaniwang dataset mula sa remote source; kung offline o hindi available, babalik ito sa mga lokal na CSV file, i-normalize ang mga timezone, at aalisin ang mga duplicate na row.",
+  "default_loader_summary": "Buod ng pag-load ng data: Ini-scan ang mga wastong CSV file, sinusuri ang mga update, pinagsasama ang mga rekord, at inaalis ang mga duplicate na entry bago ang hula (na may caching para sa mas mabilis na pag-reload)."
 }

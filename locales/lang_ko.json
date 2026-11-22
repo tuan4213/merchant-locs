@@ -85,5 +85,7 @@
     "bridge_badge": "브릿지",
     "missing_data_warn": "⚠️ <b>원본 데이터가 없습니다!</b> 규칙 예측 중. 데이터 없음: "
   },
-  "other_languages_placeholder": "🌐 기타 언어"
+  "other_languages_placeholder": "🌐 기타 언어",
+  "default_baseline_summary": "기본 기준 데이터를 사용하는 경우: 앱이 원격 소스에서 최신 표준 데이터 세트를 가져옵니다. 오프라인이거나 사용할 수 없는 경우 로컬 CSV 파일로 대체하고, 시간대를 정규화하며, 행을 중복 제거합니다.",
+  "default_loader_summary": "데이터 로딩 요약: 유효한 CSV 파일을 스캔하고, 업데이트를 확인하고, 레코드를 병합하고, 예측 전에 항목을 중복 제거합니다(더 빠른 재로드를 위해 캐싱 사용)."
 }

@@ -85,5 +85,7 @@
     "bridge_badge": "PONT",
     "missing_data_warn": "⚠️ <b>Donadas d'origina mancantas!</b> Prediccion del motiu. Cap de donada a "
   },
-  "other_languages_placeholder": "🌐 Autras lengas"
+  "other_languages_placeholder": "🌐 Autras lengas",
+  "default_baseline_summary": "Quand s'utilisan las donadas de basa predefinidas: L'aplicacion recupera lo jòc de donadas estandard mai recent de la font urbala; s'es fòra linha o indisponible, torna basar sus fichièrs CSV locals, normaliza los fús oraris e suprimís las linhas duplicadas.",
+  "default_loader_summary": "Resumit del cargament de donadas: Escanifica los fichièrs CSV valids, verifica las mesas a jorn, fusiona los registres e suprimís las entradas duplicadas abans la prediccion (amb un amagatenhament per recargar mai aviat)."
 }

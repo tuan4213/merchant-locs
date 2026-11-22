@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Brak danych źródłowych!</b> Przewidywanie wzorca. Brak danych w"
   },
-  "other_languages_placeholder": "🌐 Inne języki"
+  "other_languages_placeholder": "🌐 Inne języki",
+  "default_baseline_summary": "W przypadku domyślnych danych bazowych: Aplikacja pobiera najnowszy standardowy zestaw danych ze źródła zdalnego; w trybie offline lub przy braku połączenia używa lokalnych plików CSV, normalizuje strefy czasowe i usuwa duplikaty wierszy.",
+  "default_loader_summary": "Podsumowanie ładowania danych: Skanuje poprawne pliki CSV, sprawdza aktualizacje, łączy rekordy i usuwa duplikaty przed prognozowaniem (z buforowaniem przyspieszającym ponowne ładowanie)."
 }

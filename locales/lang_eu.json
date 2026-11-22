@@ -85,5 +85,7 @@
     "bridge_badge": "ZUBIA",
     "missing_data_warn": "⚠️ <b>Jatorrizko datuak falta dira!</b> Eredua iragartzen. Daturik ez hemen: "
   },
-  "other_languages_placeholder": "🌐 Beste hizkuntza batzuk"
+  "other_languages_placeholder": "🌐 Beste hizkuntza batzuk",
+  "default_baseline_summary": "Erreferentziako datu lehenetsiak erabiltzean: aplikazioak azken datu-multzo estandarra ekartzen du urruneko iturritik; konexiorik gabe, tokiko CSV fitxategiak erabiltzen ditu, ordu-zonak normalizatzen ditu eta bikoiztuak kentzen ditu.",
+  "default_loader_summary": "Datuak kargatzeko laburpena: baliozko CSV fitxategiak eskaneatzen ditu, eguneratzeak egiaztatzen ditu, erregistroak batzen ditu eta bikoiztuak kentzen ditu iragarpenaren aurretik (cachea erabiliz karga azkarragoetarako)."
 }

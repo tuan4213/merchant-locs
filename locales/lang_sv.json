@@ -85,5 +85,7 @@
     "bridge_badge": "BRYGGA",
     "missing_data_warn": "⚠️ <b>Källdata saknas!</b> Förutspår mönster. Ingen data vid "
   },
-  "other_languages_placeholder": "🌐 Andra språk"
+  "other_languages_placeholder": "🌐 Andra språk",
+  "default_baseline_summary": "När du använder standardbasdata: Appen hämtar den senaste standarddatauppsättningen från fjärrkällan; om den är offline eller otillgänglig återgår den till lokala CSV-filer, normaliserar tidszoner och tar bort duplicerade rader.",
+  "default_loader_summary": "Sammanfattning av dataladdning: Sannar giltiga CSV-filer, kontrollerar uppdateringar, sammanfogar poster och tar bort duplicerade poster före prediktion (med caching för snabbare omladdning)."
 }

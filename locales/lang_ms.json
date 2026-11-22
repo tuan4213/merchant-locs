@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Data asal hilang!</b> Meramalkan corak. Tiada data pada "
   },
-  "other_languages_placeholder": "🌐 Bahasa lain"
+  "other_languages_placeholder": "🌐 Bahasa lain",
+  "default_baseline_summary": "Apabila menggunakan data garis dasar lalai: Apl mengambil set data standard terkini daripada sumber jauh; jika luar talian atau tidak tersedia, ia kembali kepada fail CSV tempatan, menormalkan zon masa dan menyahdupendikkan baris.",
+  "default_loader_summary": "Ringkasan pemuatan data: Mengimbas fail CSV yang sah, menyemak kemas kini, menggabungkan rekod dan menyahdupendikkan entri sebelum ramalan (dengan pengecasan untuk muat semula yang lebih pantas)."
 }

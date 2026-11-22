@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Base data no ayera!</b> Nhyɛso mmara. Data nni hɔ wɔ "
   },
-  "other_languages_placeholder": "🌐 Kasa foforo"
+  "other_languages_placeholder": "🌐 Kasa foforo",
+  "default_baseline_summary": "Bere a worede baseline data a ɛwɔ hɔ dedaw redzi dwuma: App no nya data foforo a ɛwɔ hɔ fi bea a ɛwɔ akyirikyiri; sɛ ɛnyɛ online anaasɛ ɛnni hɔ a, ɛsan kɔ local CSV nkrataa so, ɛsesa bere nhyehyɛe, na ɛyi nsɛm a ɛsan ba no fi hɔ.",
+  "default_loader_summary": "Data loading tiafi: Hwehwɛ CSV nkrataa pa mu, hwehwɛ sɛ biriba asesa anaa, ka nkrataa bom, na eyi nsɛm a ɛsan ba no fi hɔ ansa na wodi nkonyaasɛm (de ka caching ho ma ɛma ɛyɛ ntɛm)."
 }

@@ -85,5 +85,7 @@
     "bridge_badge": "MLATHA",
     "missing_data_warn": "⚠️ <b>Zambiri zoyambirira zikusoweka!</b> Kulosa patani. Palibe zambiri pa "
   },
-  "other_languages_placeholder": "🌐 Zinenero zina"
+  "other_languages_placeholder": "🌐 Zinenero zina",
+  "default_baseline_summary": "Mukamagwiritsa ntchito data yoyamba: App imatenga dataset yatsopano kuchokera kumalo akutali; ngati mulibe intaneti kapena palibe, imabwerera ku mafayilo a CSV apakati, kusintha nthawi, ndikuchotsa mizere yobwereza.",
+  "default_loader_summary": "Chidule cha kutsitsa data: Imasanula mafayilo a CSV ovomerezeka, imayang'ana zosintha, imalumikiza zolemba, ndikuchotsa zinthu zobwereza musanalosere (ndi caching kuti mubwezeretse mwachangu)."
 }

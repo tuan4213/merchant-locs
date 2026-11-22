@@ -85,5 +85,7 @@
     "bridge_badge": "ބްރިޖް",
     "missing_data_warn": "⚠️ <b>އަސްލު މައުލޫމާތު މަދު!</b> ޕްރިޑིକ୍ޝަން ޕެޓަރން. މައުލޫމާތެއް ނެތް "
   },
-  "other_languages_placeholder": "🌐 އެހެን ބަސްތައް"
+  "other_languages_placeholder": "🌐 އެހެን ބަސްތައް",
+  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
+  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
 }

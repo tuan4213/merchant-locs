@@ -85,5 +85,7 @@
     "bridge_badge": "BHENQE",
     "missing_data_warn": "⚠️ <b>Idatha yekucala idukile!</b> Kubikezela kweli-pattern. Kute idatha ho "
   },
-  "other_languages_placeholder": "🌐 Letinye tilwimi"
+  "other_languages_placeholder": "🌐 Letinye tilwimi",
+  "default_baseline_summary": "Uma usebentisa idatha yekucala lejwayelekile: Uhlelo lutsetsa idatha lensha leyentiwe kuleyo ndzawo; uma kungekho intanethi noma ingatholakali, lusebentisa emafayela asekhaya e-CSV, lulinganise sikhatsi, futsi lusebente ngekususa imigqa lephindvwe kabili.",
+  "default_loader_summary": "Sifinyeto sekulayisha idatha: Ichibela emafayela e-CSV lene siciniseko, ihlola tinsika letfolakele, ihlanganisa amarekhodi, futsi isuse imitamo lephindvwe kabili ngaphambi kwekubikezela (ngebhokisi lekubhaka kute kulayishwe kabili ngekushesha)."
 }

@@ -85,5 +85,7 @@
     "bridge_badge": "PONT",
     "missing_data_warn": "⚠️ <b>Data gwreiddiol ar goll!</b> Yn rhagfynegi patrwm. Dim data yn "
   },
-  "other_languages_placeholder": "🌐 Ieithoedd eraill"
+  "other_languages_placeholder": "🌐 Ieithoedd eraill",
+  "default_baseline_summary": "Wrth ddefnyddio data llinell sylfaen ddiofyn: Mae'r ap yn nôl y set ddata safonol ddiweddaraf o'r ffon bell; os yw all-lein, mae'n defnyddio ffeiliau CSV lleol, yn normaleiddio parthau amser, ac yn tynnu dyblygiadau.",
+  "default_loader_summary": "Crynodeb llwytho data: Yn sganio ffeiliau CSV dilys, yn gwirio am ddiweddariadau, yn uno cofnodion, ac yn tynnu cofnodion dyblyg cyn rhagfynegi (gyda storio dros dro)."
 }

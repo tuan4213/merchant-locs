@@ -85,5 +85,7 @@
     "bridge_badge": "DROICHEAD",
     "missing_data_warn": "⚠️ <b>Data original mancant!</b> Prediction de regul. Null data a "
   },
-  "other_languages_placeholder": "🌐 Altricos lingues"
+  "other_languages_placeholder": "🌐 Altricos lingues",
+  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
+  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
 }

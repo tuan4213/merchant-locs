@@ -85,5 +85,7 @@
     "bridge_badge": "PONTE",
     "missing_data_warn": "⚠️ <b>Dati originali mancanti!</b> Predizione di mudellu. Nisun datu à "
   },
-  "other_languages_placeholder": "🌐 Altre lingue"
+  "other_languages_placeholder": "🌐 Altre lingue",
+  "default_baseline_summary": "Quand'ellu usa i dati di riferimentu predeterminati: L'app recupera l'ultimu inseme di dati standard da a fonte remota; s'ellu hè offline, torna à i schedarii CSV lucali.",
+  "default_loader_summary": "Summariu di caricamentu di dati: Scansiona i schedarii CSV validi, verifica l'aghjurnamenti, unisce i registri è elimina i duplicati."
 }

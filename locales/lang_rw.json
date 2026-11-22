@@ -85,5 +85,7 @@
     "bridge_badge": "IKIRARO",
     "missing_data_warn": "⚠️ <b>Amakuru y'umwimerere arabura!</b> Guteganya amategeko. Nta makuru kuri "
   },
-  "other_languages_placeholder": "🌐 Izindi ndimi"
+  "other_languages_placeholder": "🌐 Izindi ndimi",
+  "default_baseline_summary": "Mu gukoresha amakuru shingiro asanzwe: Porogaramu ikura amakuru mashya agezweho kuri interineti; niba nta interineti ihari cyangwa ataboneka, ikoresha dosiye za CSV zo muri mudasobwa, ikosora amasaha y'uturere, ikanasiba imirongo isubiramo.",
+  "default_loader_summary": "Incamake y'imitangire y'amakuru: Isesengura dosiye za CSV zemewe, igenzura amakuru mashya, ihuza ibyanditswe, ikanasiba ibisubiramo mbere y'uko itanga umusaruro (ikoresha ububiko bwihariye kugira ngo yongere kwihuta)."
 }

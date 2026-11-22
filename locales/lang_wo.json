@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Xibaaru suuf bi amul!</b> Yamtaalu yamtaalu. Amul xibaar ci "
   },
-  "other_languages_placeholder": "🌐 Lenen làkk"
+  "other_languages_placeholder": "🌐 Lenen làkk",
+  "default_baseline_summary": "Bu ñuy jëfandikoo xibaaru base biñ gën a rafet: Aplikaasiyo bi dafay jëli xibaar yu bees yi ci anam bu sori; bu dul am internet walla bu amul, dafay delloo ci fiyle CSV yu ci biir, teggil waxtu yi, te dindi yoon yu bokk.",
+  "default_loader_summary": "Teunk bu yeb xibaar bi: Dafay seet fiyle CSV yu baax, seet lu bees, boole xibaar yi, te dindi yu bokk bala mu def laajal (ak caching ngir mu gën a gaaw bu ñuy delloo yeb)."
 }

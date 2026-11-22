@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Alkuperäiset tiedot puuttuvat!</b> Kuvioennuste. Ei tietoja kohteessa "
   },
-  "other_languages_placeholder": "🌐 Muut kielet"
+  "other_languages_placeholder": "🌐 Muut kielet",
+  "default_baseline_summary": "Oletustietoja käytettäessä: Sovellus hakee uusimman vakiotietoaineiston etälähteestä; jos yhteys puuttuu, se käyttää paikallisia CSV-tiedostoja, normalisoi aikavyöhykkeet ja poistaa kaksoiskappaleet.",
+  "default_loader_summary": "Tietojen latauksen yhteenveto: Skannaa kelvolliset CSV-tiedostot, tarkistaa päivitykset, yhdistää tietueet ja poistaa kaksoiskappaleet ennen ennustetta (välimuistilla nopeutettu)."
 }

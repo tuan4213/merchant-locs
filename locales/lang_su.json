@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Data asli leungit!</b> Prediksi pola. Teu aya data dina "
   },
-  "other_languages_placeholder": "🌐 Basa séjénna"
+  "other_languages_placeholder": "🌐 Basa séjénna",
+  "default_baseline_summary": "Nalika ngagunakeun data dasar standar: Aplikasi nyandak set data standar panganyarna ti sumber jarak jauh; upami offline atanapi teu sayogi, éta nganggo file CSV lokal, ngabenerkeun zona waktu, sareng ngahapus baris anu sarua.",
+  "default_loader_summary": "Ringkesan muat data: Nyeken file CSV anu sah, mariksa apdet, ngagabungkeun rékaman, sareng ngahapus éntri anu sarua sateuacan prediksi (kalayan panyimpenan samentawis pikeun muat ulang langkung gancang)."
 }

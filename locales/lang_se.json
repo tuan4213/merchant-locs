@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Algovuđđosaš dieđut váilot!</b> Arvvoštallannjuolggadus. Dieđut eai gávdno dáppe"
   },
-  "other_languages_placeholder": "🌐 Eará gielat"
+  "other_languages_placeholder": "🌐 Eará gielat",
+  "default_baseline_summary": "Go geavahat standárdat baseline-dieđuid: Applica viežžá ođđaseamos standardadieđuid gáiddus gáldus; jos lea offline dahje ii gávdno, de geavaha báikkálaš CSV-fiillaid, normalisere áigeavádagaid ja sihku duppalseainniid.",
+  "default_loader_summary": "Dieđuid luemečoahkkáigeassu: Scanna dohkálaš CSV-fiillaid, dárkkista ođasmahttimiid, ovttastahttá registariid ja sihku duppalseainniid ovdal ennusteapmi (cache:ain, mii jođánit ođđasit lueme)."
 }

@@ -85,5 +85,7 @@
     "bridge_badge": "SILD",
     "missing_data_warn": "⚠️ <b>Algandmed puuduvad!</b> Reegli ennustamine. Andmed puuduvad: "
   },
-  "other_languages_placeholder": "🌐 Muud keeled"
+  "other_languages_placeholder": "🌐 Muud keeled",
+  "default_baseline_summary": "Vaikimisi baasandmete kasutamisel: rakendus hangib kaugallikast uusima standardandmestiku; võrguühenduseta olekus kasutab kohalikke CSV-faile, normaliseerib ajavööndid ja eemaldab duplikaadid.",
+  "default_loader_summary": "Andmete laadimise kokkuvõte: skannib kehtivaid CSV-faile, kontrollib värskendusi, liidab kirjed ja eemaldab enne ennustamist duplikaadid (kiiremaks laadimiseks vahemällu salvestamisega)."
 }

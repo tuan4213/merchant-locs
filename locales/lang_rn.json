@@ -85,5 +85,7 @@
     "bridge_badge": "IKIRARO",
     "missing_data_warn": "⚠️ <b>Amakuru y'itangiriro ariko arabura!</b> Ubuhanuzi bw'itegeko. Nta makuru kuri "
   },
-  "other_languages_placeholder": "🌐 Izindi ndimi"
+  "other_languages_placeholder": "🌐 Izindi ndimi",
+  "default_baseline_summary": "Mu gukoresha ibisabwa vy'ibanze: Porogaramu irondera ibiri mu GIS canke ahandi hose bishasha; niba nta murongo w'intandaro uhari canke udashobora kuboneka, isubira ku mpera za CSV ziri muri telefone cyangwa mudasobwa, igahuza amasaha n'uturere, kandi igakuraho ibisigarira vy'insigarira.",
+  "default_loader_summary": "Inshamake yo kumenyekanisha amakuru: Ironda dosiye za CSV zemewe, igenzura niba hari ibishasha, ikomatanya amakuru, kandi igakuraho ibisigarira imbere y'uko itanga ibiteganywa (ifise ububiko bwihuse bw'ama dosiye kugira ngo yihute)."
 }

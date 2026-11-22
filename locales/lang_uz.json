@@ -85,5 +85,7 @@
     "bridge_badge": "KO'PRIK",
     "missing_data_warn": "⚠️ <b>Asliy ma'lumotlar yetishmayapti!</b> Qonuniyat bashorat qilinmoqda. Ma'lumot yo'q joy: "
   },
-  "other_languages_placeholder": "🌐 Boshqa tillar"
+  "other_languages_placeholder": "🌐 Boshqa tillar",
+  "default_baseline_summary": "Standart asosiy ma'lumotlardan foydalanilganda: Ilova masofaviy manbadan eng so'nggi standart ma'lumotlar to'plamini oladi; agar offlayn bo'lsa yoki mavjud bo'lmasa, mahalliy CSV fayllariga qaytadi, vaqt mintaqalarini normallashtiradi va takroriy qatorlarni olib tashlaydi.",
+  "default_loader_summary": "Ma'lumotlarni yuklash xulosasi: Bashorat qilishdan oldin yaroqli CSV fayllarini skanerlaydi, yangilanishlarni tekshiradi, yozuvlarni birlashtiradi va takroriy yozuvlarni olib tashlaydi (tezroq qayta yuklash uchun kesh bilan)."
 }

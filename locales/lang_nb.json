@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Opprinnelige data mangler!</b> Forutsier mønster. Ingen data på "
   },
-  "other_languages_placeholder": "🌐 Andre språk"
+  "other_languages_placeholder": "🌐 Andre språk",
+  "default_baseline_summary": "Når du bruker standard grunndata: Appen heenter det nyeste standarddatasettet fra den fjerne kilden; hvis den er offline eller utilgjengelig, faller den tilbake til lokale CSV-filer, normaliserer tidssoner og fjerner dupliserte rader.",
+  "default_loader_summary": "Sammendrag av datalasting: Skanner gyldige CSV-filer, sjekker etter oppdateringer, slår sammen poster og fjerner dupliserte oppføringer før prediksjon (med mellomlagring for raskere innlasting)."
 }

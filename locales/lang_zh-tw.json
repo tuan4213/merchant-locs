@@ -85,5 +85,7 @@
     "bridge_badge": "橋接",
     "missing_data_warn": "⚠️ <b>原始資料缺失！</b>正在預測規律。此處無資料："
   },
-  "other_languages_placeholder": "🌐 其他語言"
+  "other_languages_placeholder": "🌐 其他語言",
+  "default_baseline_summary": "使用預設基準資料時：應用程式會從遠端來源取得最新的標準資料集；如果處於離線狀態或無法使用，則會改用本機 CSV 檔案、將時區標準化並移除重複的資料列。",
+  "default_loader_summary": "資料載入摘要：在進行預測前掃描有效的 CSV 檔案、檢查更新、合併記錄並去除重複項目（具備快取功能以加快重新載入速度）。"
 }

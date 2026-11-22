@@ -85,5 +85,7 @@
     "bridge_badge": "BRID",
     "missing_data_warn": "⚠️ <b>Datamäbem primik bözon!</b> Sätham lönöfik. Datamäbem no dabinon in "
   },
-  "other_languages_placeholder": "🌐 Püks votik"
+  "other_languages_placeholder": "🌐 Püks votik",
+  "default_baseline_summary": "Güiko geböl datis fomik dabinöl: Dabukem dabinäü set di datis standard nulik se fonät telik; bufo no dabinön, gebön files CSV genik, fomön timatonis e moükön lügalis dubik.",
+  "default_loader_summary": "Kufüm yükama datis: Sukom files CSV veratik, kiểmtükön nulikömi, tünükön registis e moükön lügalis bü predikam (ko keshön ad yükön vifikumo)."
 }

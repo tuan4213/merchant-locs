@@ -85,5 +85,7 @@
     "bridge_badge": "PONT",
     "missing_data_warn": "⚠️ <b>Données d'origine manquantes !</b> Prédiction de la règle. Aucune donnée à"
   },
-  "other_languages_placeholder": "🌐 Autres langues"
+  "other_languages_placeholder": "🌐 Autres langues",
+  "default_baseline_summary": "Lors de l'utilisation des données de référence par défaut : l'application récupère le dernier jeu de données standard depuis la source distante. Si elle est hors ligne, elle utilise des fichiers CSV locaux, normalise les fuseaux horaires et supprime les doublons.",
+  "default_loader_summary": "Résumé du chargement des données : analyse les fichiers CSV valides, recherche les mises à jour, fusionne les enregistrements et supprime les doublons avant la prédiction (avec mise en cache)."
 }

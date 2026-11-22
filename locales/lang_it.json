@@ -85,5 +85,7 @@
     "bridge_badge": "PONTE",
     "missing_data_warn": "⚠️ <b>Dati originali mancanti!</b> Previsione della regola in corso. Nessun dato a "
   },
-  "other_languages_placeholder": "🌐 Altre lingue"
+  "other_languages_placeholder": "🌐 Altre lingue",
+  "default_baseline_summary": "Quando si utilizzano i dati di base predefiniti: L'app recupera il set di dati standard più recente dalla sorgente remota; se offline o non disponibile, ripiega su file CSV locali, normalizza i fusi orari e rimuove i duplicati.",
+  "default_loader_summary": "Riepilogo caricamento dati: Scansiona i file CSV validi, controlla gli aggiornamenti, unisce i record e rimuove i duplicati prima della previsione (con memorizzazione nella cache per ricaricamenti più rapidi)."
 }

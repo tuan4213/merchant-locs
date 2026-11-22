@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Eredeti adatok hiányoznak!</b> Mintázatalapú előrejelzés. Nincs adat itt:"
   },
-  "other_languages_placeholder": "🌐 Más nyelvek"
+  "other_languages_placeholder": "🌐 Más nyelvek",
+  "default_baseline_summary": "Alapértelmezett alapadatok használatakor: Az alkalmazás lekéri a legfrissebb szabványos adatkészletet a távoli forrásból; offline módban helyi CSV-fájlokat használ, normalizálja az időzónákat, és eltávolítja a duplikált sorokat.",
+  "default_loader_summary": "Adatbetöltési összefoglaló: Beolvassa az érvényes CSV-fájlokat, ellenőrzi a frissítéseket, egyesíti a rekordokat, és eltávolítja a duplikált bejegyzéseket az előrejelzés előtt (gyorsítótárazással)."
 }

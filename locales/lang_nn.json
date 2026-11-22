@@ -85,5 +85,7 @@
     "bridge_badge": "BRU",
     "missing_data_warn": "⚠️ <b>Manglande rådata!</b> Predikert regel. Ingen data ved "
   },
-  "other_languages_placeholder": "🌐 Andre språk"
+  "other_languages_placeholder": "🌐 Andre språk",
+  "default_baseline_summary": "Når du brukar standard grunndata: Appen hentar det nyaste standarddatasettet frå den fjerne kjelda; om han er offline eller utilgjengeleg, fell han tilbake til lokale CSV-filer, normaliserer tidssoner og fjernar dupliserte rader.",
+  "default_loader_summary": "Samandrag av datalasting: Skannar gyldige CSV-filer, sjekkar etter oppdateringar, slår saman postar og fjernar dupliserte oppføringar før prediksjon (med mellomlagring for raskare innlasting)."
 }

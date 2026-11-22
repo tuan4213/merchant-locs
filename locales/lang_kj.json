@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Ouyelele wopetulu owa kanena!</b> Omakwato gokugandja. Kape na ouyelele po "
   },
-  "other_languages_placeholder": "🌐 Omalaka mamwe"
+  "other_languages_placeholder": "🌐 Omalaka mamwe",
+  "default_baseline_summary": "Ngele o tji longifa odata dobase: O-app oyi ta odata dopapala yopeke yopeke; nge tala o-offline nokuwa inayi monika, oyi shuna ko-fayla do-CSV domokufa, nokupeka omufa woomba, nokufula omazina.",
+  "default_loader_summary": "Oshivingo shokutwala odata: Okutalela ofayla do-CSV dopapala, okumona omapangelo, okukongela omazina, nokupula omazina omanyandja omatango (noveta yokutwala nomangu)."
 }

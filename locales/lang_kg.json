@@ -85,5 +85,7 @@
     "bridge_badge": "КӨПҮРӨ",
     "missing_data_warn": "⚠️ <b>Bikuma ya yantikulu mebika!</b> Mvitasu ya mambu. Bikuma kele ve na "
   },
-  "other_languages_placeholder": "🌐 Minkoko ya nkaka"
+  "other_languages_placeholder": "🌐 Minkoko ya nkaka",
+  "default_baseline_summary": "Ntangu ke sadila ba data ya baseline ya luyantiku: App ke baka dataset ya kuswaswisa ya mpa na kisina ya yule; kana yo kele ve na ntaneti to na nzila ve, yo ke vutukila ba fyele ya CSV ya kisika, ke songisa ba zone ya ntangu, mpe ke katula ba lendi.",
+  "default_loader_summary": "Kufina ya kuluta ya data: Ke tala ba fyele ya CSV ya mbote, ke tala ba nsokolo, ke vukisa ba nzila, mpe ke katula ba lendi na ntwala ya kusakula (ti cache sambu na kuluta nswalu)."
 }

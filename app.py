@@ -889,11 +889,21 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
         ),
         unsafe_allow_html=True,
     )
+    _note_line_1 = _t_locale(
+        "default_baseline_summary",
+        'Khi dùng dữ liệu mặc định: App tự tải bộ dữ liệu chuẩn mới nhất từ máy chủ; nếu mất kết nối hoặc không tải được từ máy chủ thì tự dùng bản dữ liệu lưu sẵn trên hệ thống. Dữ liệu sẽ được chuẩn hóa múi giờ và tự loại bỏ các dòng bị trùng.',
+        'When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.',
+    )
+    _note_line_2 = _t_locale(
+        "default_loader_summary",
+        'Cách nạp dữ liệu tóm tắt: Quét các file bảng dữ liệu hợp lệ, kiểm tra bản cập nhật mới, gom dữ liệu và lọc dòng trùng trước khi tính toán dự đoán (có lưu tạm để mở nhanh ở các lần sau).',
+        'Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads).',
+    )
     st.markdown(
-        """
+        f"""
         <div style="font-size:12px;line-height:1.55;color:#cbd5e1;background:rgba(30,41,59,0.45);border:1px solid rgba(148,163,184,0.22);border-radius:8px;padding:8px 10px;margin:4px 0 8px 0;">
-          <div><b>📚 Khi dùng dữ liệu mặc định:</b> App tự tải bộ dữ liệu chuẩn mới nhất từ máy chủ; nếu mất kết nối hoặc không tải được từ máy chủ thì tự dùng bản dữ liệu lưu sẵn trên hệ thống. Dữ liệu sẽ được chuẩn hóa múi giờ và tự loại bỏ các dòng bị trùng.</div>
-          <div style="margin-top:4px;"><b>🧩 Cách nạp dữ liệu tóm tắt:</b> Quét các file bảng dữ liệu hợp lệ, kiểm tra bản cập nhật mới, gom dữ liệu và lọc dòng trùng trước khi tính toán dự đoán (có lưu tạm để mở nhanh ở các lần sau).</div>
+          <div>📚 {_note_line_1}</div>
+          <div style="margin-top:4px;">🧩 {_note_line_2}</div>
         </div>
         """,
         unsafe_allow_html=True,

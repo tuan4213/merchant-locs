@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Dữ liệu gốc bị thiếu!</b> Dự đoán quy luật. Không có data tại "
   },
-  "other_languages_placeholder": "🌐 Ngôn ngữ khác"
+  "other_languages_placeholder": "🌐 Ngôn ngữ khác",
+  "default_baseline_summary": "Khi sử dụng dữ liệu cơ sở mặc định: Ứng dụng sẽ tìm nạp tập dữ liệu tiêu chuẩn mới nhất từ nguồn từ xa; nếu ngoại tuyến hoặc không có sẵn, ứng dụng sẽ chuyển về các tệp CSV cục bộ, chuẩn hóa múi giờ và loại bỏ các hàng trùng lặp.",
+  "default_loader_summary": "Tóm tắt tải dữ liệu: Quét các tệp CSV hợp lệ, kiểm tra cập nhật, hợp nhất các bản ghi và loại bỏ các mục trùng lặp trước khi dự đoán (có bộ nhớ đệm để tải lại nhanh hơn)."
 }

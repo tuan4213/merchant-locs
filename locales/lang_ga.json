@@ -85,5 +85,7 @@
     "bridge_badge": "DROICHID",
     "missing_data_warn": "⚠️ <b>Easpa sonraí bunaidh!</b> Patrún á réamh-mheas. Gan sonraí ag"
   },
-  "other_languages_placeholder": "🌐 Teangacha eile"
+  "other_languages_placeholder": "🌐 Teangacha eile",
+  "default_baseline_summary": "Nuair a úsáidtear bunachar sonraí réamhshocraithe: Faigheann an aip an tacar sonraí caighdeánach is déanaí ón fhoinse chianda; mura bhfuil nasc ann, úsáideann sé comhaid CSV áitiúla, déanann sé criosanna ama a normalú, agus baineann sé dúblach.",
+  "default_loader_summary": "Achoimre ar lódáil sonraí: Déanann sé comhaid CSV bhailí a scaneadh, seiceálann sé le haghaidh nuashonruithe, cumascann sé taifid, agus baineann sé iontrálacha dúblacha roimh thuar."
 }

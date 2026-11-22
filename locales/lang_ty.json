@@ -85,5 +85,7 @@
     "bridge_badge": "TARETE",
     "missing_data_warn": "⚠️ <b>'Aita te tāpura parau mātāmua!</b> 'Itera'a muā te ho'ho'a. 'Aita e tāpura parau i "
   },
-  "other_languages_placeholder": "🌐 Te tahi atu mau reo"
+  "other_languages_placeholder": "🌐 Te tahi atu mau reo",
+  "default_baseline_summary": "Aita e fa'aohipa i te mau haamaramaramara'a tumu matauhia: Te titau nei te tauira i te mau haamaramaramara'a apî roa no nia mai i te tumu atea; mai te peu e aita e natirara aore ra aita e matara, e ho'i oia i nia i te mau pueraa CSV i te fenua nei, e fa'atonu i te taime, e e tatara i te mau tuhaa e piti.",
+  "default_loader_summary": "Tapura'a no te utara'a haamaramaramara'a: E hi'opoa i te mau pueraa CSV tano, e hi'opoa i te mau tauira'a, e tuati i te mau tapura'a, e e tatara i te mau tuhaa e piti hou te tohura'a (ma te fa'aohipa i te caching no te utara'a â muri a'e ma te vitiviti)."
 }

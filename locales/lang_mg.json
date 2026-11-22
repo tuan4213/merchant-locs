@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Tsy ampy ny angon-drakitra fototra!</b> Fitsipika faminaniana. Tsy misy angona amin'ny "
   },
-  "other_languages_placeholder": "🌐 Teny hafa"
+  "other_languages_placeholder": "🌐 Teny hafa",
+  "default_baseline_summary": "Rehefa mampiasa angona fototra mahazatra: Nalain'ny rindranasa ny tahirin-kevitra farany avy amin'ny loharano lavitra; raha tsy misy aterineto na tsy azo ampiasaina dia miverina amin'ny rakitra CSV eo an-toerana izy, manara-penitra ny faritry ny ora, ary manala ny dika mitovy.",
+  "default_loader_summary": "Famintinana ny fakana angona: Tsidihiny ny rakitra CSV manankery, jereny ny fanavaozana, ampiarahiny ny rakitsoratra, ary esoriny ny dika mitovy alohan'ny vinavina (miaraka amin'ny tahiry ho an'ny fakana haingana kokoa)."
 }

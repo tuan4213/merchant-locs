@@ -85,5 +85,7 @@
     "bridge_badge": "PIRITI",
     "missing_data_warn": "⚠️ <b>Kua ngaro ngā raraunga taketake!</b> Matapae ture. Kāore he raraunga i te "
   },
-  "other_languages_placeholder": "🌐 Ētahi atu reo"
+  "other_languages_placeholder": "🌐 Ētahi atu reo",
+  "default_baseline_summary": "Ina whakamahi i ngā raraunga tūāpapa taunoa: Ka tiki te taupānga i te huinga raraunga paerewa hou mai i te pūtake mamao; mēnā kei waho ipurangi, kāore rānei e wātea ana, ka hoki ki ngā kōnae CSV ā-rohe, ka whakarite i ngā rohe wā, ka tango hoki i ngā rarangi tāruarua.",
+  "default_loader_summary": "Whakarāpopototanga uta raraunga: Ka karapoti i ngā kōnae CSV tika, ka tiro mo ngā whakahōu, ka whakakotahi i ngā rīkara, ka tango i ngā tāruarua i mua i te matapae (me te keteroki mua mo te uta anō tere)."
 }

@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Data doo hólǫ́ǫ da!</b> Doo data hólǫ́ at"
   },
-  "other_languages_placeholder": "🌐 Saanii bizaad"
+  "other_languages_placeholder": "🌐 Saanii bizaad",
+  "default_baseline_summary": "Baseline data bił yéigo: App biiʼ remote source éí dataset áłtséígooígíí yikaih; offline ádin doodaiiʼ dootʼizhdaʼ ndi, local CSV files biiʼ náás hólǫ́, timezones yáʼátééh áyiilaaígíí bitsʼą́ą́dóó rows yáʼátééh ádayilééh.",
+  "default_loader_summary": "Data loading summary: CSV files yáʼátééhígíí scan áyiilaa, update yee hódlééh, records yitłizh, prediction biniiyé entries yáʼátééh ádayilééh (caching yee baa náhásdzo)."
 }

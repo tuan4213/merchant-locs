@@ -85,5 +85,7 @@
     "bridge_badge": "BRUG",
     "missing_data_warn": "⚠️ <b>Basisgegevens ontbreke!</b> Vurspelling van patroon. Gein gegaove op "
   },
-  "other_languages_placeholder": "🌐 Ander speure"
+  "other_languages_placeholder": "🌐 Ander speure",
+  "default_baseline_summary": "Wienie standaarde basisgegaegebroek: De app häölt de recentsde standaarde dataset van de aafstand bron; es offline of neet besjikbaar, vilt 't trök op lokale CSV-bestande, normaliseert tiedzones en wissegt rieke.",
+  "default_loader_summary": "Gegaege-laajsamenvatting: Scant geldige CSV-bestande, controleert op updates, vugt records same en wissegt vermeldinge veur de veurspelling (met caching veur snellere herlaadbeurten)."
 }

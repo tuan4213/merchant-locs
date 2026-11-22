@@ -85,5 +85,7 @@
     "bridge_badge": "AKWA",
     "missing_data_warn": "⚠️ <b>Data mbụ na-efu!</b> Na-ebu amụma iwu. Enweghị data na"
   },
-  "other_languages_placeholder": "🌐 Asụsụ ndị ọzọ"
+  "other_languages_placeholder": "🌐 Asụsụ ndị ọzọ",
+  "default_baseline_summary": "Mgbe ejiri data baseline ndabara: Ngwa ahụ na-enweta dataset ọkọlọtọ kachasị ọhụrụ site na ebe dị anya; ọ bụrụ na anọghị n'ịntanetị ma ọ bụ enweghị ya, ọ na-alaghachi na faịlụ CSV mpaghara, na-ahazi oge mpaghara, ma na-ehichapụ ahịrị ndị e megharịrị.",
+  "default_loader_summary": "Nchịkọta nbudata data: Na-enyocha faịlụ CSV ziri ezi, na-elele mmelite, na-ejikọta ndekọ, ma na-ehichapụ ntinye tupu amụma (ya na nchekwa maka mbugharị ngwa ngwa)."
 }

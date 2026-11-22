@@ -85,5 +85,7 @@
     "bridge_badge": "PONS",
     "missing_data_warn": "⚠️ <b>Daticia originalia desunt!</b> Praedictio regularitatis. Nullae daticia apud "
   },
-  "other_languages_placeholder": "🌐 Aliae linguae"
+  "other_languages_placeholder": "🌐 Aliae linguae",
+  "default_baseline_summary": "Cum datis fundamentalibus defectis utens: Applicatio novissimum dataset vexillum ex fonte remoto recuperat; si offline vel non praesto est, ad fasciculos CSV locales redit, zonas temporum normalizat, et ordines duplicatos removet.",
+  "default_loader_summary": "Summatio onerationis datorum: Fasciculos CSV validos lustrat, adaequationes reprehendit, tabulas coniungit, et ante praedictionem entia duplicata removet (cum caching ad velocius re-onerationem)."
 }

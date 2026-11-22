@@ -85,5 +85,7 @@
     "bridge_badge": "BRUG",
     "missing_data_warn": "⚠️ <b>Oorspronklike data ontbreek!</b> Voorspel reëls. Geen data by "
   },
-  "other_languages_placeholder": "🌐 Ander tale"
+  "other_languages_placeholder": "🌐 Ander tale",
+  "default_baseline_summary": "Wanneer verstekbasislynstandaarde gebruik word: Die toepassing haal die nuutste standaardstel van die afgeleë bron; indien vanlyn, gebruik dit plaaslike CSV-lêers, normaliseer tydsones en verwyder duplikate.",
+  "default_loader_summary": "Data-laaiopsomming: Skandeer geldige CSV-lêers, kyk vir opdaterings, voeg rekords saam en verwyder duplikate voor voorspelling (met kasvir vinniger herlaai)."
 }

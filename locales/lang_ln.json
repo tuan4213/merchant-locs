@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Bikolo ya liboso ezangi!</b> Kolakisa liboso ya mibeko. Makambo ezali te na "
   },
-  "other_languages_placeholder": "🌐 Mingomba misusu"
+  "other_languages_placeholder": "🌐 Mingomba misusu",
+  "default_baseline_summary": "Ntango ozali kosalela ba data ya ebandeli ya standard: App ezali kozwa dataset ya sika koleka na liziba ya mosika; soki ezali na internet te to ezali te, ezongi na ba farse ya CSV ya esika, ezali kobongola ba zone ya tango, mpe ezali kolongola ba nzela oyo ezongami.",
+  "default_loader_summary": "Kufina ya kolongola ba data: Ezali kotala ba farse ya CSV ya malamu, ezali kotalela ba nsoholo, ezali kobongola ba records, mpe ezali kolongola ba nzela liboso ya kosakola (na cache mpo na kozongisa noki)."
 }

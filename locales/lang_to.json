@@ -85,5 +85,7 @@
     "bridge_badge": "PULITI",
     "missing_data_warn": "⚠️ <b>Kuo mole ʻa e fakamatalá!</b> Fakaʻilo fakatatau ki he ngaahi lao. ʻOku ʻikai ha fakamatala ʻi"
   },
-  "other_languages_placeholder": "🌐 Ngaahi lea kehe"
+  "other_languages_placeholder": "🌐 Ngaahi lea kehe",
+  "default_baseline_summary": "Ngaue'aki 'a e fakamatala tefito angamaheni: 'Oku tānaki mai ʻe he app ʻa e seti fakamatala fakamui taha mei he maʻuʻanga mamaʻo; kapau 'oku 'ikai ʻi he initaneti pe ʻoku ʻikai maʻu, 'oku foki ia ki he ngaahi faile CSV fakalotofonua, fakatonutonu ʻa e taimi, pea mo tatau 'a e ngaahi laine ʻoku toutou hoko.",
+  "default_loader_summary": "Fakanounou ʻo e fakamatala uta: Siviʻi ʻa e ngaahi faile CSV ʻoku totonu, vakaiʻi ʻa e ngaahi fakalelei, fakatahatahaʻi ʻa e ngaahi lekooti, pea mo toʻo ʻa e ngaahi hopo toutou hoko ki muʻa ke fakahoko ha fakaʻilonga (fakataha mo e caching ki he uta vave ange)."
 }

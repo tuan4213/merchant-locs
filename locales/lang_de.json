@@ -85,5 +85,7 @@
     "bridge_badge": "BRÜCKE",
     "missing_data_warn": "⚠️ <b>Originaldaten fehlen!</b> Regel wird vorhergesagt. Keine Daten um "
   },
-  "other_languages_placeholder": "🌐 Andere Sprachen"
+  "other_languages_placeholder": "🌐 Andere Sprachen",
+  "default_baseline_summary": "Bei Verwendung der Standard-Baseline-Daten: Die App ruft den neuesten Standard-Datensatz von der Remote-Quelle ab; bei Offline-Status wird auf lokale CSV-Dateien zurückgegriffen, Zeitzonen werden normalisiert und Duplikate entfernt.",
+  "default_loader_summary": "Datenladungsübersicht: Scans gültige CSV-Dateien, prüft auf Updates, führt Datensätze zusammen und entfernt Duplikate vor der Vorhersage (mit Caching für schnelleres Neuladen)."
 }

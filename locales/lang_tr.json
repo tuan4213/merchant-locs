@@ -85,5 +85,7 @@
     "bridge_badge": "KÖPRÜ",
     "missing_data_warn": "⚠️ <b>Orijinal veri eksik!</b> Kural tahmin ediliyor. Veri yok: "
   },
-  "other_languages_placeholder": "🌐 Diğer diller"
+  "other_languages_placeholder": "🌐 Diğer diller",
+  "default_baseline_summary": "Varsayılan taban verileri kullanılırken: Uygulama uzak kaynaktan en son standart veri setini getirir; çevrimdışıysa veya kullanılamıyorsa yerel CSV dosyalarına geri döner, saat dilimlerini normalleştirir ve yinelenen satırları kaldırır.",
+  "default_loader_summary": "Veri yükleme özeti: Tahminden önce geçerli CSV dosyalarını tarar, güncellemeleri kontrol eder, kayıtları birleştirir ve yinelenen girdileri kaldırır (daha hızlı yeniden yükleme için önbelleğe alma özelliğiyle birlikte)."
 }

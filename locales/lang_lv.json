@@ -85,5 +85,7 @@
     "bridge_badge": "TILTS",
     "missing_data_warn": "⚠️ <b>Trūkst oriģinālo datu!</b> Likumsakarību prognozēšana. Nav datu šeit: "
   },
-  "other_languages_placeholder": "🌐 Citas valodas"
+  "other_languages_placeholder": "🌐 Citas valodas",
+  "default_baseline_summary": "Izmantojot noklusējuma bāzlīnijas datus: lietotne izgūst jaunāko standarta datu kopu no attālā avota; ja tā navsaistībā vai nav pieejama, tā atgriežas pie vietējiem CSV failiem, normalizē laika joslas un noņem dublējošās rindas.",
+  "default_loader_summary": "Datu ielādes kopsavilkums: skenē derīgus CSV failus, pārbauda atjauninājumus, apvieno ierakstus un noņem dublētos ierakstus pirms prognozes (ar kešatmiņu ātrākai atkārtotai ielādei)."
 }

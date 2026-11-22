@@ -85,5 +85,7 @@
     "bridge_badge": "MOST",
     "missing_data_warn": "⚠️ <b>Pôvodné údaje chýbajú!</b> Predikcia pravidla. Žiadne údaje v"
   },
-  "other_languages_placeholder": "🌐 Iné jazyky"
+  "other_languages_placeholder": "🌐 Iné jazyky",
+  "default_baseline_summary": "Pri použití predvolených základných údajov: Aplikácia prevezme najnovšiu štandardnú množinu údajov zo vzdialeného zdroja; ak je offline alebo nedostupná, vráti sa k lokálnym súborom CSV, normalizuje časové pásma a odstráni duplicitné riadky.",
+  "default_loader_summary": "Súhrn načítania údajov: Prehľadá platné súbory CSV, skontroluje aktualizácie, zlúči záznamy a pred predikciou odstráni duplicitné položky (s vyrovnávacou pamäťou na rýchlejšie opätovné načítanie)."
 }

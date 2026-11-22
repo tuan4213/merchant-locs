@@ -85,5 +85,7 @@
     "bridge_badge": "PIRA",
     "missing_data_warn": "⚠️ <b>Daneya bingehîn kêm e!</b> Pêşbînîkirina qanûnê. Li vir dane tune ye"
   },
-  "other_languages_placeholder": "🌐 Zimanên din"
+  "other_languages_placeholder": "🌐 Zimanên din",
+  "default_baseline_summary": "Dema ku daneyên bingehîn ên xweser têne bikar anîn: Sepan daneya standard a herî dawî ji çavkaniya dûr distîne; heke negirêdayî be an tune be, ew vedigere pelên CSV yên herêmî, demjimêran normalîze dike, û rêzikên dubare jê dibe.",
+  "default_loader_summary": "Kurteya barkirina daneyan: Pelên CSV yên derbasdar sken dike, nûvekirinan kontrol dike, tomaran dike yek, û berî pêşbîniyê têketinan ji dubarebûnê paqij dike (bi veşartina cache re ji bo ji nû ve barkirina bileztir)."
 }

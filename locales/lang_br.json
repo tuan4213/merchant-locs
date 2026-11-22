@@ -85,5 +85,7 @@
     "bridge_badge": "PON",
     "missing_data_warn": "⚠️ <b>Mankout a ra ar roadoù orin!</b> Raktreset eo ar patrom. Titour ebet e"
   },
-  "other_languages_placeholder": "🌐 Yezhoù all"
+  "other_languages_placeholder": "🌐 Yezhoù all",
+  "default_baseline_summary": "Pa vez implijet ar roadennoù diazez dre ziouer: Ar poellad a glask an dastumad roadennoù diwezhañ adalek ar vammenn bell; ma n'eus ket a genrouedad, e implij restroù CSV lokal.",
+  "default_loader_summary": "Berradur kargañ ar roadennoù: Skannañ a ra ar restroù CSV reizh, gwiriañ ar c'hemennoù, kendeuziñ an teulioù."
 }

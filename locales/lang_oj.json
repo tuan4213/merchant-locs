@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Gwayak data noondeshkam!</b> Inebadizid pattern. Gaawiin data "
   },
-  "other_languages_placeholder": "🌐 Gwayak inaakonigewin"
+  "other_languages_placeholder": "🌐 Gwayak inaakonigewin",
+  "default_baseline_summary": "Gii-izhichiged data baseline: App owaabajitoon data gii-ozhibii'igan remote source; mii dash gaawiin wiigo ojaamisiin, gashkitoon gichi-CSV files, onizhishibii'igan timezones, mii dash gaa-gii-giishpinigaad rows.",
+  "default_loader_summary": "Data loading summary: Giigoonde CSV files, gwayak-waabandaan updates, miinigowizi records, mii dash giishpinigaad entries gii-zhichiged prediction (caching wiigi-waabandaan)."
 }

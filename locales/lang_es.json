@@ -85,5 +85,7 @@
     "bridge_badge": "PUENTE",
     "missing_data_warn": "⚠️ <b>¡Faltan datos originales!</b> Prediciendo regla. No hay datos en "
   },
-  "other_languages_placeholder": "🌐 Otros idiomas"
+  "other_languages_placeholder": "🌐 Otros idiomas",
+  "default_baseline_summary": "Al utilizar los datos de referencia predeterminados: La aplicación obtiene el conjunto de datos estándar más reciente de la fuente remota; si no hay conexión, recurre a archivos CSV locales, normaliza zonas horarias y elimina duplicados.",
+  "default_loader_summary": "Resumen de carga de datos: Escanea archivos CSV válidos, busca actualizaciones, fusiona registros y elimina entradas duplicadas antes de la predicción (con caché para recargas más rápidas)."
 }

@@ -85,5 +85,7 @@
     "bridge_badge": "KÖPRI",
     "missing_data_warn": "⚠️ <b>Asyl maglumat ýok!</b> Çaklama düzgüni. Maglumat ýok ýeri:"
   },
-  "other_languages_placeholder": "🌐 Başga diller"
+  "other_languages_placeholder": "🌐 Başga diller",
+  "default_baseline_summary": "Deslapdaky esasy maglumatlary ulananyňyzda: Programma uzakdaky çeşmeden iň soňky standart maglumatlar toplumyny getirýär; offline ýa-da elýeter däl bolsa, ýerli CSV faýllaryna geçýär, wagt zolaklaryny kadalaşdyryp we gaýtalanýan setirleri aýyrýar.",
+  "default_loader_summary": "Maglumatlary ýüklemek jemi: Çaklamazdan ozal dogry CSV faýllaryny skan edýär, täzelenmeleri barlaýar, ýazgylary birleşdirýär we gaýtalanýan ýazgylary aýyrýar (tiz ýüklemek üçin kaşirlemek bilen)."
 }

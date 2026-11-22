@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Datas d'origin mancai!</b> Predicziun da la furma. Naginas datas tar "
   },
-  "other_languages_placeholder": "🌐 Autras linguas"
+  "other_languages_placeholder": "🌐 Autras linguas",
+  "default_baseline_summary": "En utilisar datas da bas fundamentalas: L'app tschertga las pli recentas datas standard da la funtauna remota; sch'ella n'è betg online ubain disponibla, dovra ella aunc ils lieus da datas CSV locals, normalisescha las zonas da temp ed eliminescha rigas dublas.",
+  "default_loader_summary": "Summarius da chargiar las datas: Scons files CSV vvalids, controllescha per novitads, batta ensemen regischraments ed eliminescha entradas dublas avant la prognosa (cun cache per chargiar pli baud)."
 }

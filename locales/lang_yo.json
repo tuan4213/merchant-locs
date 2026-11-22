@@ -85,5 +85,7 @@
     "bridge_badge": "AFARA",
     "missing_data_warn": "⚠️ <b>Data akọkọ ti sonu!</b> Asọtẹlẹ awọn ofin. Ko si data ni"
   },
-  "other_languages_placeholder": "🌐 Awọn ede miiran"
+  "other_languages_placeholder": "🌐 Awọn ede miiran",
+  "default_baseline_summary": "Nigbati o ba nlo data ipilẹ aiyipada: Ohun elo naa n gba eto data aṣoju tuntun lati orisun jijinna; ti ko ba si ori ayelujara tabi ti ko si, o pada si awọn faili CSV agbegbe, ṣe deede awọn agbegbe aago, ati yọ awọn ila ti o tun ṣe kuro.",
+  "default_loader_summary": "Akopọ ikojọpọ data: Ṣe ayẹwo awọn faili CSV ti o wulo, ṣayẹwo fun awọn imudojuiwọn, dapọ awọn igbasilẹ, ati yọ awọn titẹ sii ti o tun ṣe kuro ṣaaju asọtẹlẹ (pẹlu caching fun awọn ikojọpọ iyara)."
 }

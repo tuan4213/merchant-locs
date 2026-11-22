@@ -85,5 +85,7 @@
     "bridge_badge": "PONTE",
     "missing_data_warn": "⚠️ <b>Dados originais ausentes!</b> Prevendo regra. Sem dados em "
   },
-  "other_languages_placeholder": "🌐 Outros idiomas"
+  "other_languages_placeholder": "🌐 Outros idiomas",
+  "default_baseline_summary": "Ao usar dados de referência padrão: O aplicativo busca o conjunto de dados padrão mais recente da fonte remota; se estiver offline ou indisponível, ele recorre a arquivos CSV locais, normaliza fusos horários e remove linhas duplicadas.",
+  "default_loader_summary": "Resumo do carregamento de dados: Verifica arquivos CSV válidos, confere atualizações, mescla registros e remove entradas duplicadas antes da previsão (com cache para recarregamentos mais rápidos)."
 }

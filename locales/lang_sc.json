@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Datos oraginarios mancanos!</b> Preditzione de su pattern. Perun datu a "
   },
-  "other_languages_placeholder": "🌐 Àteras limbas"
+  "other_languages_placeholder": "🌐 Àteras limbas",
+  "default_baseline_summary": "Candu doperat is datos de base predefinidos: s'aplicatzioni pigat su cumbitu de datos istandard prus nou de sa fonti remota; si est off-line o no est a dispositzioni, torrat a is archivius CSV locales, normalizat is zonas orarias e bogat is lìnias dupradas.",
+  "default_loader_summary": "Resumu de su carrigamentu de datos: scanat is archivius CSV bàlidos, controllat si ddui funt agiornamentos, unit is registros e bogat is intradas dupradas primas de sa preditzioni (cun cache po torrare a carrigare prus luegu)."
 }

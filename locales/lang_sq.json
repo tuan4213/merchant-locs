@@ -85,5 +85,7 @@
     "bridge_badge": "URA",
     "missing_data_warn": "⚠️ <b>Të dhënat origjinale mungojnë!</b> Parashikimi i rregullsisë. Nuk ka të dhëna në "
   },
-  "other_languages_placeholder": "🌐 Gjuhë të tjera"
+  "other_languages_placeholder": "🌐 Gjuhë të tjera",
+  "default_baseline_summary": "Kur përdoren të dhënat bazë parazgjedhura: Aplikacioni merr grupin më të fundit standard të të dhënave nga burimi në distancë; nëse është jashtë linje ose i padisponueshëm, ai përdor skedarët lokalë CSV, normalizon zonat kohore dhe heq rreshtat e dyfishtë.",
+  "default_loader_summary": "Përmbledhja e ngarkimit të të dhënave: Skanon skedarët e vlefshëm CSV, kontrollon për pëditësime, bashkon regjistrimet dhe heq hyrjet e dyfishta para parashikimit (me ruajtje në cache për ngarkime më të shpejta)."
 }

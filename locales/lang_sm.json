@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Ua misia faʻamatalaga muamua!</b> Valoia tulafono. Leai ni faʻamatalaga i le "
   },
-  "other_languages_placeholder": "🌐 Isi gagana"
+  "other_languages_placeholder": "🌐 Isi gagana",
+  "default_baseline_summary": "A fa'aoga fa'amaumauga masani a le amataga: E aumai e le polokalama fa'amaumauga fou mai le puna i fafo; afai e leai se initaneti pe le o maua, e toe fo'i i faila CSV i le lotoifale, fa'asa'o taimi, ma aveese laina fa'aluaina.",
+  "default_loader_summary": "Aotelega o le utaina o fa'amaumauga: E su'esu'e faila CSV sa'o, siaki mo fa'afouga, tu'ufa'atasi fa'amaumauga, ma aveese fa'aluaina a'o le'i faia se va'aiga (fa'atasi ma le fa'aputu tupe mo le vave toe utaina)."
 }

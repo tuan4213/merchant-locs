@@ -85,5 +85,7 @@
     "bridge_badge": "IBHULOHO",
     "missing_data_warn": "⚠️ <b>Idatha engeyona!</b> Akukho idatha ku-"
   },
-  "other_languages_placeholder": "🌐 Amanye amalimi"
+  "other_languages_placeholder": "🌐 Amanye amalimi",
+  "default_baseline_summary": "Nxa usebenzisa idatha yesisekelo ezenzakalelayo: Uhlelo luthi luthatha iqoqo ledatha eliphezulu kusuka kumthombo okude; nxa kungelai-intanethi kumbe kungatholakali, lubuyela kumafayili e-CSV asendaweni, lulungise izikhathi, lixosha imigqa ephindaphindiweyo.",
+  "default_loader_summary": "Isifinyezo sokulayisha idatha: Skena amafayili e-CSV asebenzayo, sihlola ukuvuselelwa, sihlanganisa amarekhodi, sisusa okufakiwe okuphindaphindiweyo ngaphambi kwesibikezelo (ngokusebenzisa i-caching yokulayisha ngokushesha)."
 }

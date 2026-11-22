@@ -85,5 +85,7 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Ebiwandiiko ebisooka tebiweddemu!</b> Enteebereza y'amateeka. Tewali biwandiiko ku "
   },
-  "other_languages_placeholder": "🌐 Olulimi olulala"
+  "other_languages_placeholder": "🌐 Olulimi olulala",
+  "default_baseline_summary": "Bw'oba nga kozesa data ey'omusingi eyabulijjo: App enona dataset esembayo ey'omutindo okuva ku nsibuko eya wala; bw'eba nga teli ku mutimbagano oba tennabaawo, eddira fayiro za CSV ez'omu kifo, n'eyung saawa, n'eggyawo ebintu ebiddirŋŋanye.",
+  "default_loader_summary": "Okufunkatira kw'okugoba data: Ezuula fayiro za CSV ezetakkaanya, n'ekebera ebipya, n'egatta ebiwandiiko, n'eggyawo ebiddirŋŋanye nga tennakubiriza (nga eyagala caching okuzza obuggya mangu)."
 }
