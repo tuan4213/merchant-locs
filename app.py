@@ -354,6 +354,8 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
 # === PRED_SETTINGS_WITH_TZ_END ===
 
 
+
+
 try:
     from zoneinfo import ZoneInfo
     system_tz_name = st.context.timezone or "Asia/Ho_Chi_Minh"
@@ -374,7 +376,6 @@ else: st.caption(f"🌍 System auto-detected: **{system_tz_name}** (UTC{system_o
 
 col_tz, col_tz_btn = st.columns([3, 1])
 with col_tz: 
-    utc_offset = st.slider(T("utc_offset_label", default="🌍 UTC Offset"), min_value=-12.0, max_value=14.0, step=0.5, key="utc_offset")
 with col_tz_btn: 
     st.write("")
     st.write("")
