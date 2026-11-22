@@ -832,41 +832,102 @@ def _get_pattern_items(pattern, source_slot, max_items=6, target_slot=None):
     
     return out
 
+def _has_valid_items(slot):
+    if not isinstance(slot, int):
+        return False
+    d = slot_to_items.get(slot)
+    if not isinstance(d, dict) or not d:
+        return False
+    for v in d.values():
+        if isinstance(v, (list, tuple)) and any(str(x).strip() for x in v if x):
+            return True
+        if v and not isinstance(v, (list, tuple)) and str(v).strip():
+            return True
+    return False
+
+
+def _find_item_source(slot, _visited=None):
+    if not isinstance(slot, int):
+        return None
+    if _has_valid_items(slot):
+        return slot
+    visited = set(_visited) if _visited else set()
+    if slot in visited:
+        return None
+    visited.add(slot)
+
+    # 1. Nguồn lưu sẵn trong slot_to_meta nếu có
+    meta_src = (slot_to_meta.get(slot) or {}).get("source")
+    if isinstance(meta_src, int) and meta_src != slot and meta_src not in visited:
+        found = _find_item_source(meta_src, visited)
+        if found is not None:
+            return found
+
+    # 2. Dò theo candidate nguồn của slot hiện tại
+    try:
+        cands = _predict_04am_ext(slot) if slot % 4 == 0 else _predict_std_ext(slot)
+    except Exception:
+        cands = []
+    for c in (cands or []):
+        cand_src = c.get("source")
+        if isinstance(cand_src, int) and cand_src != slot and cand_src not in visited:
+            found = _find_item_source(cand_src, visited)
+            if found is not None:
+                return found
+
+    # 3. Nếu vẫn chưa có, tìm slot gần nhất trước `slot` có cùng pattern và có item thật
+    pat = slot_to_pat.get(slot)
+    if pat:
+        candidates_same_pat = [
+            k for k, p in slot_to_pat.items()
+            if isinstance(k, int) and k < slot and p == pat and _has_valid_items(k)
+        ]
+        if candidates_same_pat:
+            return max(candidates_same_pat)
+
+    return None
+
+
+def _format_items_map_from_slot(src_slot):
+    items_map = {}
+    if not isinstance(src_slot, int):
+        return items_map
+    src_items = slot_to_items.get(src_slot)
+    if not isinstance(src_items, dict):
+        return items_map
+    for pair, vals in src_items.items():
+        if not vals:
+            continue
+        if isinstance(vals, (list, tuple)):
+            cleaned = [str(v).strip() for v in vals if v and str(v).strip()]
+            if cleaned:
+                items_map[str(pair).strip()] = ", ".join(cleaned)
+        elif str(vals).strip():
+            items_map[str(pair).strip()] = str(vals).strip()
+    return items_map
+
+
 def _slot_actual_candidates(slot):
     if slot not in REAL_SLOTS or slot not in slot_to_pat:
         return None
     real_pat = slot_to_pat[slot]
-    # [FIX] Lookup items thật từ slot_to_items[slot]
-    src_items = slot_to_items.get(slot) or {}
+    item_src = _find_item_source(slot)
+    items_map = _format_items_map_from_slot(item_src) if item_src is not None else {}
     positions = []
     for p in real_pat.split(' / '):
         pair = p.strip()
-        vals = src_items.get(pair) if isinstance(src_items, dict) else None
-        if vals:
-            if isinstance(vals, (list, tuple)):
-                items_str = ', '.join(str(v) for v in vals if v)
-            else:
-                items_str = str(vals)
-        else:
-            # Fallback pattern_items aggregated
-            agg = pattern_items.get(pair) if pair in pattern_items else None
-            if agg:
-                items_str = ', '.join(str(v) for v in agg[:3] if v)
-            else:
-                items_str = '—'
-        positions.append({'pos': pair, 'items': items_str})
+        positions.append({'pos': pair, 'items': items_map.get(pair, '—')})
     return [{
         'pattern': real_pat,
         'positions': positions,
         'prob': 'REAL',
         'source': slot,
+        'item_source': item_src,
         'reason': 'actual',
         'phases': [],
         'type': 'actual',
         'duplicates': [],
     }]
-
-
 _ROLLING_SLOTS = set()
 
 def _ensure_rolled_forward(target_slot):
@@ -922,36 +983,10 @@ def _slot_candidates(slot):
     for c in (cands or []):
         pat = c.get('pattern', '')
         src = c.get('source', slot)
-        # [FIX] Lookup items theo thứ tự ưu tiên
-        items_map = {}
-        # 1. slot_to_items[source]
-        src_items = slot_to_items.get(src) if src != '?' else None
-        if src_items and isinstance(src_items, dict):
-            for pair, vals in src_items.items():
-                if vals:
-                    if isinstance(vals, (list, tuple)):
-                        items_map[pair.strip()] = ', '.join(str(v) for v in vals if v)
-                    else:
-                        items_map[pair.strip()] = str(vals)
-        # 2. pattern_items aggregated
-        if not items_map:
-            for pair in pat.split(' / '):
-                pair = pair.strip()
-                if pair in pattern_items:
-                    agg = pattern_items[pair]
-                    if agg:
-                        items_map[pair] = ', '.join(str(v) for v in agg[:3] if v)
-        # 3. Fallback slot - 119
-        if not items_map and (slot - 119) in slot_to_items:
-            fb_items = slot_to_items[slot - 119]
-            if isinstance(fb_items, dict):
-                for pair, vals in fb_items.items():
-                    if vals:
-                        if isinstance(vals, (list, tuple)):
-                            items_map[pair.strip()] = ', '.join(str(v) for v in vals if v)
-                        else:
-                            items_map[pair.strip()] = str(vals)
-        
+        # Tự dò nguồn có item thật từ src
+        resolved_item_src = _find_item_source(src) if isinstance(src, int) else None
+        items_map = _format_items_map_from_slot(resolved_item_src) if resolved_item_src is not None else {}
+
         positions = []
         for p in pat.split(' / '):
             pair = p.strip()
@@ -960,9 +995,9 @@ def _slot_candidates(slot):
         out.append({
             'pattern': pat,
             'positions': positions,
-            'prob': f"{c.get('prob', 0.0)*100:.1f}%",
+            'prob': '',
             'source': src,
-            'reason': c.get('reason', ''),
+            'reason': (c.get('reason') or (f"nguồn {src}" if isinstance(src, int) else "dự đoán chuẩn")),
             'phases': c.get('phases', []),
             'type': 'real' if c.get('source_type') == 'real' else 'pred',
             'duplicates': c.get('duplicates', []),
@@ -988,6 +1023,17 @@ def _slot_candidates(slot):
         _sorted_vals = [k for k, _ in sorted(_cnt_map.items(), key=lambda kv: -kv[1])]
         if _sorted_vals:
             pattern_items[_pr_key] = _sorted_vals
+def _fmt_phase_formula(slot, src_slot, phase_label):
+    tag = phase_label or "Phase"
+    if isinstance(slot, int) and isinstance(src_slot, int) and slot > src_slot:
+        diff = slot - src_slot
+        k_val = max(1, (diff + 59) // 119)
+        p_val = (diff - k_val * 119) // 16
+        jitter_val = diff - k_val * 119
+        return f"{tag}=k*119+jitter, k={k_val}, p={p_val}, jitter={jitter_val}"
+    return f"{tag}=k*119+jitter, k=?, p=?, jitter=?"
+
+
 def build_widget_html(base_start_slot, offset_slots=0, n_ahead=12, lang="vi", utc_offset=7.0, missing_04=None):
     if _WIDGET_TEMPLATE is None:
         return None
@@ -1002,7 +1048,7 @@ def build_widget_html(base_start_slot, offset_slots=0, n_ahead=12, lang="vi", ut
             'iso': slot_to_ts(s).strftime('%Y-%m-%dT%H:%M:%S') + '+07:00',
             'top': cands[0] if cands else None,
             'fallbacks': cands[1:] if len(cands) > 1 else [],
-            'phase': f"phase {slot_phase[s][0]}{slot_phase[s][1]}" if s % 4 == 0 and s in slot_phase else '',
+            'phase': (_fmt_phase_formula(s, (cands[0].get('source') if cands else (slot_to_meta.get(s) or {}).get('source')), (f"{slot_phase[s][0]}{slot_phase[s][1]}" if s in slot_phase else 'Phase')) if s % 4 == 0 else ''),
             'is_actual': (s in REAL_SLOTS and cands and cands[0].get('type') == 'actual'),
             'is_bridge': _is_bridge(s),
         })
@@ -1219,19 +1265,6 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
         log.append(f"Markov err: {e}")
         import traceback; log.append(traceback.format_exc())
 
-    # Build widget
-    NOW = datetime.utcnow() + VN_OFFSET
-    current_next_slot = int((NOW - BASE).total_seconds() / (6*3600)) + 1
-    log.append(f"Next slot: {current_next_slot}")
-
-    try:
-        widget_html = build_widget_html(current_next_slot - 1, offset_days * 4, 12, lang, utc_offset, [])
-        log.append(f"Widget: {len(widget_html) if widget_html else 0} chars")
-    except Exception as e:
-        log.append(f"Widget err: {e}")
-        import traceback; log.append(traceback.format_exc())
-        widget_html = None
-
     # Tổng hợp pattern_items theo từng cặp vị trí có ưu tiên trọng số slot gần hơn
     _recency_scores = defaultdict(lambda: defaultdict(float))
     _max_item_slot = max((k for k in slot_to_items if isinstance(k, int)), default=0)
@@ -1255,4 +1288,34 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
         _sorted_vals = [k for k, _ in sorted(_sc_map.items(), key=lambda kv: -kv[1])]
         if _sorted_vals:
             pattern_items[_pr_key] = _sorted_vals
-    return widget_html, "\n".join(log), "", {'total_missing_04': 0, 'static_acc': 100.0, 'adaptive_acc': 100.0}
+    # Build widget
+    NOW = datetime.utcnow() + VN_OFFSET
+    current_next_slot = int((NOW - BASE).total_seconds() / (6*3600)) + 1
+    log.append(f"Next slot: {current_next_slot}")
+
+    _missing_04_list = []
+    _missing_all_count = 0
+    for _s_chk in range(min_slot, max_slot + 1):
+        if _s_chk not in REAL_SLOTS:
+            _missing_all_count += 1
+            if _s_chk % 4 == 0:
+                _missing_04_list.append({
+                    'slot': _s_chk,
+                    'iso': slot_to_ts(_s_chk).strftime('%Y-%m-%dT%H:%M:%S') + '+07:00',
+                })
+
+    try:
+        widget_html = build_widget_html(current_next_slot - 1, offset_days * 4, 12, lang, utc_offset, _missing_04_list)
+        log.append(f"Widget: {len(widget_html) if widget_html else 0} chars")
+    except Exception as e:
+        log.append(f"Widget err: {e}")
+        import traceback; log.append(traceback.format_exc())
+        widget_html = None
+
+    return widget_html, "\n".join(log), "", {
+        'total_missing_04': len(_missing_04_list),
+        'missing_04': _missing_04_list[-50:],
+        'total_missing_all': _missing_all_count,
+        'static_acc': 100.0,
+        'adaptive_acc': 100.0,
+    }

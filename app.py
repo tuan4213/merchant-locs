@@ -17,7 +17,6 @@ _PIPELINE_LOCK = _threading.Lock()
 SHOW_ADVANCED_UI = True
 # === END CONFIG FLAGS ===
 
-
 st.set_page_config(page_title="Merchant Location", layout="wide")
 
 components.html("""
@@ -194,34 +193,126 @@ def load_default_csv():
         if result: return result
     return _load_local_csv_v1220()
 
+# === LANG_BAR_PATCH_START ===
 _detected_lang = detect_default_lang()
-if "app_lang" not in st.session_state: st.session_state.app_lang = _detected_lang
+if "app_lang" not in st.session_state:
+    st.session_state.app_lang = _detected_lang
 
 def _set_lang(l_code):
-    st.session_state.app_lang = l_code; st.rerun()
+    st.session_state.app_lang = l_code
+    if l_code in ("vi", "en") and "lang_other_select" in st.session_state:
+        st.session_state.lang_other_select = None
 
-col_vi, col_en, col_other, _ = st.columns([1.2, 1.2, 2.5, 5])
+def _on_other_lang_change():
+    sel = st.session_state.get("lang_other_select")
+    if sel and sel in LANG_OPTIONS:
+        st.session_state.app_lang = LANG_OPTIONS[sel]
+
+_other_placeholder = "🌐 Ngôn ngữ khác / Others"
+
+st.markdown(
+    """
+    <style>
+    .lang-bar-wrap div[data-testid="stButton"] > button {
+        min-height: 48px !important;
+        padding: 8px 16px !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
+        white-space: nowrap !important;
+    }
+    .lang-bar-wrap div[data-testid="stSelectbox"],
+    .lang-bar-wrap div[data-testid="stSelectbox"] > div,
+    .lang-bar-wrap div[data-baseweb="select"],
+    .lang-bar-wrap div[data-baseweb="select"] > div:first-child {
+        height: auto !important;
+        min-height: 48px !important;
+        max-width: 100% !important;
+    }
+    .lang-bar-wrap div[data-baseweb="select"] > div:first-child > div {
+        flex-wrap: wrap !important;
+        height: auto !important;
+        min-height: 36px !important;
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+    }
+    .lang-bar-wrap div[data-baseweb="select"] [class*="placeholder"],
+    .lang-bar-wrap div[data-baseweb="select"] [class*="singleValue"],
+    .lang-bar-wrap div[data-baseweb="select"] [class*="ValueContainer"] > div,
+    .lang-bar-wrap div[data-baseweb="select"] input {
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        line-height: 1.35 !important;
+        max-width: 100% !important;
+    }
+    @media (max-width: 768px) {
+        .lang-bar-wrap div[data-testid="stButton"] > button {
+            min-height: 42px !important;
+            padding: 6px 8px !important;
+            font-size: 13.5px !important;
+        }
+        .lang-bar-wrap div[data-testid="stSelectbox"],
+        .lang-bar-wrap div[data-testid="stSelectbox"] > div,
+        .lang-bar-wrap div[data-baseweb="select"],
+        .lang-bar-wrap div[data-baseweb="select"] > div:first-child {
+            min-height: 42px !important;
+        }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown('<div class="lang-bar-wrap">', unsafe_allow_html=True)
+col_vi, col_en, col_other = st.columns([1.35, 1.35, 3.3], vertical_alignment="bottom")
+
 with col_vi:
-    st.button("🇻🇳 Tiếng Việt", on_click=_set_lang, args=("vi",), use_container_width=True, type="primary" if st.session_state.app_lang == "vi" else "secondary")
+    st.button(
+        "🇻🇳 VI",
+        on_click=_set_lang,
+        args=("vi",),
+        use_container_width=True,
+        type="primary" if st.session_state.app_lang == "vi" else "secondary",
+    )
+
 with col_en:
-    st.button("🇺🇸 English", on_click=_set_lang, args=("en",), use_container_width=True, type="primary" if st.session_state.app_lang == "en" else "secondary")
+    st.button(
+        "🇺🇸 EN",
+        on_click=_set_lang,
+        args=("en",),
+        use_container_width=True,
+        type="primary" if st.session_state.app_lang == "en" else "secondary",
+    )
+
 with col_other:
     _other_langs = {k: v for k, v in LANG_OPTIONS.items() if v not in ("vi", "en")}
     if _other_langs:
-        _options = [""] + list(_other_langs.keys())
-        _idx = _options.index(next((k for k, v in _other_langs.items() if v == st.session_state.app_lang), ""))
-        _sel = st.selectbox("🌐 Khác / Others", _options, index=_idx, label_visibility="collapsed")
-        if _sel and st.session_state.app_lang != _other_langs[_sel]: _set_lang(_other_langs[_sel])
+        _other_keys = list(_other_langs.keys())
+        _cur_other_key = next((k for k, v in _other_langs.items() if v == st.session_state.app_lang), None)
+        if _cur_other_key is None and st.session_state.get("lang_other_select") is not None:
+            st.session_state.lang_other_select = None
+        st.selectbox(
+            _other_placeholder,
+            _other_keys,
+            index=_other_keys.index(_cur_other_key) if _cur_other_key in _other_keys else None,
+            placeholder=_other_placeholder,
+            label_visibility="collapsed",
+            key="lang_other_select",
+            on_change=_on_other_lang_change,
+        )
+st.markdown("</div>", unsafe_allow_html=True)
 
 lang = st.session_state.app_lang
+# === LANG_BAR_PATCH_END ===
 
 # ==========================================
 
 T = get_translator(lang)
 
-# ==========================================
-# TIMEZONE SETTINGS (TOP)
-# ==========================================
+# === PRED_SETTINGS_WITH_TZ_START ===
 try:
     from zoneinfo import ZoneInfo
     system_tz_name = st.context.timezone or "Asia/Ho_Chi_Minh"
@@ -237,23 +328,11 @@ if "utc_offset" not in st.session_state:
 def reset_utc():
     st.session_state.utc_offset = system_offset
 
-if lang == "vi": st.caption(f"🌍 Hệ thống tự nhận diện: **{system_tz_name}** (UTC{system_offset:+.1f})")
-else: st.caption(f"🌍 System auto-detected: **{system_tz_name}** (UTC{system_offset:+.1f})")
+if "time_travel_slider" not in st.session_state:
+    st.session_state.time_travel_slider = 0
 
-col_tz, col_tz_btn = st.columns([3, 1])
-with col_tz: 
-    utc_offset = st.slider(T("utc_offset_label", default="🌍 UTC Offset"), min_value=-12.0, max_value=14.0, step=0.5, key="utc_offset")
-with col_tz_btn: 
-    st.write("")
-    st.write("")
-    st.button(T("utc_reset_btn", default="🔄 Reset"), on_click=reset_utc)
-
-_now_local = datetime.now(timezone.utc) + timedelta(hours=utc_offset)
-_now_str = _now_local.strftime('%Y-%m-%d %H:%M:%S')
-if lang == "vi": st.caption(f"🕐 **Giờ hiện tại (theo offset trên):** `{_now_str}` — UTC{utc_offset:+.1f}")
-else: st.caption(f"🕐 **Current time (per offset above):** `{_now_str}` — UTC{utc_offset:+.1f}")
-# ==========================================
-
+def reset_time_travel():
+    st.session_state.time_travel_slider = 0
 
 if predictor._WIDGET_TEMPLATE is None:
     st.error(T("err_widget_missing", default="⚠️ Không tìm thấy file `widget_template.html`."))
@@ -264,8 +343,112 @@ if _lang_errs:
     st.error(T("err_lang_files", default="⚠️ Language files error:\n\n") + "\n\n".join(f"- {e}" for e in _lang_errs))
     st.stop()
 
-try: predictor.set_secrets(dict(st.secrets))
-except Exception: pass
+try:
+    predictor.set_secrets(dict(st.secrets))
+except Exception:
+    pass
+
+_default_files = list_default_files()
+_loaded_default = None
+if _default_files:
+    try:
+        _loaded_default = load_default_csv()
+    except Exception as e:
+        st.warning(T("read_error", default="⚠️ Read error: `{e}`", e=e))
+
+with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"), expanded=False):
+    if lang == "vi":
+        st.caption(f"🌍 Hệ thống tự nhận diện: **{system_tz_name}** (UTC{system_offset:+.1f})")
+    else:
+        st.caption(f"🌍 System auto-detected: **{system_tz_name}** (UTC{system_offset:+.1f})")
+
+    col_tz, col_tz_btn = st.columns([3, 1])
+    with col_tz:
+        utc_offset = st.slider(
+            T("utc_offset_label", default="🌍 UTC Offset"),
+            min_value=-12.0,
+            max_value=14.0,
+            step=0.5,
+            key="utc_offset",
+        )
+    with col_tz_btn:
+        st.write("")
+        st.write("")
+        st.button(T("utc_reset_btn", default="🔄 Reset"), on_click=reset_utc)
+
+    _now_local = datetime.now(timezone.utc) + timedelta(hours=utc_offset)
+    _now_str = _now_local.strftime('%Y-%m-%d %H:%M:%S')
+    if lang == "vi":
+        st.caption(f"🕐 **Giờ hiện tại (theo offset trên):** `{_now_str}` — UTC{utc_offset:+.1f}")
+    else:
+        st.caption(f"🕐 **Current time (per offset above):** `{_now_str}` — UTC{utc_offset:+.1f}")
+
+    def calc_local_time(vn_hour, user_offset):
+        local_hour = (vn_hour - 7) + user_offset
+        day_shift = 0
+        if local_hour < 0:
+            local_hour += 24
+            day_shift = -1
+        elif local_hour >= 24:
+            local_hour -= 24
+            day_shift = 1
+        hh, mm = int(local_hour), int((local_hour - int(local_hour)) * 60)
+        time_str = f"{hh:02d}:{mm:02d}"
+        if day_shift == -1:
+            time_str += T("time_prev", default=" (Prev)")
+        elif day_shift == 1:
+            time_str += T("time_next", default=" (Next)")
+        return time_str
+
+    local_times = {k: calc_local_time(int(k), utc_offset) for k in ["04", "10", "16", "22"]}
+    settings_text = T("predict_settings_md", default="")
+    for k, v in local_times.items():
+        settings_text = settings_text.replace(f"{{t_{k}}}", v)
+    if settings_text:
+        st.markdown(settings_text)
+
+    st.markdown("---")
+    offset_days = st.slider(
+        T("slider_label", default="🕰️ Time travel (days)"),
+        min_value=-7,
+        max_value=30,
+        step=1,
+        key="time_travel_slider",
+    )
+    st.button(T("reset_time_travel", default="🔄 Reset Time Travel"), on_click=reset_time_travel)
+
+    st.markdown("---")
+    use_default = st.checkbox(T("use_default", default="📚 Use default baseline"), value=True)
+    st.markdown(
+        T(
+            'csv_logic_cols_html',
+            default="<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">Cột logic CSV:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(Snowflake ID nếu có — không dùng tính chu kỳ/slot)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(mốc thời gian quy đổi slot 6h)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(nội dung pattern/vật phẩm)</span></span></div>"
+        ),
+        unsafe_allow_html=True,
+    )
+    uploaded = st.file_uploader(T("uploader", default="Upload CSV"), type=["csv"], accept_multiple_files=True)
+
+    if uploaded:
+        try:
+            import io as _io, csv as _csv
+            _sample_ts = []
+            for _row in list(_csv.DictReader(_io.StringIO(uploaded[0].getvalue().decode('utf-8-sig', errors='replace'))))[:50]:
+                _t = _row.get('Timestamp') or _row.get('timestamp') or ''
+                if _t: _sample_ts.append(_t)
+            _tz_formats = predictor._check_mixed_timezones(_sample_ts)
+            if len(_tz_formats) > 1:
+                st.warning(f"⚠️ **Cảnh báo:** File CSV chứa nhiều định dạng timezone: `{_tz_formats}`. App sẽ tự động convert.")
+            elif _tz_formats and "Naive" not in _tz_formats:
+                st.info(f"ℹ️ **Timezone:** File CSV đã có sẵn timezone `{_tz_formats[0]}`. App đã tự động convert về UTC+7.")
+            else:
+                st.info(f"ℹ️ **Timezone:** File CSV không có timezone. App giả định file đang ở **UTC+{st.session_state.utc_offset}** và tự động convert về UTC+7.")
+        except Exception:
+            pass
+
+    st.markdown("---")
+
+    _settings_status_slot = st.container()
+# === PRED_SETTINGS_WITH_TZ_END ===
 
 with st.sidebar:
     st.markdown(T("sidebar_config", default="### ⚙️ Config"))
@@ -334,71 +517,42 @@ with st.sidebar:
                         del st.session_state['offset_verify_result']; st.rerun()
 
 st.title(T("title", default="📍 Merchant Location"))
-_default_files = list_default_files()
 
 if _default_files:
-    try:
-        _d_rows, _d_min, _d_max, _used = load_default_csv()
-        if _d_rows:
-            total_mb = sum(os.path.getsize(f) for f in _default_files) / 1024 / 1024
-            shown = ", ".join(f"`{f}` ({n:,})" for f, n in _used[:5]) + (f" … (+{len(_used)-5})" if len(_used) > 5 else "")
-            info_text = T("info_header", default="📚 **Default baseline** ({n} file(s)):", n=len(_used)) + "\n\n" + f"- 📁 {shown}\n"
-            info_text += T("info_from", default="- 🗓️ **From:** `{v}` (VN, UTC+7)", v=_d_min.strftime('%Y-%m-%d %H:%M')) + "\n"
-            info_text += T("info_to", default="- 🗓️ **To:** `{v}` (VN, UTC+7)", v=_d_max.strftime('%Y-%m-%d %H:%M')) + "\n"
-            info_text += T("info_total", default="- 📊 **Total:** `{n:,}` posts  ·  💾 `{mb:.1f} MB`", n=len(_d_rows), mb=total_mb) + "\n\n"
-            st.info(info_text)
-        else: st.warning(T("no_valid", default="⚠️ No valid rows"))
-    except Exception as e: st.warning(T("read_error", default="⚠️ Read error: `{e}`", e=e))
-else: st.caption(T("no_default", default="ℹ️ No baseline CSV"))
-
-if "time_travel_slider" not in st.session_state: st.session_state.time_travel_slider = 0
-def reset_time_travel(): st.session_state.time_travel_slider = 0
-
-offset_days = st.slider(T("slider_label", default="🕰️ Time travel (days)"), min_value=-7, max_value=30, step=1, key="time_travel_slider")
-st.button(T("reset_time_travel", default="🔄 Reset Time Travel"), on_click=reset_time_travel)
-
-use_default = st.checkbox(T("use_default", default="📚 Use default baseline"), value=True)
-uploaded = st.file_uploader(T("uploader", default="Upload CSV"), type=["csv"], accept_multiple_files=True)
-
-# --- CẢNH BÁO TIMEZONE CSV ---
-if uploaded:
-    try:
-        import io as _io, csv as _csv
-        _sample_ts = []
-        for _row in list(_csv.DictReader(_io.StringIO(uploaded[0].getvalue().decode('utf-8-sig', errors='replace'))))[:50]:
-            _t = _row.get('Timestamp') or _row.get('timestamp') or ''
-            if _t: _sample_ts.append(_t)
-        _tz_formats = predictor._check_mixed_timezones(_sample_ts)
-        if len(_tz_formats) > 1:
-            st.warning(f"⚠️ **Cảnh báo:** File CSV chứa nhiều định dạng timezone: `{_tz_formats}`. App sẽ tự động convert.")
-        elif _tz_formats and "Naive" not in _tz_formats:
-            st.info(f"ℹ️ **Timezone:** File CSV đã có sẵn timezone `{_tz_formats[0]}`. App đã tự động convert về UTC+7.")
-        else:
-            st.info(f"ℹ️ **Timezone:** File CSV không có timezone. App giả định file đang ở **UTC+{st.session_state.utc_offset}** và tự động convert về UTC+7.")
-    except Exception:
-        pass
+    if _loaded_default and _loaded_default[0]:
+        _d_rows, _d_min, _d_max, _used = _loaded_default
+        total_mb = sum(os.path.getsize(f) for f in _default_files) / 1024 / 1024
+        shown = ", ".join(f"`{f}` ({n:,})" for f, n in _used[:5]) + (f" … (+{len(_used)-5})" if len(_used) > 5 else "")
+        info_text = T("info_header", default="📚 **Default baseline** ({n} file(s)):", n=len(_used)) + "\n\n" + f"- 📁 {shown}\n"
+        info_text += T("info_from", default="- 🗓️ **From:** `{v}` (VN, UTC+7)", v=_d_min.strftime('%Y-%m-%d %H:%M')) + "\n"
+        info_text += T("info_to", default="- 🗓️ **To:** `{v}` (VN, UTC+7)", v=_d_max.strftime('%Y-%m-%d %H:%M')) + "\n"
+        info_text += T("info_total", default="- 📊 **Total:** `{n:,}` posts  ·  💾 `{mb:.1f} MB`", n=len(_d_rows), mb=total_mb) + "\n\n"
+        st.info(info_text)
+    else:
+        st.warning(T("no_valid", default="⚠️ No valid rows"))
+else:
+    st.caption(T("no_default", default="ℹ️ No baseline CSV"))
 
 _has_something = uploaded or (use_default and bool(_default_files))
 
 if _has_something:
     files_data = tuple((f.name, f.getvalue()) for f in (uploaded or []))
-    _loaded = load_default_csv()
-    default_rows = tuple(_loaded[0]) if use_default else tuple()
-    used_files = tuple(_loaded[3]) if use_default else tuple()
+    default_rows = tuple(_loaded_default[0]) if (use_default and _loaded_default and _loaded_default[0]) else tuple()
+    used_files = tuple(_loaded_default[3]) if (use_default and _loaded_default and _loaded_default[3]) else tuple()
 
     @st.cache_data(show_spinner=False)
     def _cached(files_tuple, default_rows_tuple, used_files_tuple, offset, use_def, lang_code, utc_off, trans_lookback, adaptive_state):
-        # [PATCH-ISOLATION-v2] Lock + reload + deepcopy tránh race
         import importlib as _il
         import copy as _cp
         with _PIPELINE_LOCK:
             _il.reload(predictor)
             _res = predictor.run_pipeline(list(files_tuple), list(default_rows_tuple), list(used_files_tuple), offset, use_def, lang_code, utc_off, trans_lookback)
             return (_res[0], _res[1], _res[2], _cp.deepcopy(_res[3]))
+
     widget_html, log_text, trans_text, trans_stats = _cached(
         files_data, default_rows, used_files, offset_days, use_default, lang, st.session_state.utc_offset, trans_lookback_input, predictor.get_adaptive_offset_state()
     )
-    
+
     if SHOW_ADVANCED_UI and trans_text:
         _stats_changed = st.session_state.get('trans_stats') != trans_stats
         _text_changed = st.session_state.get('trans_text') != trans_text
@@ -409,19 +563,33 @@ if _has_something:
     else:
         st.session_state.pop('_skip_rerun_flag', None)
 
+    parts = ([T("part_default", default="{n} baseline", n=len(_default_files))] if use_default else []) + ([T("part_upload", default="{n} uploaded", n=len(uploaded))] if uploaded else [])
+    _n_miss_04 = int(trans_stats.get('total_missing_04', 0) or 0)
+    _n_miss_all = int(trans_stats.get('total_missing_all', 0) or 0)
+
+    with _settings_status_slot:
+        if widget_html is not None:
+            st.success(T("success", default="✅ Processed: {parts}", parts=" + ".join(parts)))
+        if _n_miss_04 > 0 or _n_miss_all > 0:
+            st.error(
+                T(
+                    "gap_stats",
+                    default="⚠️ **Thống kê thiếu data:** {n04} slot 04:00 bị thiếu (tổng {nall} slot thiếu trong khoảng dữ liệu).",
+                    n=_n_miss_04,
+                    n04=_n_miss_04,
+                    nall=_n_miss_all,
+                )
+            )
+            if trans_stats.get("missing_04"):
+                with st.popover(T("gap_detail_btn_settings", default="🔍 Xem chi tiết các slot 04:00 bị thiếu gần nhất")):
+                    missing_str = format_missing_slots(trans_stats["missing_04"], st.session_state.utc_offset)
+                    st.code(missing_str, language="text")
+        else:
+            st.success(T("gap_none", default="✅ Dữ liệu đầy đủ, không phát hiện slot thiếu nào."))
+
     if widget_html is None:
         st.error(T("failed", default="❌ Pipeline failed")); st.code(log_text, language="text")
     else:
-        parts = ([T("part_default", default="{n} baseline", n=len(_default_files))] if use_default else []) + ([T("part_upload", default="{n} uploaded", n=len(uploaded))] if uploaded else [])
-        st.success(T("success", default="✅ Processed: {parts}", parts=" + ".join(parts)))
-        if trans_stats.get('total_missing_04', 0) > 0:
-            c1, c2 = st.columns([4, 1])
-            with c1: st.warning(T("gap_warning", default="⚠️ **Cảnh báo Gap:** Phát hiện **{n}** slot bị thiếu dữ liệu.", n=trans_stats['total_missing_04']))
-            with c2:
-                with st.popover(T("gap_detail_btn", default="🔍 Chi tiết"), use_container_width=True):
-                    st.write(T("gap_list_title", default="**Các slot bị thiếu gần nhất:**"))
-                    missing_str = format_missing_slots(trans_stats['missing_04'], st.session_state.utc_offset)
-                    st.code(missing_str, language="text")
         components.html(widget_html, height=1100, scrolling=True)
         with st.expander(T("expander", default="📋 Log"), expanded=False):
             col_log_a, col_log_b = st.columns([4, 1])
@@ -431,29 +599,3 @@ if _has_something:
 else:
     st.info(T("upload_hint", default="👆 Upload CSV to start"))
 
-with st.expander(T("predict_settings_title", default=T("predict_settings_title", default="⚙️ Predict Settings")), expanded=False):
-
-    def calc_local_time(vn_hour, user_offset):
-        local_hour = (vn_hour - 7) + user_offset
-        day_shift = 0
-        if local_hour < 0: local_hour += 24; day_shift = -1
-        elif local_hour >= 24: local_hour -= 24; day_shift = 1
-        hh, mm = int(local_hour), int((local_hour - int(local_hour)) * 60)
-        time_str = f"{hh:02d}:{mm:02d}"
-        if day_shift == -1: time_str += T("time_prev", default=" (Prev)")
-        elif day_shift == 1: time_str += T("time_next", default=" (Next)")
-        return time_str
-
-    local_times = {k: calc_local_time(int(k), utc_offset) for k in ["04", "10", "16", "22"]}
-    settings_text = T("predict_settings_md", default="")
-    for k, v in local_times.items(): settings_text = settings_text.replace(f"{{t_{k}}}", v)
-    st.markdown(settings_text)
-    st.warning(T("timezone_warning", default="⚠️ Times based on VN timezone"))
-    st.warning(T("gap_disabled_warning", default="⚠️ **Lưu ý:** Các tính năng xử lý gap (Bridge, Patch 1, Auto-Heal) đã bị vô hiệu hoá vĩnh viễn trong code để đảm bảo dữ liệu không bị nhiễu."))
-    if trans_stats.get('total_missing_04', 0) > 0:
-        st.error(T("gap_stats", default="⚠️ **Thống kê Gap:** {n} slot bị thiếu dữ liệu.", n=trans_stats['total_missing_04']))
-        with st.popover(T("gap_detail_btn_settings", default="🔍 Xem chi tiết các slot gần nhất")):
-            missing_str = format_missing_slots(trans_stats['missing_04'], st.session_state.utc_offset)
-            st.code(missing_str, language="text")
-    else:
-        st.success(T("gap_none", default="✅ Dữ liệu đầy đủ, không phát hiện gap nào."))
