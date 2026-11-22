@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 स्थैतिक-TRANS अतिलिखितम्",
     "trans_using_static": "✅ स्थैतिक-TRANS प्रयुज्यते",
     "trans_scanned_caption": "📥 अन्विष्टम्: **{used}** स्थानानि (आवश्यकम्: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 शिक्षणम्: {train} | परीक्षणम्: {test}",
     "trans_edit": "विषयं सम्पादयन्तु:",
     "err_widget_missing": "⚠️ `widget_template.html` न प्राप्तम्।",
     "err_lang_files": "⚠️ भाषा-सञ्चिका-त्रुटिः:",
@@ -65,7 +65,7 @@
     "dup_hint": "अन्य-स्रोतेन पुष्टिः कृता",
     "check": "परीक्षणम्",
     "real_badge": "वास्तविकम्",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "सेतुः",
     "missing_data_warn": "⚠️ <b>मूल-दत्तांशः लुप्तः!</b> नियम-भविष्यवाणी। दत्तांशः नास्ति - "
   },
   "other_languages_placeholder": "🌐 अन्याः भाषाः"

@@ -11,7 +11,7 @@
     "no_default": "ℹ️ Nog gein basisgegevens",
     "no_valid": "⚠️ Gein geldige gegaove",
     "read_error": "⚠️ Fout bij 't laojen van gegaove: `{e}`",
-    "uploader": "Upload CSV",
+    "uploader": "CSV uploaden",
     "use_default": "📚 Gebroek standaarde basisgegevens",
     "slider_label": "🕰️ Tiedreis (daag)",
     "reset_time_travel": "🔄 Stel tiedreis opgenuiw in",

@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 ସ୍ଥିର TRANS ଓଭରରାଇଡ୍ ହୋଇଛି",
     "trans_using_static": "✅ ସ୍ଥିର TRANS ବ୍ୟବହାର ହେଉଛି",
     "trans_scanned_caption": "📥 ସ୍କାନ୍ ହୋଇଛି: **{used}** ସ୍ଲଟ୍ (ଆବଶ୍ୟକ: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 ଟ୍ରେନ୍: {train} | ଟେଷ୍ଟ୍: {test}",
     "trans_edit": "ବିଷୟବସ୍ତୁ ସଂଶୋଧନ କରନ୍ତୁ:",
     "err_widget_missing": "⚠️ `widget_template.html` ମିଳିଲା ନାହିଁ।",
     "err_lang_files": "⚠️ ଭାଷା ଫାଇଲ୍ ତ୍ରୁଟି:",
@@ -65,7 +65,7 @@
     "dup_hint": "ଅନ୍ୟ ଉତ୍ସ ଦ୍ୱାରା ନିଶ୍ଚିତ ହୋଇଛି",
     "check": "ଯାଞ୍ଚ କରନ୍ତୁ",
     "real_badge": "REAL",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "ବ୍ରିଜ୍",
     "missing_data_warn": "⚠️ <b>ମୂଳ ଡାଟା ଅନୁପସ୍ଥିତ!</b> ପ୍ୟାଟର୍ନ୍ ପୂର୍ବାନୁମାନ କରାଯାଉଛି। କୌଣସି ଡାଟା ନାହିଁ "
   },
   "other_languages_placeholder": "🌐 ଅନ୍ୟାନ୍ୟ ଭାଷାଗୁଡ଼ିକ"

@@ -66,7 +66,7 @@
     "check": "Ellenőrzés",
     "real_badge": "TÉNYLEGES",
     "bridge_badge": "BRIDGE",
-    "missing_data_warn": "⚠️ <b>Eredeti adatok hiányoznak!</b> Mintázatalapú előrejelzés. Nincs adat itt: "
+    "missing_data_warn": "⚠️ <b>Eredeti adatok hiányoznak!</b> Mintázatalapú előrejelzés. Nincs adat itt:"
   },
   "other_languages_placeholder": "🌐 Más nyelvek"
 }

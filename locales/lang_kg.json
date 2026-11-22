@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS menungina",
     "trans_using_static": "✅ Kifulu TRANS ya static",
     "trans_scanned_caption": "📥 Mekeba: **{used}** bisika (lomba: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Longo: {train} | Teste: {test}",
     "trans_edit": "Soba mambu:",
     "err_widget_missing": "⚠️ Kifulu `widget_template.html` mbuakani ve.",
     "err_lang_files": "⚠️ Lulembu ya mukanda ya ndinga:",

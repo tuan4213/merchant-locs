@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Gii-aanjitoon static TRANS",
     "trans_using_static": "✅ Aabaji'itoon static TRANS",
     "trans_scanned_caption": "📥 Gii-nandawaabandigaade: **{used}** slotin (nandawendaagwad: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Nitaawigiwebizh: {train} | Misawenjige: {test}",
     "trans_edit": "Aanji'itoon biinjayi'ii:",
     "err_widget_missing": "⚠️ Gaawiin mikosinoon `widget_template.html`.",
     "err_lang_files": "⚠️ Gaawiin gii-oditinoon ikidowin mazina'igan:",

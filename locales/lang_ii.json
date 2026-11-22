@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS ꄐꌠ ꏂ",
     "trans_using_static": "✅ TRANS ꄐꌠ ꅡ",
     "trans_scanned_caption": "📥 ꐚ: **{used}** slot (ꐚꅡ: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 ꀊꐚ: {train} | ꇓꐚ: {test}",
     "trans_edit": "ꏓꁏ ꏂ:",
     "err_widget_missing": "⚠️ `widget_template.html` ꀋꏦ.",
     "err_lang_files": "⚠️ ꀥꉙ ꏂ ꄡꑵ:",
@@ -64,7 +64,7 @@
     "reinforced": "ꄸꅔ",
     "dup_hint": "ꄌꌠ ꄐꌠ ꅡ",
     "check": "ꐚ",
-    "real_badge": "THẬT",
+    "real_badge": "ꌅꉬ",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>ꌋꆀ ꄉꌠ!</b> ꄌꌠ. ꌋꆀ ꀋꏦ "
   },

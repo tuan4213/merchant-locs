@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 ثابته TRANS لغوه شوه",
     "trans_using_static": "✅ د ثابت TRANS کارول",
     "trans_scanned_caption": "📥 سکین شوي: **{used}** سلایټ (اړتیا: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 روزنه: {train} | ازموینه: {test}",
     "trans_edit": "محتوا سمول:",
     "err_widget_missing": "⚠️ `widget_template.html` ونه موندل شو.",
     "err_lang_files": "⚠️ د ژبې فایل تېروتنه:",
@@ -65,7 +65,7 @@
     "dup_hint": "د بلې سرچینې لخوا تایید شوی",
     "check": "تایید",
     "real_badge": "واقعي",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "پل",
     "missing_data_warn": "⚠️ <b>اصلي ډاټا ورکه ده!</b> د قاعدې وړاندوېینه. ډاټا نشته په "
   },
   "other_languages_placeholder": "🌐 نورې ژبې"

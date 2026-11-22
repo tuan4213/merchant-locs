@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 I-TRANS emileyo itshintshiwe",
     "trans_using_static": "✅ Usebenzisa i-TRANS emileyo",
     "trans_scanned_caption": "📥 Kuhlolwe: **{used}** izithuba (kuyadingeka: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Uqeqesho: {train} | Uvavanyo: {test}",
     "trans_edit": "Hlela umxholo:",
     "err_widget_missing": "⚠️ Ayifunyenwanga `widget_template.html`.",
     "err_lang_files": "⚠️ Impazamo yefayile yolwimi:",

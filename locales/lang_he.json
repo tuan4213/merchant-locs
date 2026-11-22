@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS סטטי נדרס",
     "trans_using_static": "✅ משתמש ב-TRANS סטטי",
     "trans_scanned_caption": "📥 נסרקו: **{used}** סלוטים (נדרש: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 אימון: {train} | בדיקה: {test}",
     "trans_edit": "ערוך תוכן:",
     "err_widget_missing": "⚠️ `widget_template.html` לא נמצא.",
     "err_lang_files": "⚠️ שגיאה בקובץ השפה:",
@@ -65,7 +65,7 @@
     "dup_hint": "מאושר על ידי מקור אחר",
     "check": "בדוק",
     "real_badge": "אמיתי",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "גשר",
     "missing_data_warn": "⚠️ <b>הנתונים המקוריים חסרים!</b> חיזוי תבניות. אין נתונים ב-"
   },
   "other_languages_placeholder": "🌐 שפות אחרות"

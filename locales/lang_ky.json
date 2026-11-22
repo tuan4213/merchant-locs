@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Статикалык TRANS алмаштырылды",
     "trans_using_static": "✅ Статикалык TRANS колдонулууда",
     "trans_scanned_caption": "📥 Сканерленди: **{used}** слот (талап кылынат: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Машыгуу: {train} | Сыноо: {test}",
     "trans_edit": "Мазмунду оңдоо:",
     "err_widget_missing": "⚠️ `widget_template.html` табылган жок.",
     "err_lang_files": "⚠️ Тил файлынын катасы:",

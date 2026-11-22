@@ -38,7 +38,7 @@
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 Okupeka TRANS",
     "trans_scan_slots": "Ozombunga zokupeka",
-    "adaptive_toggled": "✅ Adaptive offset {status}",
+    "adaptive_toggled": "✅ Oyo lyokukwatakana {status}",
     "trans_overridden": "🚀 TRANS yatuka",
     "trans_using_static": "✅ Maseka TRANS static",
     "trans_scanned_caption": "📥 Pekwa: **{used}** ozombunga (okuzirira: {req})",

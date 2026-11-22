@@ -38,7 +38,7 @@
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 TRANS сканерлау",
     "trans_scan_slots": "Кире сканерлау аралары саны",
-    "adaptive_toggled": "✅ Adaptive offset {status}",
+    "adaptive_toggled": "✅ Адаптив күчерелеш {status}",
     "trans_overridden": "🚀 Статик TRANS алмаштырылды",
     "trans_using_static": "✅ Статик TRANS кулланыла",
     "trans_scanned_caption": "📥 Сканерланды: **{used}** ара (таләп ителә: {req})",
@@ -65,7 +65,7 @@
     "dup_hint": "Башка чыганак белән расланган",
     "check": "Тикшерү",
     "real_badge": "ЧЫН",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "КУПИР",
     "missing_data_warn": "⚠️ <b>Башлангыч мәгълүмат җитми!</b> Кагыйдәләр буенча фаразлана. Мәгълүмат юк: "
   },
   "other_languages_placeholder": "🌐 Başqa телләр"

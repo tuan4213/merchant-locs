@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Статикин TRANS йухайазйина",
     "trans_using_static": "✅ Статикин TRANS лелош йу",
     "trans_scanned_caption": "📥 Сканерйина: **{used}** slot (оьшуш йу: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Ӏаморан: {train} | Тестийн: {test}",
     "trans_edit": "Чулацам хийца:",
     "err_widget_missing": "⚠️ `widget_template.html` карийна йац.",
     "err_lang_files": "⚠️ Меттан файлан гӀалат:",

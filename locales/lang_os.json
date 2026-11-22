@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Статикон TRANS раивд у",
     "trans_using_static": "✅ Статикон TRANS-ӕй пайда кӕнын",
     "trans_scanned_caption": "📥 Скангонд: **{used}** слот (хъӕуы: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Ахуыр: {train} | Тест: {test}",
     "trans_edit": "Текст ивын:",
     "err_widget_missing": "⚠️ `widget_template.html` нӕ ссардам.",
     "err_lang_files": "⚠️ Ӕвзаджы файлы ӕнӕрастдзинад:",

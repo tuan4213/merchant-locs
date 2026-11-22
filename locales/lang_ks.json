@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 سٹَیٹِک TRANS اۆوَر رایِڈ گۆو",
     "trans_using_static": "✅ سٹَیٹِک TRANS اِستِعمال گَچھان",
     "trans_scanned_caption": "📥 سکین گۆو: **{used}** سُلاٹ (ضروٗرَت: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 ٹرین: {train} | ٹیسٹ: {test}",
     "trans_edit": "مَضمُون اَیڈِٹ کَرِو:",
     "err_widget_missing": "⚠️ `widget_template.html` لَبَنَس مَنٛز غَلَطی۔",
     "err_lang_files": "⚠️ زَبان فایِل غَلَطی:",

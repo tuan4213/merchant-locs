@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS استاتیک بازنویسی شد",
     "trans_using_static": "✅ در حال استفاده از TRANS استاتیک",
     "trans_scanned_caption": "📥 اسکن شده: **{used}** اسلات (مورد نیاز: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 آموزش: {train} | آزمون: {test}",
     "trans_edit": "ویرایش محتوا:",
     "err_widget_missing": "⚠️ فایل `widget_template.html` یافت نشد.",
     "err_lang_files": "⚠️ خطا در فایل زبان:",
@@ -65,7 +65,7 @@
     "dup_hint": "تایید شده توسط منبع دیگر",
     "check": "بررسی",
     "real_badge": "واقعی",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "پل ارتباطی",
     "missing_data_warn": "⚠️ <b>داده‌های اصلی مفقود است!</b> پیش‌بینی الگو. بدون داده در "
   },
   "other_languages_placeholder": "🌐 سایر زبان‌ها"

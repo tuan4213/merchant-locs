@@ -33,7 +33,7 @@
     "gap_stats": "⚠️ **Estatistik done ki manke:** {n} plas.",
     "gap_detail_btn_settings": "🔍 Wè plas ki manke pi resan yo",
     "gap_none": "✅ Done yo konplè, pa gen twou detekte.",
-    "time_prev": " (Nèspwa)",
+    "time_prev": "(Nèspwa)",
     "time_next": " (Denmen)",
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 Echany TRANS",
@@ -66,7 +66,7 @@
     "check": "Verifye",
     "real_badge": "REYÈL",
     "bridge_badge": "PON",
-    "missing_data_warn": "⚠️ <b>Done orijinal yo manke!</b> Prediksyon modèl. Pa gen done nan "
+    "missing_data_warn": "⚠️ <b>Done orijinal yo manke!</b> Prediksyon modèl. Pa gen done nan"
   },
   "other_languages_placeholder": "🌐 Lòt lang yo"
 }

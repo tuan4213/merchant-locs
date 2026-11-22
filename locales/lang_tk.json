@@ -33,7 +33,7 @@
     "gap_stats": "⚠️ **Maglumat ýetmezçiligi statistikasy:** {n} slot.",
     "gap_detail_btn_settings": "🔍 Iň soňky ýitirilen slotlary görmek",
     "gap_none": "✅ Maglumat doly, ýitgi tapylmady.",
-    "time_prev": " (Düýn)",
+    "time_prev": "(Düýn)",
     "time_next": " (Ertir)",
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 TRANS skanirleme",
@@ -66,7 +66,7 @@
     "check": "Barla",
     "real_badge": "HAKYKY",
     "bridge_badge": "KÖPRI",
-    "missing_data_warn": "⚠️ <b>Asyl maglumat ýok!</b> Çaklama düzgüni. Maglumat ýok ýeri: "
+    "missing_data_warn": "⚠️ <b>Asyl maglumat ýok!</b> Çaklama düzgüni. Maglumat ýok ýeri:"
   },
   "other_languages_placeholder": "🌐 Başga diller"
 }

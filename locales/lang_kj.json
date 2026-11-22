@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS ya tulwa pombanda",
     "trans_using_static": "✅ Okuza TRANS ya static",
     "trans_scanned_caption": "📥 Ya kononwa: **{used}** omitwe (peta: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Longo: {train} | Ngabeka: {test}",
     "trans_edit": "Lundulula omuvalu:",
     "err_widget_missing": "⚠️ Kape na `widget_template.html`.",
     "err_lang_files": "⚠️ Eyono lyefaila lyelaka:",

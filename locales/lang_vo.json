@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS statik pävotükon",
     "trans_using_static": "✅ Gebon TRANS statiki",
     "trans_scanned_caption": "📥 Päscanon: **{used}** slotis (jeräli: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Fätük: {train} | Testüv: {test}",
     "trans_edit": "Redaköl yüni:",
     "err_widget_missing": "⚠️ `widget_template.html` no pätüvon.",
     "err_lang_files": "⚠️ Pöl nünamaseda pükik:",
@@ -65,7 +65,7 @@
     "dup_hint": "Päfermükon fa tökim votik",
     "check": "Testöl",
     "real_badge": "MELIK",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "BRID",
     "missing_data_warn": "⚠️ <b>Datamäbem primik bözon!</b> Sätham lönöfik. Datamäbem no dabinon in "
   },
   "other_languages_placeholder": "🌐 Püks votik"

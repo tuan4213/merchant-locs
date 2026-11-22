@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 स्थिर TRANS अधिलेखन (overridden) भयो",
     "trans_using_static": "✅ स्थिर TRANS प्रयोग गर्दै",
     "trans_scanned_caption": "📥 स्क्यान गरियो: **{used}** स्लटहरू (आवश्यक: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 ट्रेनिङ: {train} | टेस्ट: {test}",
     "trans_edit": "सामग्री सम्पादन गर्नुहोस्:",
     "err_widget_missing": "⚠️ `widget_template.html` फेला परेन।",
     "err_lang_files": "⚠️ भाषा फाइल त्रुटि:",
@@ -65,7 +65,7 @@
     "dup_hint": "अन्य स्रोतद्वारा पुष्टि गरिएको",
     "check": "जाँच गर्नुहोस्",
     "real_badge": "वास्तविक",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "ब्रिज",
     "missing_data_warn": "⚠️ <b>मूल डाटा छुटेको छ!</b> नियम भविष्यवाणी गर्दै। यहाँ डाटा छैन "
   },
   "other_languages_placeholder": "🌐 अन्य भाषाहरू"

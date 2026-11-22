@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Waxaa lagu beddelay TRANS taangiga ah",
     "trans_using_static": "✅ Waxaa la isticmaalayaa TRANS taangiga ah",
     "trans_scanned_caption": "📥 Waxaa la baadhay: **{used}** slot (looga baahan yahay: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Tababarka: {train} | Imtixaanka: {test}",
     "trans_edit": "Wax ka beddel maaddada:",
     "err_widget_missing": "⚠️ Ma la helin `widget_template.html`.",
     "err_lang_files": "⚠️ Qalad faylka luqadda:",
@@ -65,7 +65,7 @@
     "dup_hint": "Waxaa xaqiijiyay il kale",
     "check": "Eeg",
     "real_badge": "DHAB AH",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "BUUNDADA",
     "missing_data_warn": "⚠️ <b>Xogta asalka ah waa tusaale ahaan maqan!</b> Mantaqadda la rooday. Ma jirto xog lagu "
   },
   "other_languages_placeholder": "🌐 Luuqadaha kale"

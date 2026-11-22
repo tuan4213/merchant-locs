@@ -34,7 +34,7 @@
     "gap_detail_btn_settings": "🔍 Rora makanya ma hīhī marĩa maagate",
     "gap_none": "✅ Ũhoro nĩ muuru, gũtirĩ kanya gũtarĩ.",
     "time_prev": " (Iro)",
-    "time_next": " (Rūciũ)",
+    "time_next": "(Rūciũ)",
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 TRANS gũthūthūria",
     "trans_scan_slots": "Makanya ma gũthūthūria na thīinī",
@@ -66,7 +66,7 @@
     "check": "Thūthūria",
     "real_badge": "MA",
     "bridge_badge": "BRIDGE",
-    "missing_data_warn": "⚠️ <b>Ũhoro wa kīambīrīria nĩ mwaga!</b> Kūratha mūhianīre. Gũtirĩ ūhoro harī "
+    "missing_data_warn": "⚠️ <b>Ũhoro wa kīambīrīria nĩ mwaga!</b> Kūratha mūhianīre. Gũtirĩ ūhoro harī"
   },
   "other_languages_placeholder": "🌐 Njoki ingĩ"
 }

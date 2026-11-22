@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Static TRANS yasimbuwe",
     "trans_using_static": "✅ Hakoreshejwe static TRANS",
     "trans_scanned_caption": "📥 Ibysakaswe: **{used}** slot (bisabwa: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Gutanga: {train} | Ikizamini: {test}",
     "trans_edit": "Hindura ibikubiyemo:",
     "err_widget_missing": "⚠️ `widget_template.html` ntiyabonetse.",
     "err_lang_files": "⚠️ Ikosa mu idosiye y'ururimi:",
@@ -65,7 +65,7 @@
     "dup_hint": "Byemejwe n'indi nkomoko",
     "check": "Gusuzuma",
     "real_badge": "UKURI",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "IKIRARO",
     "missing_data_warn": "⚠️ <b>Amakuru y'umwimerere arabura!</b> Guteganya amategeko. Nta makuru kuri "
   },
   "other_languages_placeholder": "🌐 Izindi ndimi"

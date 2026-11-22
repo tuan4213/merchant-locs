@@ -34,7 +34,7 @@
     "gap_detail_btn_settings": "🔍 Mostra els últims intervals faltants",
     "gap_none": "✅ Dades completes, no s'ha detectat cap buit.",
     "time_prev": " (Ahir)",
-    "time_next": " (Demà)",
+    "time_next": "(Demà)",
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 Escaneig TRANS",
     "trans_scan_slots": "Intervals d'escaneig invers",
@@ -66,7 +66,7 @@
     "check": "Comprova",
     "real_badge": "REAL",
     "bridge_badge": "PONT",
-    "missing_data_warn": "⚠️ <b>Falten dades originals!</b> S'està predint el patró. No hi ha dades a "
+    "missing_data_warn": "⚠️ <b>Falten dades originals!</b> S'està predint el patró. No hi ha dades a"
   },
   "other_languages_placeholder": "🌐 Altres llengües"
 }

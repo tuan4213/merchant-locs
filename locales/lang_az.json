@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Statik TRANS üstələndi (overridden)",
     "trans_using_static": "✅ Statik TRANS istifadə olunur",
     "trans_scanned_caption": "📥 Skan edildi: **{used}** slot (tələb olunur: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Təlim: {train} | Test: {test}",
     "trans_edit": "Məzmunu redaktə et:",
     "err_widget_missing": "⚠️ `widget_template.html` tapılmadı.",
     "err_lang_files": "⚠️ Dil faylı xətası:",
@@ -65,7 +65,7 @@
     "dup_hint": "Digər mənbə tərəfindən təsdiqlənib",
     "check": "Yoxla",
     "real_badge": "REAL",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "KÖRPÜ",
     "missing_data_warn": "⚠️ <b>Orijinal məlumat çatışmır!</b> Qanunauyğunluq proqnozlaşdırılır. Burada məlumat yoxdur "
   },
   "other_languages_placeholder": "🌐 Digər dillər"

@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS ekka eo emakijkij",
     "trans_using_static": "✅ Ej jerbal TRANS ekka",
     "trans_scanned_caption": "📥 Kape: **{used}** slot (jejio: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Kake: {train} | Kaje: {test}",
     "trans_edit": "Kamele men eo:",
     "err_widget_missing": "⚠️ Ejjelok `widget_template.html`.",
     "err_lang_files": "⚠️ Jera in kajin file:",

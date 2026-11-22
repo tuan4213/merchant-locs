@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS statiku ġie ssostitwit",
     "trans_using_static": "✅ Qed tuża TRANS statiku",
     "trans_scanned_caption": "📥 Skannjati: **{used}** slots (meħtieġ: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Taħriġ: {train} | Test: {test}",
     "trans_edit": "Immodifika l-kontenut:",
     "err_widget_missing": "⚠️ Ma nstabx `widget_template.html`.",
     "err_lang_files": "⚠️ Żball fil-fajls tal-lingwa:",
@@ -65,8 +65,8 @@
     "dup_hint": "Ikkonfermat minn sors ieħor",
     "check": "Iċċekkja",
     "real_badge": "ATTWALI",
-    "bridge_badge": "BRIDGE",
-    "missing_data_warn": "⚠️ <b>Id-dejta oriġinali nieqsa!</b> Tbassir tar-regolarità. L-ebda dejta fi "
+    "bridge_badge": "PURTIERA",
+    "missing_data_warn": "⚠️ <b>Id-dejta oriġinali nieqsa!</b> Tbassir tar-regolarità. L-ebda dejta fi"
   },
   "other_languages_placeholder": "🌐 Lingwi oħra"
 }

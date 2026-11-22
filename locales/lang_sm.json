@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Ua sui le TRANS faʻamautu",
     "trans_using_static": "✅ O loʻo faʻaogaina le TRANS faʻamautu",
     "trans_scanned_caption": "📥 Na suʻeina: **{used}** avanoa (manaʻomia: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 A'oa'oga: {train} | Su'ega: {test}",
     "trans_edit": "Faʻasaʻo le anotusi:",
     "err_widget_missing": "⚠️ Leai se `widget_template.html` na maua.",
     "err_lang_files": "⚠️ Sese le faila o le gagana:",

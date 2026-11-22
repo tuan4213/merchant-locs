@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Ua pāpa'i-mātāmua-hia te TRANS static",
     "trans_using_static": "✅ Te fa'a'ohipahia nei te TRANS static",
     "trans_scanned_caption": "📥 Hi'opo'ohia: **{used}** slot (ani: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Ha'api'ira'a: {train} | Fa'ahoro: {test}",
     "trans_edit": "Pāpa'i i te tumu parau:",
     "err_widget_missing": "⚠️ 'Aita i 'itehia te `widget_template.html`.",
     "err_lang_files": "⚠️ Hape putu'ite reo:",
@@ -65,7 +65,7 @@
     "dup_hint": "Ua fa'atī'ahia e te tahi 'āhuara'a",
     "check": "Hi'opo'o",
     "real_badge": "MAU",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "TARETE",
     "missing_data_warn": "⚠️ <b>'Aita te tāpura parau mātāmua!</b> 'Itera'a muā te ho'ho'a. 'Aita e tāpura parau i "
   },
   "other_languages_placeholder": "🌐 Te tahi atu mau reo"

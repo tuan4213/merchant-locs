@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Препишан статичкиот TRANS",
     "trans_using_static": "✅ Се користи статички TRANS",
     "trans_scanned_caption": "📥 Скенирани: **{used}** слотови (потребно: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Тренинг: {train} | Тест: {test}",
     "trans_edit": "Уреди содржина:",
     "err_widget_missing": "⚠️ Не е пронајдено `widget_template.html`.",
     "err_lang_files": "⚠️ Грешка во јазичните датотеки:",

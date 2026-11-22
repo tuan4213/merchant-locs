@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Static TRANS kolgana",
     "trans_using_static": "✅ Static TRANS cidajin",
     "trans_scanned_caption": "📥 Korona: **{used}** slot (raa: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 학습: {train} | 테스트: {test}",
     "trans_edit": "Bayan awo yakkate:",
     "err_widget_missing": "⚠️ `widget_template.html` buzoanyi.",
     "err_lang_files": "⚠️ Təskəna faillu kuskuri:",

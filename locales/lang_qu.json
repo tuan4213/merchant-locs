@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Sayasqa TRANS astasqa",
     "trans_using_static": "✅ Sayasqa TRANS llamk'achisqa",
     "trans_scanned_caption": "📥 Mask'asqa: **{used}** slot (munasqa: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Yachachiy: {train} | Ñakariy: {test}",
     "trans_edit": "Yuyayta allichay:",
     "err_widget_missing": "⚠️ `widget_template.html` mana tarisqachu.",
     "err_lang_files": "⚠️ Simi khipu pantay:",
@@ -65,7 +65,7 @@
     "dup_hint": "Huk pukimanta takyachisqa",
     "check": "Qhaway",
     "real_badge": "CHIQAP",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "CHAKA",
     "missing_data_warn": "⚠️ <b>Qallariy datos pisichkan!</b> Kamachiy watuy. Mana datos kanchu "
   },
   "other_languages_placeholder": "🌐 Huk simikuna"

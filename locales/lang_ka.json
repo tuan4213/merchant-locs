@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 სტატიკური TRANS გადაფარულია",
     "trans_using_static": "✅ გამოიყენება სტატიკური TRANS",
     "trans_scanned_caption": "📥 დასკანირდა: **{used}** სლოტი (მოთხოვნილი: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊ტრენინგი: {train} | ტესტი: {test}",
     "trans_edit": "შინაარსის რედაქტირება:",
     "err_widget_missing": "⚠️ `widget_template.html` ვერ მოიძებნა.",
     "err_lang_files": "⚠️ ენის ფაილების შეცდომა:",
@@ -65,7 +65,7 @@
     "dup_hint": "დადასტურებულია სხვა წყაროს მიერ",
     "check": "შემოწმება",
     "real_badge": "რეალური",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "ხიდი",
     "missing_data_warn": "⚠️ <b>საწყისი მონაცემები დაკარგულია!</b> მიმდინარეობს კანონზომიერების პროგნოზირება. მონაცემები არ არის აქ "
   },
   "other_languages_placeholder": "🌐 სხვა ენები"

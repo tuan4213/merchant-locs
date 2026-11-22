@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS statik u mbivendos",
     "trans_using_static": "✅ Po përdoret TRANS statik",
     "trans_scanned_caption": "📥 Janë skanuar: **{used}** slote (kërkohet: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Mësim: {train} | Test: {test}",
     "trans_edit": "Modifiko përmbajtjen:",
     "err_widget_missing": "⚠️ Nuk u gjet `widget_template.html`.",
     "err_lang_files": "⚠️ Gabim në skedarët e gjuhës:",

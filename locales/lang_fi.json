@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Staattinen TRANS ohitettu",
     "trans_using_static": "✅ Käytetään staattista TRANS-arvoa",
     "trans_scanned_caption": "📥 Skannattu: **{used}** slottia (vaadittu: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Opetus: {train} | Testi: {test}",
     "trans_edit": "Muokkaa sisältöä:",
     "err_widget_missing": "⚠️ Tiedostoa `widget_template.html` ei löytynyt.",
     "err_lang_files": "⚠️ Kielitiedostovirhe:",

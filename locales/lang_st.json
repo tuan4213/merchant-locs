@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS e sa fetohing e ngotsoe holimo",
     "trans_using_static": "✅ Ho sebelisoa TRANS e sa fetohing",
     "trans_scanned_caption": "📥 Ho hlahlobiloe: di-slot tse **{used}** (ho hlokahala: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Koetlisa: {train} | Teko: {test}",
     "trans_edit": "Efetola dikateng:",
     "err_widget_missing": "⚠️ Ha ea fumana `widget_template.html`.",
     "err_lang_files": "⚠️ Phoso ea faele ea puo:",
@@ -65,7 +65,7 @@
     "dup_hint": "E tiisitsoe ke mohloli o mong",
     "check": "Hlahloba",
     "real_badge": "SEBELE",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "BOROA",
     "missing_data_warn": "⚠️ <b>Dintlha tsa qalo di haella!</b> Ho inahaneloa mokgwa. Ha ho dintlha ho "
   },
   "other_languages_placeholder": "🌐 Lipuo tse ling"

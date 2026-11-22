@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 اسٽيٽڪ TRANS کي اوور رائڊ ڪيو ويو",
     "trans_using_static": "✅ اسٽيٽڪ TRANS استعمال ٿي رهيو آهي",
     "trans_scanned_caption": "📥 اسڪين ٿيل: **{used}** سلاٽ (طلب: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 ٽرين: {train} | ٽيسٽ: {test}",
     "trans_edit": "مواد ايڊٽ ڪريو:",
     "err_widget_missing": "⚠️ `widget_template.html` نه مليو.",
     "err_lang_files": "⚠️ ٻولي فائل جي غلطي:",
@@ -65,7 +65,7 @@
     "dup_hint": "ٻئي ذريعي سان تصديق ٿيل",
     "check": "چيڪ ڪريو",
     "real_badge": "اصل",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "برج",
     "missing_data_warn": "⚠️ <b>اصل ڊيٽا غائب آهي!</b> قانون جي اڳڪٿي. هتي ڊيٽا ناهي "
   },
   "other_languages_placeholder": "🌐 ٻيون ٻوليون"

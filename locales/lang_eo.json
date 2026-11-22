@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Statika TRANS anstataŭigita",
     "trans_using_static": "✅ Uzante statikan TRANS",
     "trans_scanned_caption": "📥 Skanitaj: **{used}** fendoj (postulata: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Trejni: {train} | Testi: {test}",
     "trans_edit": "Redakti enhavon:",
     "err_widget_missing": "⚠️ Ne trovis `widget_template.html`.",
     "err_lang_files": "⚠️ Eraro de lingvaj dosieroj:",

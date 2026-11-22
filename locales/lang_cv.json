@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Статикӑллӑ TRANS ҫӗнӗрен ҫырнӑ",
     "trans_using_static": "✅ Статикӑллӑ TRANS усӑ курать",
     "trans_scanned_caption": "📥 Сканерланӑ: **{used}** slot (ыйтни: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Çăлкуç: {train} | Тĕрĕслев: {test}",
     "trans_edit": "Ӑшне улӑштарасси:",
     "err_widget_missing": "⚠️ `widget_template.html` тупӑнман.",
     "err_lang_files": "⚠️ Чӗлхе файлӗн йӑнӑшӗ:",

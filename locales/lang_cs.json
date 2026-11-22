@@ -34,7 +34,7 @@
     "gap_detail_btn_settings": "🔍 Zobrazit nejnovější chybějící sloty",
     "gap_none": "✅ Kompletní data, žádné mezery nezjištěny.",
     "time_prev": " (Včera)",
-    "time_next": " (Zítra)",
+    "time_next": "(Zítra)",
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 Skenování TRANS",
     "trans_scan_slots": "Počet slotů pro zpětné skenování",
@@ -66,7 +66,7 @@
     "check": "Zkontrolovat",
     "real_badge": "SKUTEČNÝ",
     "bridge_badge": "BRIDGE",
-    "missing_data_warn": "⚠️ <b>Původní data chybí!</b> Předpověď vzoru. Žádná data na "
+    "missing_data_warn": "⚠️ <b>Původní data chybí!</b> Předpověď vzoru. Žádná data na"
   },
   "other_languages_placeholder": "🌐 Další jazyky"
 }

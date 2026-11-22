@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Statik TRANS ustiga yozildi",
     "trans_using_static": "✅ Statik TRANS ishlatilmoqda",
     "trans_scanned_caption": "📥 Skanerlandi: **{used}** slot (talab qilinadi: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 O'qitish: {train} | Sinov: {test}",
     "trans_edit": "Tahrirlash tarkibi:",
     "err_widget_missing": "⚠️ `widget_template.html` topilmadi.",
     "err_lang_files": "⚠️ Til fayllari xatosi:",

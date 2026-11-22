@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Static TRANS ကို ကျော်လွှားပြီး (overridden)",
     "trans_using_static": "✅ Static TRANS ကို အသုံးပြုနေသည်",
     "trans_scanned_caption": "📥 စကင်ဖတ်ပြီးစီး: **{used}** slot (တောင်းဆိုထားသည်: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 လေ့ကျင့်ရန်: {train} | စမ်းသပ်ရန်: {test}",
     "trans_edit": "အကြောင်းအရာကို ပြင်ဆင်ရန်:",
     "err_widget_missing": "⚠️ `widget_template.html` ကို မတွေ့ပါ။",
     "err_lang_files": "⚠️ ဘာသာစကားဖိုင် အမှားအယွင်း:",
@@ -65,7 +65,7 @@
     "dup_hint": "အခြားရင်းမြစ်ဖြင့် အတည်ပြုပြီး",
     "check": "စစ်ဆေးရန်",
     "real_badge": "တကယ့်",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "တံတား",
     "missing_data_warn": "⚠️ <b>မူလဒေတာ လစ်ဟာနေသည်!</b> စည်းမျဉ်းကို ခန့်မှန်းနေသည်။ တွင် ဒေတာမရှိပါ "
   },
   "other_languages_placeholder": "🌐 အခြားဘာသာစကားများ"

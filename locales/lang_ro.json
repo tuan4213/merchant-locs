@@ -34,7 +34,7 @@
     "gap_detail_btn_settings": "🔍 Vezi cele mai recente sloturi lipsă",
     "gap_none": "✅ Date complete, nu s-au detectat goluri.",
     "time_prev": " (Ieri)",
-    "time_next": " (Mâine)",
+    "time_next": "(Mâine)",
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 Scanare TRANS",
     "trans_scan_slots": "Număr de sloturi scanate înapoi",
@@ -66,7 +66,7 @@
     "check": "Verifică",
     "real_badge": "REAL",
     "bridge_badge": "BRIDGE",
-    "missing_data_warn": "⚠️ <b>Datele originale lipsesc!</b> Predicție de model. Fără date la "
+    "missing_data_warn": "⚠️ <b>Datele originale lipsesc!</b> Predicție de model. Fără date la"
   },
   "other_languages_placeholder": "🌐 Alte limbi"
 }

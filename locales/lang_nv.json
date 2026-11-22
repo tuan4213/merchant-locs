@@ -33,7 +33,7 @@
     "gap_stats": "⚠️ **Gap stats:** {n} slots.",
     "gap_detail_btn_settings": "🔍 Slots doo hólǫ́ǫ da",
     "gap_none": "✅ Data ałtso hólǫ́.",
-    "time_prev": " (Iínííł)",
+    "time_prev": "(Iínííł)",
     "time_next": " (Dah Neeztą́)",
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 TRANS Scan",
@@ -66,7 +66,7 @@
     "check": "Check",
     "real_badge": "REAL",
     "bridge_badge": "BRIDGE",
-    "missing_data_warn": "⚠️ <b>Data doo hólǫ́ǫ da!</b> Doo data hólǫ́ at "
+    "missing_data_warn": "⚠️ <b>Data doo hólǫ́ǫ da!</b> Doo data hólǫ́ at"
   },
   "other_languages_placeholder": "🌐 Saanii bizaad"
 }

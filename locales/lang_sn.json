@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Pfuura TRANS yakamira",
     "trans_using_static": "✅ Kushandisa TRANS yakamira",
     "trans_scanned_caption": "📥 Zvatsvagwa: **{used}** mikana (inodiwa: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 kudzidzisa: {train} | edza: {test}",
     "trans_edit": "Gadzirisa zvirimo:",
     "err_widget_missing": "⚠️ `widget_template.html` haina kuwanikwa.",
     "err_lang_files": "⚠️ Kanganiso yefairo mutauro:",

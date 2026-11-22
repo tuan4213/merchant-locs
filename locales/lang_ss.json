@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 I-TRANS lemiye yebhalwa ngaphezulu",
     "trans_using_static": "✅ Kusetjentiswa i-TRANS lemiye",
     "trans_scanned_caption": "📥 Kuskeniwe: **{used}** slot (kudzingeka: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Licitsa: {train} | Vivivinyo: {test}",
     "trans_edit": "Hlela okuqukethwe:",
     "err_widget_missing": "⚠️ Ayitfolakalanga `widget_template.html`.",
     "err_lang_files": "⚠️ Inkinga yelifayela leluhlelo lwelulwimi:",
@@ -65,7 +65,7 @@
     "dup_hint": "Kucinfezwe ngulomunye umtfombo",
     "check": "Hlola",
     "real_badge": "SINETO",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "BHENQE",
     "missing_data_warn": "⚠️ <b>Idatha yekucala idukile!</b> Kubikezela kweli-pattern. Kute idatha ho "
   },
   "other_languages_placeholder": "🌐 Letinye tilwimi"

@@ -34,7 +34,7 @@
     "gap_detail_btn_settings": "🔍 Ver os últimos intervalos faltantes",
     "gap_none": "✅ Datos completos, non se detectaron lagoas.",
     "time_prev": " (Onte)",
-    "time_next": " (Mañá)",
+    "time_next": "(Mañá)",
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 Escaneo TRANS",
     "trans_scan_slots": "Intervalos de escaneo inverso",
@@ -66,7 +66,7 @@
     "check": "Comprobar",
     "real_badge": "REAL",
     "bridge_badge": "PONTE",
-    "missing_data_warn": "⚠️ <b>Faltan os datos orixinais!</b> Predicindo o patrón. Non hai datos en "
+    "missing_data_warn": "⚠️ <b>Faltan os datos orixinais!</b> Predicindo o patrón. Non hai datos en"
   },
   "other_languages_placeholder": "🌐 Outras linguas"
 }

@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS gvaq",
     "trans_using_static": "✅ Nyinh TRANS static",
     "trans_scanned_caption": "📥 Sam: **{used}** slot (daih: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Nqgiq: {train} | Ndoj: {test}",
     "trans_edit": "Gai neix:",
     "err_widget_missing": "⚠️ Mbouj raen `widget_template.html`.",
     "err_lang_files": "⚠️ Gwnz baih vay cuengh:",
@@ -68,5 +68,5 @@
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Suhgyau mbouj miz!</b> Singxnyied pattern. Mbouj miz suhgyau daengz "
   },
-  "other_languages_placeholder": "🌐 Other languages"
+  "other_languages_placeholder": "🌐 Vunz guekhoz lai"
 }
