@@ -104,3 +104,14 @@ Mốc 04:00 **TÁCH BIỆT HOÀN TOÀN** khỏi chu kỳ 119. Nó không dùng 1
 ### 6. Data Processing & Predictor Logic
 - **Trans History (Time Travel):** Cho phép user xem dự đoán ở các mốc thời gian trong quá khứ/tương lai. Slider nhận giá trị `offset_days` (-7 đến +30 ngày). Mỗi ngày tương ứng 4 slots (04:00, 10:00, 16:00, 22:00). Các slot bị thiếu dữ liệu (missing_04) sẽ được highlight trong popover.
 - **Known Patterns & Mapping:** Dữ liệu đầu vào là các chuỗi kèo (vd: "3-15"). Sử dụng `item_utils.py` để dịch ID thành tên item. Cơ chế dự đoán phân tích tần suất xuất hiện của các cặp Item trong 30 slots gần nhất. **Lưu ý:** Tuyệt đối không sửa đổi cấu trúc file `known_patterns.txt` và `trans_history.txt` bằng tay, vì Predictor sẽ parse lỗi và crash app.
+
+---
+
+## Mốc thời gian chuẩn, chi tiết bộ dự đoán & liên kết ứng dụng
+
+- **Web App:** [https://merchant-locs-patch1.streamlit.app](https://merchant-locs-patch1.streamlit.app)
+- **Mốc gốc quy chiếu (`BASE`):** `2025-01-01 04:00:00` (giờ VN, `UTC+7`), mỗi slot kéo dài 6 giờ (`04:00`, `10:00`, `16:00`, `22:00` theo giờ VN).
+- **Nhánh dự đoán 04:00 (`_predict_04am_ext`):** Dùng cho các slot `04:00` (`slot % 4 == 0`), kết hợp chuỗi pha (`A1–A4, B3, C7`), bảng độ lệch đặc thù `GAPS_04` (`k*119 + p*j`), chuỗi chuyển tiếp bậc 2 (`MARKOV_B2` / `MARKOV_B2_2T`), `TRANS` và ưu tiên khớp các pattern gần nhất.
+- **Nhánh dự đoán chuẩn 10:00 / 16:00 / 22:00 (`_predict_std_ext`):** Mặc định bám theo chu kỳ `119` (`CYCLE = 119`) và chu kỳ lớn `1072` (`MACRO_CYCLE = 1072`); khi phát hiện rủi ro dị thường hoặc trùng mốc bất thường sẽ ánh xạ pha theo `STD_ANOMALY_OFFSETS` và kiểm tra các vị trí phụ `157`, `814`, `399` (bao gồm trường hợp `ghost gap` trên chu kỳ `1072`).
+- **Chống rò rỉ dữ liệu (`cutoff`):** Khi đánh giá rủi ro dị thường hoặc khoảng cách kế tiếp, chỉ xét các mốc/dữ liệu trước `cutoff_slot` / `target_slot` để không lộ thông tin tương lai.
+- **Truy vết nguồn item & trọng số theo thời gian (`_find_item_source`, `half_life`):** Dò nguồn vật phẩm qua `_find_item_source` (ưu tiên slot nguồn trực tiếp/ứng viên, sau đó mới dò ngược slot cùng pattern) và áp dụng phân rã trọng số theo khoảng cách slot (`half_life = 200.0`) khi tổng hợp danh sách item.

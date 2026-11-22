@@ -90,3 +90,14 @@ The Last Merch is **COMPLETELY SEPARATED** from Cycle 119. It does NOT use 119 o
 ### 6. Data Processing & Predictor Logic
 - **Trans History (Time Travel):** Allows users to view predictions at specific past/future timestamps. The slider accepts `offset_days` (-7 to +30 days). Each day corresponds to 4 slots (04:00, 10:00, 16:00, 22:00). Missing data slots (`missing_04`) will be highlighted in a popover.
 - **Known Patterns & Mapping:** Input data consists of match strings (e.g., "3-15"). Uses `item_utils.py` to translate IDs to item names. The prediction mechanism analyzes the frequency of item pairs within the last 30 slots. **Note:** Absolutely do not manually modify the structure of `known_patterns.txt` and `trans_history.txt`, as the Predictor will fail to parse them and crash the app.
+
+---
+
+## Reference Anchor, Predictor Details & Web App Link
+
+- **Web App:** [https://merchant-locs-patch1.streamlit.app](https://merchant-locs-patch1.streamlit.app)
+- **Base Anchor (`BASE`):** `2025-01-01 04:00:00` (VN time, `UTC+7`), with 6-hour slots (`04:00`, `10:00`, `16:00`, `22:00` VN time).
+- **04:00 Prediction Branch (`_predict_04am_ext`):** Handles `04:00` slots (`slot % 4 == 0`) using phase chains (`A1–A4, B3, C7`), dedicated gap offsets `GAPS_04` (`k*119 + p*j`), second-order Markov transitions (`MARKOV_B2` / `MARKOV_B2_2T`), `TRANS`, and recency matching.
+- **Standard 10:00 / 16:00 / 22:00 Branch (`_predict_std_ext`):** Defaults to the `119` cycle (`CYCLE = 119`) and `1072` macro cycle (`MACRO_CYCLE = 1072`); applies `STD_ANOMALY_OFFSETS` on anomaly risk/slots and checks auxiliary positions `157`, `814`, `399` (including `ghost gap` checks along the `1072` cycle).
+- **Lookback Cutoff Guard (`cutoff`):** Filters anomaly/gap history strictly prior to `cutoff_slot` / `target_slot` to prevent future data leakage.
+- **Item Source Tracing & Time Decay (`_find_item_source`, `half_life`):** Resolves item origins via `_find_item_source` (direct/candidate source slot first, then prior matching-pattern slot) and weights aggregated items with slot-distance decay (`half_life = 200.0`).
