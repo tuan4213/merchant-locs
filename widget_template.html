@@ -19,12 +19,13 @@
 #mwidget .ch.active .float-btn, #mwidget .pat-row.active .float-btn, #mwidget .items-list.active .float-btn, #mwidget .fb-item.active .copy-fb-btn { display: flex; }
 #mwidget .float-btn:hover, #mwidget .copy-fb-btn:hover { background: #7ab7ff; color: #1e1e2e; transform: translateY(-50%) scale(1.1); }
 #mwidget .float-btn.copied, #mwidget .copy-fb-btn.copied {width: 74px; background: #90ee90; color: #1e1e2e; border-color: #90ee90; justify-content: flex-start; padding-left: 7px;}
-#mwidget .ch .left{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+#mwidget .ch .left{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 #mwidget .ch .slot{color:#7ab7ff;font-weight:700;font-size:15px}
 #mwidget .ch .time{color:#c0c0d0;font-weight:600}
-#mwidget .ch .local{font-size:11px;color:#888;margin-left:6px}
+#mwidget .ch .local{font-size:11px;color:#888;margin-left:2px}
 #mwidget .ch .tag{font-size:11px;padding:1px 6px;border-radius:3px;background:rgba(122,183,255,.15);color:#7ab7ff}
 #mwidget .ch .tag.phase{background:rgba(255,158,100,.15);color:#ff9e64}
+#mwidget .ch .tag.reason{background:rgba(122,183,255,.14);color:#7ab7ff;max-width:460px;white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-height:1.3}
 #mwidget .ch .tag.actual{background:rgba(144,238,144,.25);color:#90ee90;font-weight:700}
 #mwidget .ch .tag.bridge{background:rgba(138,124,255,.25);color:#8a7cff;font-weight:700}
 #mwidget .ch .cd{color:#90ee90;font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
@@ -181,10 +182,6 @@
             h += `<div class="missing-warn">${L.missing_data_warn || '⚠️ <b>Dữ liệu gốc bị thiếu!</b> Dự đoán quy luật. Không có data tại '}${missDate} ${missParts.timeStr}</div>`;
         }
     }
-    const topReasonTxt = formatCandMeta(top, top && top.type === 'actual');
-    if (topReasonTxt) {
-      h += '<div class="fb-hint" style="margin-top:8px;color:#7ab7ff">💡 ' + esc(topReasonTxt) + '</div>';
-    }
     return h;
   }
   function renderFbCol(fallbacks, top, second){
@@ -282,6 +279,8 @@
       const sParts = getTimeParts(s.iso, utc_offset);
       let tags='';
       if(s.phase)tags+='<span class="tag phase">'+esc(s.phase)+'</span>';
+      const topReasonTxt = formatCandMeta(s.top, isActual || (top && top.type === 'actual'));
+      if(topReasonTxt && topReasonTxt !== s.phase) tags+='<span class="tag reason">'+esc(topReasonTxt)+'</span>';
       let cdDisplay;
       if(isActual || isBridge){ cdDisplay = '<span class="'+cdCls+'">✓</span>'; }
       else if(dd > 0){ cdDisplay = '<span class="'+cdCls+'">'+fmt(dd)+'</span>'; }
