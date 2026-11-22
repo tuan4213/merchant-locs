@@ -832,41 +832,102 @@ def _get_pattern_items(pattern, source_slot, max_items=6, target_slot=None):
     
     return out
 
+def _has_valid_items(slot):
+    if not isinstance(slot, int):
+        return False
+    d = slot_to_items.get(slot)
+    if not isinstance(d, dict) or not d:
+        return False
+    for v in d.values():
+        if isinstance(v, (list, tuple)) and any(str(x).strip() for x in v if x):
+            return True
+        if v and not isinstance(v, (list, tuple)) and str(v).strip():
+            return True
+    return False
+
+
+def _find_item_source(slot, _visited=None):
+    if not isinstance(slot, int):
+        return None
+    if _has_valid_items(slot):
+        return slot
+    visited = set(_visited) if _visited else set()
+    if slot in visited:
+        return None
+    visited.add(slot)
+
+    # 1. Nguồn lưu sẵn trong slot_to_meta nếu có
+    meta_src = (slot_to_meta.get(slot) or {}).get("source")
+    if isinstance(meta_src, int) and meta_src != slot and meta_src not in visited:
+        found = _find_item_source(meta_src, visited)
+        if found is not None:
+            return found
+
+    # 2. Dò theo candidate nguồn của slot hiện tại
+    try:
+        cands = _predict_04am_ext(slot) if slot % 4 == 0 else _predict_std_ext(slot)
+    except Exception:
+        cands = []
+    for c in (cands or []):
+        cand_src = c.get("source")
+        if isinstance(cand_src, int) and cand_src != slot and cand_src not in visited:
+            found = _find_item_source(cand_src, visited)
+            if found is not None:
+                return found
+
+    # 3. Nếu vẫn chưa có, tìm slot gần nhất trước `slot` có cùng pattern và có item thật
+    pat = slot_to_pat.get(slot)
+    if pat:
+        candidates_same_pat = [
+            k for k, p in slot_to_pat.items()
+            if isinstance(k, int) and k < slot and p == pat and _has_valid_items(k)
+        ]
+        if candidates_same_pat:
+            return max(candidates_same_pat)
+
+    return None
+
+
+def _format_items_map_from_slot(src_slot):
+    items_map = {}
+    if not isinstance(src_slot, int):
+        return items_map
+    src_items = slot_to_items.get(src_slot)
+    if not isinstance(src_items, dict):
+        return items_map
+    for pair, vals in src_items.items():
+        if not vals:
+            continue
+        if isinstance(vals, (list, tuple)):
+            cleaned = [str(v).strip() for v in vals if v and str(v).strip()]
+            if cleaned:
+                items_map[str(pair).strip()] = ", ".join(cleaned)
+        elif str(vals).strip():
+            items_map[str(pair).strip()] = str(vals).strip()
+    return items_map
+
+
 def _slot_actual_candidates(slot):
     if slot not in REAL_SLOTS or slot not in slot_to_pat:
         return None
     real_pat = slot_to_pat[slot]
-    # [FIX] Lookup items thật từ slot_to_items[slot]
-    src_items = slot_to_items.get(slot) or {}
+    item_src = _find_item_source(slot)
+    items_map = _format_items_map_from_slot(item_src) if item_src is not None else {}
     positions = []
     for p in real_pat.split(' / '):
         pair = p.strip()
-        vals = src_items.get(pair) if isinstance(src_items, dict) else None
-        if vals:
-            if isinstance(vals, (list, tuple)):
-                items_str = ', '.join(str(v) for v in vals if v)
-            else:
-                items_str = str(vals)
-        else:
-            # Fallback pattern_items aggregated
-            agg = pattern_items.get(pair) if pair in pattern_items else None
-            if agg:
-                items_str = ', '.join(str(v) for v in agg[:3] if v)
-            else:
-                items_str = '—'
-        positions.append({'pos': pair, 'items': items_str})
+        positions.append({'pos': pair, 'items': items_map.get(pair, '—')})
     return [{
         'pattern': real_pat,
         'positions': positions,
         'prob': 'REAL',
         'source': slot,
+        'item_source': item_src,
         'reason': 'actual',
         'phases': [],
         'type': 'actual',
         'duplicates': [],
     }]
-
-
 _ROLLING_SLOTS = set()
 
 def _ensure_rolled_forward(target_slot):
@@ -922,18 +983,9 @@ def _slot_candidates(slot):
     for c in (cands or []):
         pat = c.get('pattern', '')
         src = c.get('source', slot)
-        # Lấy thẳng items từ slot nguồn (src)
-        items_map = {}
-        src_items = slot_to_items.get(src) if isinstance(src, int) else None
-        if isinstance(src_items, dict):
-            for pair, vals in src_items.items():
-                if vals:
-                    if isinstance(vals, (list, tuple)):
-                        cleaned = [str(v).strip() for v in vals if v and str(v).strip()]
-                        if cleaned:
-                            items_map[pair.strip()] = ', '.join(cleaned)
-                    elif str(vals).strip():
-                        items_map[pair.strip()] = str(vals).strip()
+        # Tự dò nguồn có item thật từ src
+        resolved_item_src = _find_item_source(src) if isinstance(src, int) else None
+        items_map = _format_items_map_from_slot(resolved_item_src) if resolved_item_src is not None else {}
 
         positions = []
         for p in pat.split(' / '):
