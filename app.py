@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import hashlib
 
 # --- ✨ Accent UI: Pill Time, Shift Badges, Rule Tags & Time Machine Banner ---
 st.markdown(
@@ -304,6 +306,8 @@ import predictor
 # [PATCH-LOCK] Serialize run_pipeline calls
 import threading as _threading
 _PIPELINE_LOCK = _threading.Lock()
+_SYNC_WATCH_LOCK = _threading.Lock()
+_AUTO_APPLY_TIMEOUT_SEC = 30.0
 
 # === CONFIG FLAGS (was missing after refactor) ===
 # Bật/tắt UI nâng cao cho block 'Quét TRANS' (verify offsets động)
@@ -411,6 +415,107 @@ def _get_main_sha():
         if r.returncode == 0 and r.stdout.strip(): return r.stdout.strip().split()[0]
     except Exception: pass
     return None
+
+def _get_local_runtime_commit() -> str:
+    for env_key in ("GIT_COMMIT_SHA", "STREAMLIT_GIT_COMMIT", "COMMIT_SHA", "GITHUB_SHA"):
+        val = (os.getenv(env_key) or "").strip()
+        if val:
+            return val[:12]
+    try:
+        r = subprocess.run(["git", "rev-parse", "--short=12", "HEAD"], capture_output=True, text=True, timeout=5)
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout.strip()
+    except Exception:
+        pass
+    return "unknown"
+
+
+@st.cache_resource(show_spinner=False)
+def _get_sync_watch_store():
+    return {
+        "active_sig": None,
+        "last_files": {},
+        "pending_sig": None,
+        "detected_at": None,
+        "changed_parts": [],
+    }
+
+
+def _compute_local_watch_sig():
+    parts_hash = {}
+    watch_files = ["predictor.py", "widget_template.html"] + list_default_files()
+    for rel in sorted(set(watch_files)):
+        p = Path(rel)
+        if p.exists() and p.is_file():
+            parts_hash[rel] = hashlib.sha256(p.read_bytes()).hexdigest()[:12]
+    return parts_hash
+
+
+def _build_three_parts_sig(parts_hash: dict) -> str:
+    grouped = {
+        "data": {k: v for k, v in sorted(parts_hash.items()) if k.endswith(".csv")},
+        "widget_template.html": parts_hash.get("widget_template.html"),
+        "predictor.py": parts_hash.get("predictor.py"),
+    }
+    return hashlib.sha256(json.dumps(grouped, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def _evaluate_watch_changes():
+    store = _get_sync_watch_store()
+    local_map = _compute_local_watch_sig()
+    sig_str = _build_three_parts_sig(local_map)
+
+    with _SYNC_WATCH_LOCK:
+        if store["active_sig"] is None:
+            store["active_sig"] = sig_str
+            store["last_files"] = local_map
+            store["pending_sig"] = None
+            store["detected_at"] = None
+            store["changed_parts"] = []
+            return sig_str, False, []
+
+        if sig_str == store["active_sig"]:
+            store["pending_sig"] = None
+            store["detected_at"] = None
+            store["changed_parts"] = []
+            return sig_str, False, []
+
+        prev_files = store.get("last_files") or {}
+        changed = []
+        if {k: v for k, v in prev_files.items() if k.endswith(".csv")} != {k: v for k, v in local_map.items() if k.endswith(".csv")}:
+            changed.append("data")
+        if prev_files.get("widget_template.html") != local_map.get("widget_template.html"):
+            changed.append("widget html")
+        if prev_files.get("predictor.py") != local_map.get("predictor.py"):
+            changed.append("predictor")
+
+        if not changed:
+            store["active_sig"] = sig_str
+            store["last_files"] = local_map
+            return sig_str, False, []
+
+        if store["pending_sig"] != sig_str:
+            store["pending_sig"] = sig_str
+            store["detected_at"] = time.time()
+            store["changed_parts"] = changed
+
+        return sig_str, True, list(store["changed_parts"])
+
+
+def _apply_sync_update():
+    store = _get_sync_watch_store()
+    st.cache_data.clear()
+    local_map = _compute_local_watch_sig()
+    sig_str = _build_three_parts_sig(local_map)
+    with _SYNC_WATCH_LOCK:
+        store["active_sig"] = sig_str
+        store["last_files"] = local_map
+        store["pending_sig"] = None
+        store["detected_at"] = None
+        store["changed_parts"] = []
+    st.session_state.pop("user_postponed_sig", None)
+    st.rerun()
+
 
 @st.cache_data(ttl=3600, show_spinner="⏳ Đang tải data mới...")
 def _load_at_sha(sha):
@@ -634,6 +739,20 @@ lang = st.session_state.app_lang
 
 T = get_translator(lang)
 
+if "user_adaptive_enabled" not in st.session_state:
+    try:
+        st.session_state["user_adaptive_enabled"] = bool(predictor.get_adaptive_offset_state())
+    except Exception:
+        st.session_state["user_adaptive_enabled"] = False
+
+if "user_candidate_offsets" not in st.session_state:
+    try:
+        cur_off = getattr(predictor, "ADAPTIVE_CANDIDATE_OFFSETS", None)
+        st.session_state["user_candidate_offsets"] = tuple(cur_off) if cur_off else tuple()
+    except Exception:
+        st.session_state["user_candidate_offsets"] = tuple()
+
+
 # === PRED_SETTINGS_WITH_TZ_START ===
 try:
     from zoneinfo import ZoneInfo
@@ -777,12 +896,24 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
 with st.sidebar:
     st.markdown(T("sidebar_config", default="### ⚙️ Config"))
     if st.button(T("sidebar_reload", default="🔄 Reload config files"), use_container_width=True, key="btn_reload_sidebar"):
-        st.cache_data.clear(); st.rerun()
+        _apply_sync_update()
     st.caption(T("sidebar_hint", default="Sửa config files → bấm Reload"))
-    
+
+    _local_head = _get_local_runtime_commit()
+    _chk_time = datetime.now().strftime("%H:%M:%S")
     _current_sha = _get_main_sha()
-    if _current_sha: st.caption(f"🟢 GitHub: `{_current_sha[:7]}`")
-    else: st.caption("🔴 GitHub: Offline")
+    _w_store_now = _get_sync_watch_store() or {}
+    _w_active = _w_store_now.get("active_sig")
+    _w_pending = _w_store_now.get("pending_sig")
+    _w_active_short = _w_active[-12:] if isinstance(_w_active, str) and _w_active else "init"
+    st.caption(f"🧬 Local HEAD: `{_local_head}` · 🕒 `{_chk_time}`")
+    if _current_sha:
+        st.caption(f"🟢 GitHub (`{_DATA_BRANCH}`): `{_current_sha[:7]}` · Active: `{_w_active_short}`")
+    else:
+        st.caption(f"🔴 GitHub: Offline · Active: `{_w_active_short}`")
+    if _w_pending and _w_pending != _w_active:
+        _p_parts = ", ".join(_w_store_now.get("changed_parts") or [])
+        st.warning(f"⚡ Có thay đổi ở: `{_p_parts or '3 files'}`")
     
     trans_lookback_input = predictor.TRANS_ADAPTIVE_LOOKBACK
     if SHOW_ADVANCED_UI:
@@ -799,10 +930,10 @@ with st.sidebar:
                 _s_acc = stats.get('static_acc', 0); _a_acc = stats.get('adaptive_acc', 0); _delta = _a_acc - _s_acc
                 _d_icon = '🟢' if _delta > 0 else ('⚪' if _delta == 0 else '🔴')
                 st.caption(f'Static: **{_s_acc:.1f}%** | Adaptive: **{_a_acc:.1f}%** | Delta: {_d_icon} {_delta:+.1f}%')
-                _curr = predictor.get_adaptive_offset_state()
+                _curr = bool(st.session_state.get("user_adaptive_enabled", False))
                 _tog = st.toggle('🚀 Bật Adaptive Offset (override TRANS)', value=_curr, key='adaptive_offset_toggle')
                 if _tog != _curr:
-                    predictor.set_adaptive_offset_state(_tog)
+                    st.session_state["user_adaptive_enabled"] = bool(_tog)
                     st.success(T("adaptive_toggled", default="✅ Đã {status} adaptive offset", status="BẬT" if _tog else "TẮT"))
                     st.rerun()
                 if stats.get('was_overridden', False): st.success(T('trans_overridden', default='🚀 Đã ghi đè TRANS tĩnh'))
@@ -828,17 +959,50 @@ with st.sidebar:
                     if res['new_acc'] >= res['old_acc']:
                         st.success(f"✅ Bộ mới tốt hơn/ngang bằng (+{res['new_acc']-res['old_acc']:.1f}%)")
                         if st.button("🚀 Áp dụng Bộ Mới", type="primary", key="btn_apply_new", use_container_width=True):
-                            predictor.ADAPTIVE_CANDIDATE_OFFSETS = res['new_offsets']
-                            predictor._build_context_offset_cache(); st.cache_data.clear(); del st.session_state['offset_verify_result']
-                            st.success("Đã áp dụng Offsets mới thành công!"); st.rerun()
+                            st.session_state["user_candidate_offsets"] = tuple(res['new_offsets'] or [])
+                            del st.session_state['offset_verify_result']
+                            st.success("Đã áp dụng Offsets mới cho phiên của bạn!"); st.rerun()
                     else:
                         st.error(f"❌ Bộ mới KÉM HƠN ({res['new_acc']-res['old_acc']:.1f}%)")
                         if st.button("⚠️ Vẫn áp dụng (Không khuyến khích)", key="btn_apply_force", use_container_width=True):
-                            predictor.ADAPTIVE_CANDIDATE_OFFSETS = res['new_offsets']
-                            predictor._build_context_offset_cache(); st.cache_data.clear(); del st.session_state['offset_verify_result']
-                            st.warning("Đã áp dụng Offsets mới (dù kém hơn)."); st.rerun()
+                            st.session_state["user_candidate_offsets"] = tuple(res['new_offsets'] or [])
+                            del st.session_state['offset_verify_result']
+                            st.warning("Đã áp dụng Offsets mới cho phiên của bạn (dù kém hơn)."); st.rerun()
                     if st.button("🗑️ Bỏ qua / Hủy kết quả", key="btn_discard_verify", use_container_width=True):
                         del st.session_state['offset_verify_result']; st.rerun()
+
+_cur_watch_sig, _has_watch_change, _watch_parts = _evaluate_watch_changes()
+if _has_watch_change:
+    _w_store = _get_sync_watch_store()
+    with _SYNC_WATCH_LOCK:
+        _det_ts = _w_store.get("detected_at") or time.time()
+        _parts_txt = ", ".join(_w_store.get("changed_parts") or _watch_parts)
+
+    _user_postponed = (st.session_state.get("user_postponed_sig") == _cur_watch_sig)
+    _elapsed_s = time.time() - _det_ts
+    _rem_s = max(0, int(_AUTO_APPLY_TIMEOUT_SEC - _elapsed_s))
+
+    if (not _user_postponed) and _elapsed_s >= _AUTO_APPLY_TIMEOUT_SEC:
+        _apply_sync_update()
+
+    with st.container(border=True):
+        if _user_postponed:
+            st.info(f"⏸️ **Bạn đã hoãn cập nhật (`{_parts_txt}`)** cho phiên này. Bấm **Cập nhật ngay** khi muốn áp dụng.")
+        else:
+            st.warning(f"🔔 **Phát hiện thay đổi ở `{_parts_txt}`.** Không ai chọn sau **{_rem_s}s** sẽ tự chạy cập nhật.")
+
+        _b1, _b2, _b3 = st.columns([1.4, 1.4, 4.2])
+        with _b1:
+            if st.button("✅ Cập nhật ngay", key="btn_watch_yes", use_container_width=True):
+                _apply_sync_update()
+        with _b2:
+            if st.button("⏸️ Hoãn (No)", key="btn_watch_no", use_container_width=True):
+                st.session_state["user_postponed_sig"] = _cur_watch_sig
+                st.rerun()
+
+    if (not _user_postponed) and _rem_s > 0:
+        time.sleep(1)
+        st.rerun()
 
 st.title(T("title", default="📍 Merchant Location"))
 
@@ -864,17 +1028,31 @@ if _has_something:
     default_rows = tuple(_loaded_default[0]) if (use_default and _loaded_default and _loaded_default[0]) else tuple()
     used_files = tuple(_loaded_default[3]) if (use_default and _loaded_default and _loaded_default[3]) else tuple()
 
+    _user_adapt_flag = bool(st.session_state.get("user_adaptive_enabled", False))
+    _user_cand_tuple = tuple(st.session_state.get("user_candidate_offsets") or ())
+
     @st.cache_data(show_spinner=False)
-    def _cached(files_tuple, default_rows_tuple, used_files_tuple, offset, use_def, lang_code, utc_off, trans_lookback, adaptive_state):
-        import importlib as _il
+    def _cached(files_tuple, default_rows_tuple, used_files_tuple, offset, use_def, lang_code, utc_off, trans_lookback, adaptive_state, cand_offsets_tuple):
         import copy as _cp
         with _PIPELINE_LOCK:
-            _il.reload(predictor)
-            _res = predictor.run_pipeline(list(files_tuple), list(default_rows_tuple), list(used_files_tuple), offset, use_def, lang_code, utc_off, trans_lookback)
-            return (_res[0], _res[1], _res[2], _cp.deepcopy(_res[3]))
+            _prev_adapt = predictor.get_adaptive_offset_state()
+            _prev_cands = list(getattr(predictor, "ADAPTIVE_CANDIDATE_OFFSETS", []) or [])
+            try:
+                predictor.set_adaptive_offset_state(bool(adaptive_state))
+                if cand_offsets_tuple:
+                    predictor.ADAPTIVE_CANDIDATE_OFFSETS = list(cand_offsets_tuple)
+                if hasattr(predictor, "_build_context_offset_cache"):
+                    predictor._build_context_offset_cache()
+                _res = predictor.run_pipeline(list(files_tuple), list(default_rows_tuple), list(used_files_tuple), offset, use_def, lang_code, utc_off, trans_lookback)
+                return (_res[0], _res[1], _res[2], _cp.deepcopy(_res[3]))
+            finally:
+                predictor.set_adaptive_offset_state(_prev_adapt)
+                predictor.ADAPTIVE_CANDIDATE_OFFSETS = _prev_cands
+                if hasattr(predictor, "_build_context_offset_cache"):
+                    predictor._build_context_offset_cache()
 
     widget_html, log_text, trans_text, trans_stats = _cached(
-        files_data, default_rows, used_files, offset_days, use_default, lang, st.session_state.utc_offset, trans_lookback_input, predictor.get_adaptive_offset_state()
+        files_data, default_rows, used_files, offset_days, use_default, lang, st.session_state.utc_offset, trans_lookback_input, _user_adapt_flag, _user_cand_tuple
     )
 
     if SHOW_ADVANCED_UI and trans_text:
