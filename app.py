@@ -870,6 +870,21 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
         ),
         unsafe_allow_html=True,
     )
+    st.markdown(
+        """
+        <div style="font-size:12px;line-height:1.55;color:#cbd5e1;background:rgba(30,41,59,0.45);border:1px solid rgba(148,163,184,0.22);border-radius:8px;padding:8px 10px;margin:4px 0 8px 0;">
+          <div><b>📚 Chế độ mặc định (Use default baseline):</b> Khi bật, app ưu tiên lấy dữ liệu từ nhánh remote <code>_DATA_BRANCH</code> (<code>main</code>) theo SHA mới nhất; nếu remote lỗi/không có SHA thì tự fallback sang các file <code>.csv</code> local. Mỗi dòng hợp lệ được parse mốc thời gian qua <code>predictor.parse_ts</code> và khử trùng lặp theo bộ <code>(dt, username, content)</code>.</div>
+          <div style="margin-top:4px;"><b>🧩 Các hàm nạp dữ liệu (<code>def</code>):</b>
+            <code>list_default_files()</code> (tìm file <code>.csv</code> hợp lệ, đưa <code>data.csv</code> xuống cuối danh sách),
+            <code>_get_main_sha()</code> (lấy SHA nhánh <code>main</code> qua <code>git ls-remote</code>, cache 60s),
+            <code>_load_at_sha(sha)</code> (clone shallow <code>--depth 1</code> nhánh <code>main</code> vào <code>/tmp/main_repo_data_v1220</code>, gom CSV &amp; lọc trùng, cache 3600s),
+            <code>_load_local_csv_v1220()</code> (đọc &amp; lọc trùng trực tiếp từ file <code>.csv</code> local khi fallback),
+            <code>load_default_csv()</code> (gọi <code>_get_main_sha()</code> → <code>_load_at_sha(sha)</code>, nếu không có thì gọi <code>_load_local_csv_v1220()</code>).
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     uploaded = st.file_uploader(T("uploader", default="Upload CSV"), type=["csv"], accept_multiple_files=True)
 
     if uploaded:
@@ -976,34 +991,31 @@ _cur_watch_sig, _has_watch_change, _watch_parts = _evaluate_watch_changes()
 if _has_watch_change:
     _w_store = _get_sync_watch_store()
     with _SYNC_WATCH_LOCK:
-        _det_ts = _w_store.get("detected_at") or time.time()
         _parts_txt = ", ".join(_w_store.get("changed_parts") or _watch_parts)
 
-    _user_postponed = (st.session_state.get("user_postponed_sig") == _cur_watch_sig)
-    _elapsed_s = time.time() - _det_ts
-    _rem_s = max(0, int(_AUTO_APPLY_TIMEOUT_SEC - _elapsed_s))
+    _init_postpone_key = f"_watch_default_postponed_{_cur_watch_sig}"
+    if not st.session_state.get(_init_postpone_key):
+        st.session_state[_init_postpone_key] = True
+        if "user_postponed_sig" not in st.session_state:
+            st.session_state["user_postponed_sig"] = _cur_watch_sig
 
-    if (not _user_postponed) and _elapsed_s >= _AUTO_APPLY_TIMEOUT_SEC:
-        _apply_sync_update()
+    _user_postponed = (st.session_state.get("user_postponed_sig") == _cur_watch_sig)
 
     with st.container(border=True):
         if _user_postponed:
-            st.info(f"⏸️ **Bạn đã hoãn cập nhật (`{_parts_txt}`)** cho phiên này. Bấm **Cập nhật ngay** khi muốn áp dụng.")
+            st.info(f"⏸️ **Mặc định đang Hoãn cập nhật (`{_parts_txt}`)** cho phiên này. Bấm **✅ Cập nhật ngay** nếu muốn áp dụng.")
         else:
-            st.warning(f"🔔 **Phát hiện thay đổi ở `{_parts_txt}`.** Không ai chọn sau **{_rem_s}s** sẽ tự chạy cập nhật.")
+            st.warning(f"🔔 **Đang áp dụng cập nhật (`{_parts_txt}`)** cho phiên này.")
 
         _b1, _b2, _b3 = st.columns([1.4, 1.4, 4.2])
         with _b1:
             if st.button("✅ Cập nhật ngay", key="btn_watch_yes", use_container_width=True):
+                st.session_state.pop("user_postponed_sig", None)
                 _apply_sync_update()
         with _b2:
             if st.button("⏸️ Hoãn (No)", key="btn_watch_no", use_container_width=True):
                 st.session_state["user_postponed_sig"] = _cur_watch_sig
                 st.rerun()
-
-    if (not _user_postponed) and _rem_s > 0:
-        time.sleep(1)
-        st.rerun()
 
 st.title(T("title", default="📍 Merchant Location"))
 
