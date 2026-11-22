@@ -108,149 +108,83 @@ def get_translator(lang):
 def get_widget_text(lang):
     return _load_lang_file(lang).get('widget', {})
 
-# === ISO639_NAME_MAP_PATCH_START ===
-def _flag_from_cc(cc: str) -> str:
+# === STATIC_ISO639_LABELS_START ===
+def _cc_flag(cc: str) -> str:
     cc = (cc or "").strip().upper()
     if len(cc) == 2 and cc.isalpha():
         return chr(0x1F1E6 + ord(cc[0]) - 65) + chr(0x1F1E6 + ord(cc[1]) - 65)
     return "🌐"
 
-_LANG_TO_CC = {
-    "aa": "ET", "ab": "GE", "ae": "IR", "af": "ZA", "ak": "GH", "am": "ET", "an": "ES", "ar": "SA",
-    "as": "IN", "av": "RU", "ay": "BO", "az": "AZ", "ba": "RU", "be": "BY", "bg": "BG", "bh": "IN",
-    "bi": "VU", "bm": "ML", "bn": "BD", "bo": "CN", "br": "FR", "bs": "BA", "ca": "ES", "ce": "RU",
-    "ch": "GU", "co": "FR", "cr": "CA", "cs": "CZ", "cu": "BG", "cv": "RU", "cy": "GB", "da": "DK",
-    "de": "DE", "dv": "MV", "dz": "BT", "ee": "GH", "el": "GR", "en": "US", "eo": "UN", "es": "ES",
-    "et": "EE", "eu": "ES", "fa": "IR", "ff": "SN", "fi": "FI", "fj": "FJ", "fo": "FO", "fr": "FR",
-    "fy": "NL", "ga": "IE", "gd": "GB", "gl": "ES", "gn": "PY", "gu": "IN", "gv": "IM", "ha": "NG",
-    "he": "IL", "hi": "IN", "ho": "PG", "hr": "HR", "ht": "HT", "hu": "HU", "hy": "AM", "hz": "NA",
-    "ia": "UN", "id": "ID", "ie": "UN", "ig": "NG", "ii": "CN", "ik": "US", "io": "UN", "is": "IS",
-    "it": "IT", "iu": "CA", "ja": "JP", "jv": "ID", "ka": "GE", "kg": "CD", "ki": "KE", "kj": "NA",
-    "kk": "KZ", "kl": "GL", "km": "KH", "kn": "IN", "ko": "KR", "kr": "NG", "ks": "IN", "ku": "IQ",
-    "kv": "RU", "kw": "GB", "ky": "KG", "la": "VA", "lb": "LU", "lg": "UG", "li": "NL", "ln": "CD",
-    "lo": "LA", "lt": "LT", "lu": "CD", "lv": "LV", "mg": "MG", "mh": "MH", "mi": "NZ", "mk": "MK",
-    "ml": "IN", "mn": "MN", "mr": "IN", "ms": "MY", "mt": "MT", "my": "MM", "na": "NR", "nb": "NO",
-    "nd": "ZW", "ne": "NP", "ng": "NA", "nl": "NL", "nn": "NO", "no": "NO", "nr": "ZA", "nv": "US",
-    "ny": "MW", "oc": "FR", "oj": "CA", "om": "ET", "or": "IN", "os": "GE", "pa": "IN", "pi": "IN",
-    "pl": "PL", "ps": "AF", "pt": "PT", "qu": "PE", "rm": "CH", "rn": "BI", "ro": "RO", "ru": "RU",
-    "rw": "RW", "sa": "IN", "sc": "IT", "sd": "PK", "se": "NO", "sg": "CF", "si": "LK", "sk": "SK",
-    "sl": "SI", "sm": "WS", "sn": "ZW", "so": "SO", "sq": "AL", "sr": "RS", "ss": "SZ", "st": "LS",
-    "su": "ID", "sv": "SE", "sw": "KE", "ta": "IN", "te": "IN", "tg": "TJ", "th": "TH", "ti": "ER",
-    "tk": "TM", "tl": "PH", "tn": "BW", "to": "TO", "tr": "TR", "ts": "ZA", "tt": "RU", "tw": "GH",
-    "ty": "PF", "ug": "CN", "uk": "UA", "ur": "PK", "uz": "UZ", "ve": "ZA", "vi": "VN", "vo": "UN",
-    "wa": "BE", "wo": "SN", "xh": "ZA", "yi": "IL", "yo": "Yoruba", "za": "CN", "zh": "CN", "zh-cn": "CN",
-    "zh-tw": "TW", "zu": "ZA",
+# (Tên ngôn ngữ, mã quốc gia 2 chữ cái để render cờ)
+_ISO639_STATIC_META = {
+    "aa": ("Afar", "ET"), "ab": ("Abkhazian", "GE"), "ae": ("Avestan", "IR"), "af": ("Afrikaans", "ZA"),
+    "ak": ("Akan", "GH"), "am": ("Amharic", "ET"), "an": ("Aragonese", "ES"), "ar": ("العربية", "SA"),
+    "as": ("Assamese", "IN"), "av": ("Avaric", "RU"), "ay": ("Aymara", "BO"), "az": ("Azərbaycan", "AZ"),
+    "ba": ("Bashkir", "RU"), "be": ("Беларуская", "BY"), "bg": ("Български", "BG"), "bh": ("Bhojpuri", "IN"),
+    "bi": ("Bislama", "VU"), "bm": ("Bambara", "ML"), "bn": ("বাংলা", "BD"), "bo": ("བོད་སྐད", "CN"),
+    "br": ("Brezhoneg", "FR"), "bs": ("Bosanski", "BA"), "ca": ("Català", "ES"), "ce": ("Нохчийн", "RU"),
+    "ch": ("Chamoru", "GU"), "co": ("Corsu", "FR"), "cr": ("Nēhiyawēwin", "CA"), "cs": ("Čeština", "CZ"),
+    "cu": ("Church Slavic", "BG"), "cv": ("Чӑвашла", "RU"), "cy": ("Cymraeg", "GB"), "da": ("Dansk", "DK"),
+    "de": ("Deutsch", "DE"), "dv": ("Divehi", "MV"), "dz": ("རྫོང་ཁ", "BT"), "ee": ("Eʋegbe", "GH"),
+    "el": ("Ελληνικά", "GR"), "en": ("English", "US"), "eo": ("Esperanto", "UN"), "es": ("Español", "ES"),
+    "et": ("Eesti", "EE"), "eu": ("Euskara", "ES"), "fa": ("فارسی", "IR"), "ff": ("Fulfulde", "SN"),
+    "fi": ("Suomi", "FI"), "fj": ("Na Vosa Vakaviti", "FJ"), "fo": ("Føroyskt", "FO"), "fr": ("Français", "FR"),
+    "fy": ("Frysk", "NL"), "ga": ("Gaeilge", "IE"), "gd": ("Gàidhlig", "GB"), "gl": ("Galego", "ES"),
+    "gn": ("Avañe'ẽ", "PY"), "gu": ("ગુજરાતી", "IN"), "gv": ("Gaelg", "IM"), "ha": ("Hausa", "NG"),
+    "he": ("עברית", "IL"), "hi": ("हिन्दी", "IN"), "ho": ("Hiri Motu", "PG"), "hr": ("Hrvatski", "HR"),
+    "ht": ("Kreyòl Ayisyen", "HT"), "hu": ("Magyar", "HU"), "hy": ("Հայերեն", "AM"), "hz": ("Otjiherero", "NA"),
+    "ia": ("Interlingua", "UN"), "id": ("Bahasa Indonesia", "ID"), "ie": ("Interlingue", "UN"),
+    "ig": ("Igbo", "NG"), "ii": ("ꆈꌠꉙ", "CN"), "ik": ("Iñupiaq", "US"), "io": ("Ido", "UN"),
+    "is": ("Íslenska", "IS"), "it": ("Italiano", "IT"), "iu": ("ᐃᓄᒃᑎᑐᑦ", "CA"), "ja": ("日本語", "JP"),
+    "jv": ("Basa Jawa", "ID"), "ka": ("ქართული", "GE"), "kg": ("Kikongo", "CD"), "ki": ("Gĩkũyũ", "KE"),
+    "kj": ("Kwanyama", "NA"), "kk": ("Қазақ тілі", "KZ"), "kl": ("Kalaallisut", "GL"), "km": ("ខ្មែរ", "KH"),
+    "kn": ("ಕನ್ನಡ", "IN"), "ko": ("한국어", "KR"), "kr": ("Kanuri", "NG"), "ks": ("कॉशुर", "IN"),
+    "ku": ("Kurdî", "IQ"), "kv": ("Коми", "RU"), "kw": ("Kernewek", "GB"), "ky": ("Кыргызча", "KG"),
+    "la": ("Latina", "VA"), "lb": ("Lëtzebuergesch", "LU"), "lg": ("Luganda", "UG"), "li": ("Limburgs", "NL"),
+    "ln": ("Lingála", "CD"), "lo": ("ລາວ", "LA"), "lt": ("Lietuvių", "LT"), "lu": ("Kiluba", "CD"),
+    "lv": ("Latviešu", "LV"), "mg": ("Malagasy", "MG"), "mh": ("Kajin M̧ajeļ", "MH"), "mi": ("Te Reo Māori", "NZ"),
+    "mk": ("Македонски", "MK"), "ml": ("മലയാളം", "IN"), "mn": ("Монгол", "MN"), "mr": ("मराठी", "IN"),
+    "ms": ("Bahasa Melayu", "MY"), "mt": ("Malti", "MT"), "my": ("မြန်မာ", "MM"), "na": ("Dorerin Naoero", "NR"),
+    "nb": ("Norsk bokmål", "NO"), "nd": ("isiNdebele", "ZW"), "ne": ("नेपाली", "NP"), "ng": ("Owambo", "NA"),
+    "nl": ("Nederlands", "NL"), "nn": ("Norsk nynorsk", "NO"), "no": ("Norsk", "NO"), "nr": ("isiNdebele", "ZA"),
+    "nv": ("Diné bizaad", "US"), "ny": ("Chichewa", "MW"), "oc": ("Occitan", "FR"), "oj": ("ᐊᓂᔑᓈᐯᒧᐎᓐ", "CA"),
+    "om": ("Afaan Oromoo", "ET"), "or": ("ଓଡ଼ିଆ", "IN"), "os": ("Ирон", "GE"), "pa": ("ਪੰਜਾਬੀ", "IN"),
+    "pi": ("Pāli", "IN"), "pl": ("Polski", "PL"), "ps": ("پښتو", "AF"), "pt": ("Português", "PT"),
+    "qu": ("Runasimi", "PE"), "rm": ("Rumantsch", "CH"), "rn": ("Ikirundi", "BI"), "ro": ("Română", "RO"),
+    "ru": ("Русский", "RU"), "rw": ("Ikinyarwanda", "RW"), "sa": ("संस्कृतम्", "IN"), "sc": ("Sardu", "IT"),
+    "sd": ("سنڌي", "PK"), "se": ("Davvisámegiella", "NO"), "sg": ("Sängö", "CF"), "si": ("සිංහල", "LK"),
+    "sk": ("Slovenčina", "SK"), "sl": ("Slovenščina", "SI"), "sm": ("Gagana Samoa", "WS"), "sn": ("chiShona", "ZW"),
+    "so": ("Soomaali", "SO"), "sq": ("Shqip", "AL"), "sr": ("Српски", "RS"), "ss": ("SiSwati", "SZ"),
+    "st": ("Sesotho", "LS"), "su": ("Basa Sunda", "ID"), "sv": ("Svenska", "SE"), "sw": ("Kiswahili", "KE"),
+    "ta": ("தமிழ்", "IN"), "te": ("తెలుగు", "IN"), "tg": ("Тоҷикӣ", "TJ"), "th": ("ไทย", "TH"),
+    "ti": ("ትግርኛ", "ER"), "tk": ("Türkmen", "TM"), "tl": ("Tagalog", "PH"), "tn": ("Setswana", "BW"),
+    "to": ("Lea fakatonga", "TO"), "tr": ("Türkçe", "TR"), "ts": ("Xitsonga", "ZA"), "tt": ("Татарча", "RU"),
+    "tw": ("Twi", "GH"), "ty": "Tahitian", "ug": ("ئۇيغۇرچە", "CN"), "uk": ("Українська", "UA"),
+    "ur": ("اردو", "PK"), "uz": ("Oʻzbek", "UZ"), "ve": ("Tshivenḓa", "ZA"), "vi": ("Tiếng Việt", "VN"),
+    "vo": ("Volapük", "UN"), "wa": ("Walon", "BE"), "wo": ("Wolof", "SN"), "xh": ("isiXhosa", "ZA"),
+    "yi": ("ייִדיש", "IL"), "yo": ("Yoruba", "NG"), "za": ("Saɯ cueŋƅ", "CN"), "zh": ("中文", "CN"),
+    "zh-cn": ("简体中文", "CN"), "zh-tw": ("繁體中文", "TW"), "zu": ("isiZulu", "ZA"),
 }
 
-_CUSTOM_LANG_NAMES = {
-    "vi": "Tiếng Việt",
-    "en": "English",
-    "ja": "日本語",
-    "zh": "中文",
-    "zh-cn": "简体中文",
-    "zh-tw": "繁體中文",
-    "fr": "Français",
-    "ko": "한국어",
-    "th": "ไทย",
-    "id": "Bahasa Indonesia",
-    "ms": "Bahasa Melayu",
-    "de": "Deutsch",
-    "es": "Español",
-    "pt": "Português",
-    "ru": "Русский",
-    "ar": "العربية",
-    "hi": "हिन्दी",
-    "it": "Italiano",
-    "nl": "Nederlands",
-    "pl": "Polski",
-    "tr": "Türkçe",
-    "uk": "Українська",
-    "af": "Afrikaans",
-    "am": "Amharic",
-    "az": "Azərbaycan",
-    "bg": "Български",
-    "bn": "বাংলা",
-    "bs": "Bosanski",
-    "ca": "Català",
-    "cs": "Čeština",
-    "cy": "Cymraeg",
-    "da": "Dansk",
-    "el": "Ελληνικά",
-    "et": "Eesti",
-    "eu": "Euskara",
-    "fa": "فارسی",
-    "fi": "Suomi",
-    "ga": "Gaeilge",
-    "gl": "Galego",
-    "gu": "ગુજરાતી",
-    "he": "עברית",
-    "hr": "Hrvatski",
-    "hu": "Magyar",
-    "hy": "Հայերեն",
-    "is": "Íslenska",
-    "ka": "ქართული",
-    "kk": "Қазақ тілі",
-    "km": "ខ្មែរ",
-    "kn": "ಕನ್ನಡ",
-    "lo": "ລາວ",
-    "lt": "Lietuvių",
-    "lv": "Latviešu",
-    "mk": "Македонски",
-    "ml": "മലയാളം",
-    "mn": "Монгол",
-    "mr": "मराठी",
-    "mt": "Malti",
-    "my": "မြန်မာ",
-    "ne": "नेपाली",
-    "no": "Norsk",
-    "pa": "ਪੰਜਾਬੀ",
-    "ps": "پښتو",
-    "ro": "Română",
-    "si": "සිංහල",
-    "sk": "Slovenčina",
-    "sl": "Slovenščina",
-    "so": "Soomaali",
-    "sq": "Shqip",
-    "sr": "Српски",
-    "sv": "Svenska",
-    "sw": "Kiswahili",
-    "ta": "தமிழ்",
-    "te": "తెలుగు",
-    "tl": "Tagalog",
-    "ur": "اردو",
-    "uz": "Oʻzbek",
-    "zu": "isiZulu",
-}
-
-def _format_lang_with_flag(code: str, existing_label: str = "") -> str:
+def _build_static_label(code: str) -> str:
     c = (code or "").strip().lower()
-    flag = _flag_from_cc(_LANG_TO_CC.get(c, c[:2]))
-    name = _CUSTOM_LANG_NAMES.get(c)
-    if not name:
-        try:
-            import pycountry
-            lang_obj = pycountry.languages.get(alpha_2=c[:2])
-            if lang_obj and getattr(lang_obj, "name", None):
-                name = lang_obj.name
-        except Exception:
-            pass
-    if not name and existing_label and existing_label.strip().lower() != c:
-        cleaned = re.sub(r"[🇦-🇿]2|\🌐", "", existing_label).strip()
-        if cleaned and not cleaned.lower().startswith("language ("):
-            name = cleaned
-    if not name:
-        name = f"Lang {c.upper()}" if c else "Unknown"
-    return f"{name} {flag}".strip()
+    meta = _ISO639_STATIC_META.get(c) or _ISO639_STATIC_META.get(c.split("-")[0])
+    if isinstance(meta, tuple) and len(meta) == 2:
+        name, cc = meta
+        return f"{name} {_cc_flag(cc)}".strip()
+    if isinstance(meta, str):
+        return f"{meta} {_cc_flag(c[:2])}".strip()
+    return f"{c.upper()} 🌐" if c else "🌐"
 
-try:
-    if isinstance(LANG_LABELS, dict):
-        _rebuilt = {}
-        for _lbl, _code in LANG_LABELS.items():
-            _c = str(_code).strip().lower()
-            _formatted = _format_lang_with_flag(_c, str(_lbl or ""))
-            _rebuilt[_formatted] = _c
-        LANG_LABELS.clear()
-        LANG_LABELS.update(_rebuilt)
-except Exception:
-    pass
-# === ISO639_NAME_MAP_PATCH_END ===
+if isinstance(globals().get("LANG_LABELS"), dict):
+    _codes_in_order = []
+    _seen_codes = set()
+    for _lbl, _cd in LANG_LABELS.items():
+        _c = str(_cd).strip().lower()
+        if _c and _c not in _seen_codes:
+            _seen_codes.add(_c)
+            _codes_in_order.append(_c)
+    _new_map = {_build_static_label(_c): _c for _c in _codes_in_order}
+    LANG_LABELS.clear()
+    LANG_LABELS.update(_new_map)
+# === STATIC_ISO639_LABELS_END ===
