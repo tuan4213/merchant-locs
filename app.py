@@ -273,9 +273,87 @@ lang = st.session_state.app_lang
 
 T = get_translator(lang)
 
-# ==========================================
-# TIMEZONE SETTINGS (TOP)
-# ==========================================
+# === PRED_SETTINGS_WITH_TZ_START ===
+try:
+    from zoneinfo import ZoneInfo
+    system_tz_name = st.context.timezone or "Asia/Ho_Chi_Minh"
+    vn_tz = ZoneInfo("Asia/Ho_Chi_Minh")
+    sample = datetime(2025, 1, 1, 12, 0, tzinfo=vn_tz).astimezone(ZoneInfo(system_tz_name))
+    system_offset = sample.utcoffset().total_seconds() / 3600
+except Exception:
+    system_tz_name, system_offset = "Asia/Ho_Chi_Minh", 7.0
+
+if "utc_offset" not in st.session_state:
+    st.session_state.utc_offset = system_offset
+
+def reset_utc():
+    st.session_state.utc_offset = system_offset
+
+with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"), expanded=False):
+    if lang == "vi":
+        st.caption(f"🌍 Hệ thống tự nhận diện: **{system_tz_name}** (UTC{system_offset:+.1f})")
+    else:
+        st.caption(f"🌍 System auto-detected: **{system_tz_name}** (UTC{system_offset:+.1f})")
+
+    col_tz, col_tz_btn = st.columns([3, 1])
+    with col_tz:
+        utc_offset = st.slider(
+            T("utc_offset_label", default="🌍 UTC Offset"),
+            min_value=-12.0,
+            max_value=14.0,
+            step=0.5,
+            key="utc_offset",
+        )
+    with col_tz_btn:
+        st.write("")
+        st.write("")
+        st.button(T("utc_reset_btn", default="🔄 Reset"), on_click=reset_utc)
+
+    _now_local = datetime.now(timezone.utc) + timedelta(hours=utc_offset)
+    _now_str = _now_local.strftime('%Y-%m-%d %H:%M:%S')
+    if lang == "vi":
+        st.caption(f"🕐 **Giờ hiện tại (theo offset trên):** `{_now_str}` — UTC{utc_offset:+.1f}")
+    else:
+        st.caption(f"🕐 **Current time (per offset above):** `{_now_str}` — UTC{utc_offset:+.1f}")
+
+    st.markdown("---")
+
+    def calc_local_time(vn_hour, user_offset):
+        local_hour = (vn_hour - 7) + user_offset
+        day_shift = 0
+        if local_hour < 0:
+            local_hour += 24
+            day_shift = -1
+        elif local_hour >= 24:
+            local_hour -= 24
+            day_shift = 1
+        hh, mm = int(local_hour), int((local_hour - int(local_hour)) * 60)
+        time_str = f"{hh:02d}:{mm:02d}"
+        if day_shift == -1:
+            time_str += T("time_prev", default=" (Prev)")
+        elif day_shift == 1:
+            time_str += T("time_next", default=" (Next)")
+        return time_str
+
+    local_times = {k: calc_local_time(int(k), utc_offset) for k in ["04", "10", "16", "22"]}
+    settings_text = T("predict_settings_md", default="")
+    for k, v in local_times.items():
+        settings_text = settings_text.replace(f"{{t_{k}}}", v)
+    if settings_text:
+        st.markdown(settings_text)
+    st.warning(T("timezone_warning", default="⚠️ Times based on VN timezone"))
+    st.warning(T("gap_disabled_warning", default="⚠️ **Lưu ý:** Các tính năng xử lý gap (Bridge, Patch 1, Auto-Heal) đã bị vô hiệu hoá vĩnh viễn trong code để đảm bảo dữ liệu không bị nhiễu."))
+    _stats_for_settings = locals().get("trans_stats") or st.session_state.get("trans_stats", {})
+    if _stats_for_settings.get("total_missing_04", 0) > 0:
+        st.error(T("gap_stats", default="⚠️ **Thống kê Gap:** {n} slot bị thiếu dữ liệu.", n=_stats_for_settings["total_missing_04"]))
+        with st.popover(T("gap_detail_btn_settings", default="🔍 Xem chi tiết các slot gần nhất")):
+            missing_str = format_missing_slots(_stats_for_settings["missing_04"], st.session_state.utc_offset)
+            st.code(missing_str, language="text")
+    else:
+        st.success(T("gap_none", default="✅ Dữ liệu đầy đủ, không phát hiện gap nào."))
+# === PRED_SETTINGS_WITH_TZ_END ===
+
+
 try:
     from zoneinfo import ZoneInfo
     system_tz_name = st.context.timezone or "Asia/Ho_Chi_Minh"
