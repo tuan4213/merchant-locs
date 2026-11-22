@@ -1,40 +1,94 @@
 import streamlit as st
 
-# --- Global Wrap Text + 4-Column Merchant Timezone Table + Time Machine Guide ---
+# --- 🎨 Clean Wrap Text + 4-Column Merchant Timezone Table + Time Machine Card ---
 st.markdown(
     """
     <style>
-    .stMarkdown, .stMarkdown p, .stMarkdown div, .stMarkdown li,
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    .stMarkdown, .stMarkdown p, .stMarkdown div, .stMarkdown li, .stMarkdown span,
     .stSelectbox, .stSelectbox label, .stSelectbox div[data-baseweb="select"],
     .stSelectbox div[data-baseweb="select"] span,
     div[data-baseweb="popover"] li, div[data-baseweb="menu"] div,
     .mc-wrap-box, .mc-wrap-box * {
         white-space: normal !important;
-        word-break: break-word !important;
-        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
+    }
+    .mc-tz-card {
+        margin: 8px 0 12px 0;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: rgba(15, 23, 42, 0.28);
+    }
+    .mc-tz-note {
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: #cbd5e1;
+        margin-bottom: 8px;
+    }
+    .mc-table-scroll {
+        width: 100%;
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.32);
     }
     table.mc-grid-table {
         width: 100%;
         border-collapse: collapse;
-        table-layout: fixed;
-        margin: 8px 0 10px 0;
+        margin: 0;
         font-size: 12px;
-        line-height: 1.42;
+        line-height: 1.45;
     }
     table.mc-grid-table th,
     table.mc-grid-table td {
-        border: 1px solid rgba(148, 163, 184, 0.38);
-        padding: 6px 7px;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        padding: 7px 8px;
         text-align: left;
         vertical-align: top;
         white-space: normal !important;
-        word-break: break-word !important;
-        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
     }
     table.mc-grid-table th {
-        background: rgba(148, 163, 184, 0.16);
+        background: rgba(56, 189, 248, 0.12);
+        color: #e2e8f0;
+        font-weight: 700;
+    }
+    table.mc-grid-table tr:nth-child(even) td {
+        background: rgba(148, 163, 184, 0.05);
+    }
+    .mc-shift-badge {
+        display: inline-block;
+        margin-top: 3px;
+        padding: 1px 6px;
+        border-radius: 999px;
+        font-size: 11px;
         font-weight: 600;
+        background: rgba(250, 204, 21, 0.14);
+        color: #fde047;
+        border: 1px solid rgba(250, 204, 21, 0.28);
+    }
+    .mc-shift-same {
+        background: rgba(74, 222, 128, 0.12);
+        color: #86efac;
+        border-color: rgba(74, 222, 128, 0.25);
+    }
+    .mc-tm-card {
+        margin: 8px 0 12px 0;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border-left: 3px solid #38bdf8;
+        border-top: 1px solid rgba(148, 163, 184, 0.22);
+        border-right: 1px solid rgba(148, 163, 184, 0.22);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+        background: rgba(56, 189, 248, 0.07);
+        font-size: 12.5px;
+        line-height: 1.52;
+        color: #e2e8f0;
     }
     </style>
     """,
@@ -52,11 +106,26 @@ def _fmt_utc_offset(utc_offset) -> str:
 
 
 def _t_locale(key: str, vi_default: str, en_default: str) -> str:
-    lang = str(st.session_state.get("lang", "")).lower()
-    fallback = vi_default if lang.startswith("vi") else en_default
+    cur_lang = str(
+        st.session_state.get("app_lang")
+        or st.session_state.get("lang")
+        or globals().get("lang")
+        or "vi"
+    ).strip().lower()
+    is_vi = cur_lang == "vi" or cur_lang.startswith("vi")
+    fallback = vi_default if is_vi else en_default
     try:
-        val = T(key, default=fallback)
-        if not val or (not lang.startswith("vi") and val == vi_default):
+        tr_fn = globals().get("T")
+        if callable(tr_fn):
+            val = tr_fn(key, default=fallback)
+        else:
+            from i18n import get_translator
+            val = get_translator(cur_lang or "vi")(key, default=fallback)
+        if not isinstance(val, str) or not val.strip():
+            return fallback
+        if is_vi and val.strip() == en_default.strip() and vi_default != en_default:
+            return vi_default
+        if (not is_vi) and cur_lang != "en" and val.strip() == vi_default.strip() and vi_default != en_default:
             return en_default
         return val
     except Exception:
@@ -81,12 +150,12 @@ def _render_tz_milestone_table(utc_offset):
 
     r_first = _t_locale(
         "tz_rule_first",
-        "Khởi đầu chu kỳ ngày; ưu tiên pattern thật từ CSV, thiếu thì dùng Markov/pha.",
+        "Mở đầu chu kỳ ngày; ưu tiên pattern thật từ CSV, thiếu thì dùng Markov/pha.",
         "Daily cycle start; prefers actual CSV pattern, else Markov/phase.",
     )
     r_mid = _t_locale(
         "tz_rule_mid",
-        "Nối tiếp chuỗi Markov & quy luật chuyển pha; lấp gap bằng bridge nếu thiếu slot.",
+        "Nối tiếp chuỗi Markov & quy luật chuyển pha; bù gap bằng bridge nếu thiếu slot.",
         "Continues Markov chain & phase transitions; fills gaps via bridge if slot missing.",
     )
     r_last = _t_locale(
@@ -109,37 +178,48 @@ def _render_tz_milestone_table(utc_offset):
         day_delta = (dt_cur.date() - dt_vn.date()).days
         if day_delta < 0:
             day_badge = day_prev
+            badge_cls = "mc-shift-badge"
         elif day_delta > 0:
             day_badge = day_next
+            badge_cls = "mc-shift-badge"
         else:
             day_badge = day_same
+            badge_cls = "mc-shift-badge mc-shift-same"
 
         rows_html.append(
             f"<tr>"
             f"<td><b>{m_label}</b></td>"
             f"<td>{dt_vn.strftime('%H:%M')}</td>"
-            f"<td><b>{dt_cur.strftime('%H:%M')}</b><br><span style='opacity:0.85;'>({day_badge})</span></td>"
+            f"<td><b>{dt_cur.strftime('%H:%M')}</b><br><span class='{badge_cls}'>{day_badge}</span></td>"
             f"<td>{rule_desc}</td>"
             f"</tr>"
         )
 
     guide_txt = _t_locale(
         "tz_milestone_guide",
-        "Mốc giờ & quy đổi (UTC{tz_str}): Thanh trượt đổi múi giờ hiển thị; đổi UTC có thể đẩy mốc sang ngày hôm trước hoặc ngày hôm sau.",
-        "Timezone & conversion (UTC{tz_str}): Slider adjusts display timezone; shifting UTC may move a merchant into the previous or next day.",
+        "🧭 Mốc giờ & quy đổi (UTC{tz_str}): Thanh trượt chỉnh múi giờ hiển thị; đổi UTC có thể đẩy mốc sang ngày hôm trước hoặc ngày hôm sau.",
+        "🧭 Timezone & conversion (UTC{tz_str}): Slider adjusts display timezone; shifting UTC may move a merchant into the previous or next day.",
     ).format(tz_str=tz_str)
-    col_m = _t_locale("tz_col_merchant", "Mốc Merchant", "Merchant")
-    col_vn = _t_locale("tz_col_vn", "Giờ VN (UTC+7)", "VN Time (UTC+7)")
-    col_target = _t_locale("tz_col_target", "Giờ UTC{tz_str} & lệch ngày", "UTC{tz_str} Time & Day Shift").format(tz_str=tz_str)
+    col_m = _t_locale("tz_col_merchant", "Merchant", "Merchant")
+    col_vn = _t_locale("tz_col_vn", "VN (UTC+7)", "VN (UTC+7)")
+    col_target = _t_locale("tz_col_target", "UTC{tz_str} & Lệch ngày", "UTC{tz_str} & Shift").format(tz_str=tz_str)
     col_rule = _t_locale("tz_col_rule", "Tóm tắt quy tắc đoán", "Prediction Rule Summary")
 
     html = (
-        f"<div class='mc-wrap-box' style='margin-top:6px;margin-bottom:10px;'>"
-        f"<div style='font-size:12.5px;opacity:0.92;margin-bottom:6px;'>{guide_txt}</div>"
+        f"<div class='mc-wrap-box mc-tz-card'>"
+        f"<div class='mc-tz-note'>{guide_txt}</div>"
+        f"<div class='mc-table-scroll'>"
         f"<table class='mc-grid-table'>"
+        f"<colgroup>"
+        f"<col style='width: 21%;'>"
+        f"<col style='width: 15%;'>"
+        f"<col style='width: 22%;'>"
+        f"<col style='width: 42%;'>"
+        f"</colgroup>"
         f"<thead><tr><th>{col_m}</th><th>{col_vn}</th><th>{col_target}</th><th>{col_rule}</th></tr></thead>"
         f"<tbody>{''.join(rows_html)}</tbody>"
         f"</table>"
+        f"</div>"
         f"</div>"
     )
     st.markdown(html, unsafe_allow_html=True)
@@ -151,15 +231,8 @@ def _render_time_machine_guide():
         "🕰️ Time Machine (Du hành thời gian): Lùi hoặc tiến số ngày trên thanh trượt để xem dữ liệu/dự đoán ở quá khứ hoặc tương lai, đối chiếu lịch sử và mô phỏng kịch bản. Chỉ đổi góc nhìn hiển thị, không sửa dữ liệu gốc.",
         "🕰️ Time Machine: Shift days backward or forward on the slider to inspect past or future data/predictions, compare history, and simulate scenarios. View-only; source data is untouched.",
     )
-    html = (
-        "<div class='mc-wrap-box' style='margin-top:6px;margin-bottom:10px;padding:8px 10px;"
-        "border-radius:8px;border:1px solid rgba(148,163,184,0.28);background:rgba(148,163,184,0.06);"
-        f"font-size:12.5px;line-height:1.5;'>{tm_txt}</div>"
-    )
+    html = f"<div class='mc-wrap-box mc-tm-card'>{tm_txt}</div>"
     st.markdown(html, unsafe_allow_html=True)
-
-
-
 
 import streamlit.components.v1 as components
 import csv, os, glob, subprocess, shutil, base64
