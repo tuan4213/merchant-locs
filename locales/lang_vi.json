@@ -61,9 +61,9 @@
     "tz_day_prev": "Hôm trước",
     "tz_day_same": "Cùng ngày",
     "tz_day_next": "Hôm sau",
-    "tz_rule_first": "Khởi đầu chu kỳ ngày; ưu tiên pattern thật từ CSV, thiếu thì dùng Markov/pha.",
-    "tz_rule_mid": "Nối tiếp chuỗi Markov & quy luật chuyển pha; lấp gap bằng bridge nếu thiếu slot.",
-    "tz_rule_last": "Chốt phiên cuối ngày; đối chiếu chéo nguồn/chuỗi và dùng fallback nếu thiếu dữ liệu."
+    "tz_rule_first": "Mốc gốc 04:00 VN: ưu tiên data thật, dò chuỗi pha & cụm lệch k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter theo k, p; khi lệch gap 16 / 116 / 132 hoặc chu kỳ 1072 sẽ xét k*116 + p*16 theo k, p để bắt đúng pha, thiếu slot thì bù tiến.",
+    "tz_rule_mid": "Mặc định đi theo nhịp 119 (k*119 + jitter); khi gap đạt 16 / 116 / 132 hoặc rơi vào chu kỳ 1072 (mẫu 14 bước) sẽ dùng công thức k*116 + p*16 theo chỉ số k, p để chuyển sang pha A tương ứng (A4 / A3).",
+    "tz_rule_last": "Chốt ca theo nhịp 119 (k*119 + jitter); nếu lệch gap 16 / 116 / 132 hoặc chu kỳ 1072 (dùng k*116 + p*16 theo k, p) sẽ ưu tiên pha điều chỉnh A2 / C7 và đối chiếu mốc dự phòng khi thiếu dữ liệu."
   },
   "widget": {
     "title": "Vị trí Merchant",
