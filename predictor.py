@@ -922,36 +922,19 @@ def _slot_candidates(slot):
     for c in (cands or []):
         pat = c.get('pattern', '')
         src = c.get('source', slot)
-        # [FIX] Lookup items theo thứ tự ưu tiên
+        # Lấy thẳng items từ slot nguồn (src)
         items_map = {}
-        # 1. slot_to_items[source]
-        src_items = slot_to_items.get(src) if src != '?' else None
-        if src_items and isinstance(src_items, dict):
+        src_items = slot_to_items.get(src) if isinstance(src, int) else None
+        if isinstance(src_items, dict):
             for pair, vals in src_items.items():
                 if vals:
                     if isinstance(vals, (list, tuple)):
-                        items_map[pair.strip()] = ', '.join(str(v) for v in vals if v)
-                    else:
-                        items_map[pair.strip()] = str(vals)
-        # 2. pattern_items aggregated
-        if not items_map:
-            for pair in pat.split(' / '):
-                pair = pair.strip()
-                if pair in pattern_items:
-                    agg = pattern_items[pair]
-                    if agg:
-                        items_map[pair] = ', '.join(str(v) for v in agg[:3] if v)
-        # 3. Fallback slot - 119
-        if not items_map and (slot - 119) in slot_to_items:
-            fb_items = slot_to_items[slot - 119]
-            if isinstance(fb_items, dict):
-                for pair, vals in fb_items.items():
-                    if vals:
-                        if isinstance(vals, (list, tuple)):
-                            items_map[pair.strip()] = ', '.join(str(v) for v in vals if v)
-                        else:
-                            items_map[pair.strip()] = str(vals)
-        
+                        cleaned = [str(v).strip() for v in vals if v and str(v).strip()]
+                        if cleaned:
+                            items_map[pair.strip()] = ', '.join(cleaned)
+                    elif str(vals).strip():
+                        items_map[pair.strip()] = str(vals).strip()
+
         positions = []
         for p in pat.split(' / '):
             pair = p.strip()
