@@ -196,7 +196,6 @@
       const reasonTxt = formatCandMeta(second, second.type === 'actual');
       h += '<div class="fb-item top2">' + mkBtn(fbCopyStr, '📋', true) +
            '<div class="fb-head">' +
-             '<span class="fb-prob">[' + esc(second.prob) + ']</span>' +
              '<span class="fb-reason">' + esc(reasonTxt) + '</span>' +
            '</div>' +
            '<div class="fb-pat">' + esc(second.pattern) + '</div>' +
@@ -213,7 +212,7 @@
         const hasItem = checkPos.items && checkPos.items !== '—';
         const itHtml = hasItem ? esc(checkPos.items) : '<span style="opacity:.35;font-style:italic">—</span>';
         h += '<div class="' + cls + '">' + mkBtn(fbCopyStr, '📋', true) +
-             '<div class="fb-head"><span class="fb-prob">[' + esc(f.prob) + ']</span>' +
+             '<div class="fb-head">' +
              '<span class="fb-reason">' + esc(reason) + '</span></div><div class="fb-pat">' + esc(f.pattern) + '</div>' +
              '<div class="fb-hint">' + esc(L.check) + ' <b>' + esc(checkPos.pos) + '</b>: ' + itHtml + '</div></div>';
       }
@@ -221,7 +220,7 @@
     if (top && top.duplicates && top.duplicates.length > 0) {
       h += '<div class="fb-title" style="margin-top:10px;color:#90ee90">' + esc(L.reinforced) + '</div>';
       for (const d of top.duplicates) {
-        h += '<div class="fb-item dup"><div class="fb-head"><span class="fb-prob" style="color:#888">[' + esc((d.prob * 100).toFixed(1)) + '%]</span>' +
+        h += '<div class="fb-item dup"><div class="fb-head">' +
              '<span class="fb-reason" style="color:#888">' + esc(d.reason || ('phase ' + d.phases.join('/'))) + '</span></div>' +
              '<div class="fb-hint" style="color:#888">' + esc(L.dup_hint) + '</div></div>';
       }
