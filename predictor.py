@@ -1023,6 +1023,16 @@ def _slot_candidates(slot):
         _sorted_vals = [k for k, _ in sorted(_cnt_map.items(), key=lambda kv: -kv[1])]
         if _sorted_vals:
             pattern_items[_pr_key] = _sorted_vals
+def _fmt_phase_formula(slot, src_slot, phase_label):
+    tag = phase_label or "Phase"
+    if isinstance(slot, int) and isinstance(src_slot, int) and slot > src_slot:
+        diff = slot - src_slot
+        k_val = max(1, (diff + 59) // 119)
+        jitter_val = diff - k_val * 119
+        return f"{tag}=k*119+jitter, k={k_val},jitter={jitter_val}"
+    return f"{tag}=k*119+jitter"
+
+
 def build_widget_html(base_start_slot, offset_slots=0, n_ahead=12, lang="vi", utc_offset=7.0, missing_04=None):
     if _WIDGET_TEMPLATE is None:
         return None
@@ -1037,7 +1047,7 @@ def build_widget_html(base_start_slot, offset_slots=0, n_ahead=12, lang="vi", ut
             'iso': slot_to_ts(s).strftime('%Y-%m-%dT%H:%M:%S') + '+07:00',
             'top': cands[0] if cands else None,
             'fallbacks': cands[1:] if len(cands) > 1 else [],
-            'phase': f"phase {slot_phase[s][0]}{slot_phase[s][1]}" if s % 4 == 0 and s in slot_phase else '',
+            'phase': (_fmt_phase_formula(s, (cands[0].get('source') if cands else (slot_to_meta.get(s) or {}).get('source')), (f"{slot_phase[s][0]}{slot_phase[s][1]}" if s in slot_phase else 'Phase')) if s % 4 == 0 else ''),
             'is_actual': (s in REAL_SLOTS and cands and cands[0].get('type') == 'actual'),
             'is_bridge': _is_bridge(s),
         })
