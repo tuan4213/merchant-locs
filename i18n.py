@@ -107,3 +107,60 @@ def get_translator(lang):
 
 def get_widget_text(lang):
     return _load_lang_file(lang).get('widget', {})
+
+# === ISO639_NAME_MAP_PATCH_START ===
+_EXTRA_LANG_LABELS = {
+    "vi": "Tiếng Việt 🇻🇳",
+    "en": "English 🇺🇸",
+    "ja": "日本語 🇯🇵",
+    "zh": "中文 🇨🇳",
+    "zh-cn": "简体中文 🇨🇳",
+    "zh-tw": "繁體中文 🇹🇼",
+    "fr": "Français 🇫🇷",
+    "ko": "한국어 🇰🇷",
+    "th": "ไทย 🇹🇭",
+    "id": "Bahasa Indonesia 🇮🇩",
+    "ms": "Bahasa Melayu 🇲🇾",
+    "de": "Deutsch 🇩🇪",
+    "es": "Español 🇪🇸",
+    "pt": "Português 🇵🇹",
+    "ru": "Русский 🇷🇺",
+    "ar": "العربية 🇸🇦",
+    "hi": "हिन्दी 🇮🇳",
+    "it": "Italiano 🇮🇹",
+    "nl": "Nederlands 🇳🇱",
+    "pl": "Polski 🇵🇱",
+    "tr": "Türkçe 🇹🇷",
+    "uk": "Українська 🇺🇦",
+    "af": "Afrikaans (af)",
+    "am": "Amharic (am)",
+}
+
+def _resolve_iso_lang_label(code: str) -> str:
+    c = (code or "").strip().lower()
+    if c in _EXTRA_LANG_LABELS:
+        return _EXTRA_LANG_LABELS[c]
+    try:
+        import pycountry
+        lang_obj = pycountry.languages.get(alpha_2=c)
+        if lang_obj and getattr(lang_obj, "name", None):
+            return f"{lang_obj.name} ({c})"
+    except Exception:
+        pass
+    return f"Language ({c})" if c else "Unknown"
+
+try:
+    if isinstance(LANG_LABELS, dict):
+        _rebuilt = {}
+        for _lbl, _code in LANG_LABELS.items():
+            _c = str(_code).strip().lower()
+            _nice = _resolve_iso_lang_label(_c)
+            if _lbl and _lbl != _c and not (_lbl.strip().lower() == _c):
+                _rebuilt[_lbl] = _c
+            else:
+                _rebuilt[_nice] = _c
+        LANG_LABELS.clear()
+        LANG_LABELS.update(_rebuilt)
+except Exception:
+    pass
+# === ISO639_NAME_MAP_PATCH_END ===
