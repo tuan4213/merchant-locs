@@ -359,7 +359,6 @@ st.button(T("reset_time_travel", default="🔄 Reset Time Travel"), on_click=res
 
 use_default = st.checkbox(T("use_default", default="📚 Use default baseline"), value=True)
 st.caption(
-    "📄 **Các cột CSV:** `timestamp` (mốc thời gian quy đổi sang `slot` 6h) · "
     "`content` (nội dung pattern/vật phẩm) · `username` (người đăng/nguồn). "
     "**Cột `id` (nếu có):** mã định danh bản ghi gốc — hệ thống **không** dùng `id` để tính chu kỳ hay `slot`, có hay không đều chạy bình thường."
 )
