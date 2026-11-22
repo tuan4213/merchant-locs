@@ -200,20 +200,19 @@ def _render_tz_milestone_table(utc_offset):
 
     r_first = _t_locale(
         "tz_rule_first",
-        "Mốc gốc 04:00 VN: dò chuỗi pha A1–A4/B3/C7 & cụm k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter theo bậc k, p, ghép MarkovB2 & TRANS; thiếu thì bù tiến +4.",
-        "04:00 VN base: reads A1–A4/B3/C7 chains & k*119 + p*j clusters (j ∈ ±6, ±12) / k*119 + jitter across k, p with MarkovB2 & TRANS; forward-fills +4 if missing.",
+        "Mốc gốc 04:00 VN: dò chuỗi pha A1–A4/B3/C7 & cụm lệch k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter theo k, p; ghép MarkovB2 & TRANS, thiếu thì bù tiến +4.",
+        "04:00 VN base: reads A1–A4/B3/C7 chains & k*119 + p*j clusters (j ∈ ±6, ±12) / k*119 + jitter across k, p; pairs MarkovB2 & TRANS, forward-filling +4 if missing.",
     )
     r_mid = _t_locale(
         "tz_rule_mid",
-        "Mặc định nhịp 119 (k*119 + jitter); khi lệch gap 16 / 116 / 132 hoặc chu kỳ 1072 (mẫu 14 bước) sẽ dùng k*116 + p*16 theo k, p để lấy pha A (A4 / A3).",
+        "Mặc định nhịp 119 (k*119 + jitter); khi lệch gap 16 / 116 / 132 hoặc chu kỳ 1072 (mẫu 14 bước) sẽ xét k*116 + p*16 theo k, p để chuyển sang pha A (A4 / A3).",
         "Defaults to 119 (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to pick Phase A (A4 / A3).",
     )
     r_last = _t_locale(
         "tz_rule_last",
-        "Chốt ca nhịp 119 (k*119 + jitter); khi có rủi ro gap 16 / 116 / 132 hoặc chu kỳ 1072 (dùng k*116 + p*16 theo k, p) sẽ ưu tiên pha điều chỉnh A2 / C7.",
+        "Chốt ca theo nhịp 119 (k*119 + jitter); khi lệch gap 16 / 116 / 132 hoặc chu kỳ 1072 (dùng k*116 + p*16 theo k, p) sẽ ưu tiên pha điều chỉnh A2 / C7.",
         "Wraps along 119 (k*119 + jitter); when gaps 16 / 116 / 132 or cycle 1072 hit (k*116 + p*16 across k, p), favors adjusted phase A2 / C7.",
     )
-
     merchants = [
         (m_first, 4, 0, ["04:00 Base", "Phase A1–A4/B3/C7", "k, p · MarkovB2"], r_first, True),
         (m_second, 10, 0, ["Cycle 119", "Gap 16/116/132", "Macro 1072 → A4"], r_mid, False),
