@@ -693,11 +693,11 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
             step=0.5,
             key="utc_offset",
         )
+        st.button(T("utc_reset_btn", default="🔄 Reset"), on_click=reset_utc)
         _render_tz_milestone_table(utc_offset)
     with col_tz_btn:
         st.write("")
         st.write("")
-        st.button(T("utc_reset_btn", default="🔄 Reset"), on_click=reset_utc)
 
     _now_local = datetime.now(timezone.utc) + timedelta(hours=utc_offset)
     _now_str = _now_local.strftime('%Y-%m-%d %H:%M:%S')
