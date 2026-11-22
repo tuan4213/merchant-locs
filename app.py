@@ -1,6 +1,6 @@
 import streamlit as st
 
-# --- Global Wrap Text + 4-Column Grid Table Helper ---
+# --- Global Wrap Text + 4-Column Merchant Timezone Table + Time Machine Guide ---
 st.markdown(
     """
     <style>
@@ -51,6 +51,18 @@ def _fmt_utc_offset(utc_offset) -> str:
     return f"{sign}{abs_val:g}"
 
 
+def _t_locale(key: str, vi_default: str, en_default: str) -> str:
+    lang = str(st.session_state.get("lang", "")).lower()
+    fallback = vi_default if lang.startswith("vi") else en_default
+    try:
+        val = T(key, default=fallback)
+        if not val or (not lang.startswith("vi") and val == vi_default):
+            return en_default
+        return val
+    except Exception:
+        return fallback
+
+
 def _render_tz_milestone_table(utc_offset):
     from datetime import datetime, timezone, timedelta
     off_val = float(utc_offset)
@@ -58,18 +70,30 @@ def _render_tz_milestone_table(utc_offset):
     tz_cur = timezone(timedelta(hours=off_val))
     tz_vn = timezone(timedelta(hours=7))
 
-    day_prev = T("tz_day_prev", default="Hôm trước")
-    day_same = T("tz_day_same", default="Cùng ngày")
-    day_next = T("tz_day_next", default="Hôm sau")
+    day_prev = _t_locale("tz_day_prev", "Hôm trước", "Prev day")
+    day_same = _t_locale("tz_day_same", "Cùng ngày", "Same day")
+    day_next = _t_locale("tz_day_next", "Hôm sau", "Next day")
 
-    m_first = T("tz_m_first", default="First Merchant")
-    m_second = T("tz_m_second", default="Merchant 2")
-    m_third = T("tz_m_third", default="Merchant 3")
-    m_last = T("tz_m_last", default="Last Merchant")
+    m_first = _t_locale("tz_m_first", "First Merchant", "First Merchant")
+    m_second = _t_locale("tz_m_second", "Merchant 2", "Merchant 2")
+    m_third = _t_locale("tz_m_third", "Merchant 3", "Merchant 3")
+    m_last = _t_locale("tz_m_last", "Last Merchant", "Last Merchant")
 
-    r_first = T("tz_rule_first", default="Khởi đầu chu kỳ ngày; ưu tiên pattern thật từ CSV, thiếu thì dùng Markov/pha.")
-    r_mid = T("tz_rule_mid", default="Nối tiếp chuỗi Markov & quy luật chuyển pha; lấp gap bằng bridge nếu thiếu slot.")
-    r_last = T("tz_rule_last", default="Chốt phiên cuối ngày; đối chiếu chéo nguồn/chuỗi và dùng fallback nếu thiếu dữ liệu.")
+    r_first = _t_locale(
+        "tz_rule_first",
+        "Khởi đầu chu kỳ ngày; ưu tiên pattern thật từ CSV, thiếu thì dùng Markov/pha.",
+        "Daily cycle start; prefers actual CSV pattern, else Markov/phase.",
+    )
+    r_mid = _t_locale(
+        "tz_rule_mid",
+        "Nối tiếp chuỗi Markov & quy luật chuyển pha; lấp gap bằng bridge nếu thiếu slot.",
+        "Continues Markov chain & phase transitions; fills gaps via bridge if slot missing.",
+    )
+    r_last = _t_locale(
+        "tz_rule_last",
+        "Chốt phiên cuối ngày; đối chiếu chéo nguồn/chuỗi và dùng fallback nếu thiếu dữ liệu.",
+        "Closes daily cycle; cross-checks sources/chains and uses fallback if data missing.",
+    )
 
     merchants = [
         (m_first, 4, 0, r_first),
@@ -99,14 +123,15 @@ def _render_tz_milestone_table(utc_offset):
             f"</tr>"
         )
 
-    guide_txt = T(
+    guide_txt = _t_locale(
         "tz_milestone_guide",
-        default="Mốc giờ & quy đổi (UTC{tz_str}): Thanh trượt đổi múi giờ hiển thị; đổi UTC có thể đẩy mốc sang ngày hôm trước hoặc ngày hôm sau.",
+        "Mốc giờ & quy đổi (UTC{tz_str}): Thanh trượt đổi múi giờ hiển thị; đổi UTC có thể đẩy mốc sang ngày hôm trước hoặc ngày hôm sau.",
+        "Timezone & conversion (UTC{tz_str}): Slider adjusts display timezone; shifting UTC may move a merchant into the previous or next day.",
     ).format(tz_str=tz_str)
-    col_m = T("tz_col_merchant", default="Mốc Merchant")
-    col_vn = T("tz_col_vn", default="Giờ VN (UTC+7)")
-    col_target = T("tz_col_target", default="Giờ UTC{tz_str} & lệch ngày").format(tz_str=tz_str)
-    col_rule = T("tz_col_rule", default="Tóm tắt quy tắc đoán")
+    col_m = _t_locale("tz_col_merchant", "Mốc Merchant", "Merchant")
+    col_vn = _t_locale("tz_col_vn", "Giờ VN (UTC+7)", "VN Time (UTC+7)")
+    col_target = _t_locale("tz_col_target", "Giờ UTC{tz_str} & lệch ngày", "UTC{tz_str} Time & Day Shift").format(tz_str=tz_str)
+    col_rule = _t_locale("tz_col_rule", "Tóm tắt quy tắc đoán", "Prediction Rule Summary")
 
     html = (
         f"<div class='mc-wrap-box' style='margin-top:6px;margin-bottom:10px;'>"
@@ -121,9 +146,10 @@ def _render_tz_milestone_table(utc_offset):
 
 
 def _render_time_machine_guide():
-    tm_txt = T(
+    tm_txt = _t_locale(
         "time_machine_guide",
-        default="🕰️ Time Machine (Du hành thời gian): Lùi hoặc tiến số ngày trên thanh trượt để xem dữ liệu/dự đoán ở quá khứ hoặc tương lai, đối chiếu lịch sử và mô phỏng kịch bản. Chỉ đổi góc nhìn hiển thị, không sửa dữ liệu gốc.",
+        "🕰️ Time Machine (Du hành thời gian): Lùi hoặc tiến số ngày trên thanh trượt để xem dữ liệu/dự đoán ở quá khứ hoặc tương lai, đối chiếu lịch sử và mô phỏng kịch bản. Chỉ đổi góc nhìn hiển thị, không sửa dữ liệu gốc.",
+        "🕰️ Time Machine: Shift days backward or forward on the slider to inspect past or future data/predictions, compare history, and simulate scenarios. View-only; source data is untouched.",
     )
     html = (
         "<div class='mc-wrap-box' style='margin-top:6px;margin-bottom:10px;padding:8px 10px;"
@@ -175,21 +201,11 @@ st.markdown(
 )
 
 
-def _fmt_utc_offset(utc_offset) -> str:
-    val = float(utc_offset)
-    sign = "+" if val >= 0 else "-"
-    abs_val = abs(val)
-    if abs_val.is_integer():
-        return f"{sign}{int(abs_val)}"
-    return f"{sign}{abs_val:g}"
-
-
-def _render_tz_milestone_table(utc_offset):
+def _render_tz_milestone_table(utc_offset: int):
     from datetime import datetime, timezone, timedelta
-    off_val = float(utc_offset)
-    tz_str = _fmt_utc_offset(off_val)
-    tz_cur = timezone(timedelta(hours=off_val))
+    tz_cur = timezone(timedelta(hours=int(utc_offset)))
     tz_vn = timezone(timedelta(hours=7))
+    sign = "+" if int(utc_offset) >= 0 else ""
     base_slots = [
         ("Slot 1 (04:00 VN)", 4, 0),
         ("Slot 2 (10:00 VN)", 10, 0),
@@ -204,27 +220,22 @@ def _render_tz_milestone_table(utc_offset):
             f"<tr>"
             f"<td>{label}</td>"
             f"<td>{dt_vn.strftime('%H:%M')} (UTC+7)</td>"
-            f"<td><b>{dt_cur.strftime('%H:%M')}</b> (UTC{tz_str})</td>"
+            f"<td><b>{dt_cur.strftime('%H:%M')}</b> (UTC{sign}{int(utc_offset)})</td>"
             f"</tr>"
         )
-    guide_txt = T(
-        "tz_milestone_guide",
-        default="Mốc giờ & quy đổi (UTC{tz_str}): Thanh trượt điều chỉnh múi giờ hiển thị; mốc chuẩn 4 slot/ngày quy đổi tự động theo offset đang chọn.",
-    ).format(tz_str=tz_str)
-    col_slot = T("tz_col_slot", default="Mốc slot")
-    col_vn = T("tz_col_vn", default="Giờ VN")
-    col_target = T("tz_col_target", default="Giờ UTC{tz_str}").format(tz_str=tz_str)
     html = (
         f"<div class='mc-wrap-box' style='margin-top:6px;margin-bottom:10px;'>"
-        f"<div style='font-size:12.5px;opacity:0.92;margin-bottom:6px;'>{guide_txt}</div>"
+        f"<div style='font-size:12.5px;opacity:0.92;margin-bottom:6px;'>"
+        f"<b>Mốc giờ &amp; quy đổi (UTC{sign}{int(utc_offset)}):</b> Thanh trượt điều chỉnh múi giờ hiển thị; "
+        f"mốc chuẩn 4 slot/ngày quy đổi tự động theo offset đang chọn."
+        f"</div>"
         f"<table class='mc-grid-table'>"
-        f"<thead><tr><th>{col_slot}</th><th>{col_vn}</th><th>{col_target}</th></tr></thead>"
+        f"<thead><tr><th>Mốc slot</th><th>Giờ VN</th><th>Giờ UTC{sign}{int(utc_offset)}</th></tr></thead>"
         f"<tbody>{''.join(rows_html)}</tbody>"
         f"</table>"
         f"</div>"
     )
     st.markdown(html, unsafe_allow_html=True)
-
 
 
 def _render_time_machine_guide():
@@ -641,7 +652,6 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
             key="utc_offset",
         )
         _render_tz_milestone_table(utc_offset)
-        _render_tz_milestone_table(utc_offset)
     with col_tz_btn:
         st.write("")
         st.write("")
@@ -686,7 +696,6 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
         step=1,
         key="time_travel_slider",
     )
-    _render_time_machine_guide()
     _render_time_machine_guide()
     st.button(T("reset_time_travel", default="🔄 Reset Time Travel"), on_click=reset_time_travel)
 
