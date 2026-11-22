@@ -61,9 +61,9 @@
     "tz_day_prev": "முந்தைய நாள்",
     "tz_day_same": "அதே நாள்",
     "tz_day_next": "அடுத்த நாள்",
-    "tz_rule_first": "தினசரி சுழற்சி தொடக்கம்; உண்மையான CSV வடிவத்தை விரும்புகிறது, இல்லையெனில் மார்கோவ்/கட்டம்.",
-    "tz_rule_mid": "மார்கோவ் சங்கிலி & கட்ட மாற்றங்களைத் தொடர்கிறது; ஸ்லாட் விடுபட்டால் பாலம் மூலம் இடைவெளிகளை நிரப்புகிறது.",
-    "tz_rule_last": "தினசரி சுழற்சியை மூடுகிறது; மூலங்கள்/சங்கிலிகளை குறுக்கு சரிபார்த்து, தரவு விடுபட்டால் ஃபால்பேக்கைப் பயன்படுத்துகிறது."
+    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
+    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
+    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
   },
   "widget": {
     "title": "வணிகர் இருப்பிடம்",

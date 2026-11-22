@@ -61,9 +61,9 @@
     "tz_day_prev": "मागील दिवस",
     "tz_day_same": "तोच दिवस",
     "tz_day_next": "पुढचा दिवस",
-    "tz_rule_first": "दैनिक चक्र सुरू; वास्तविक CSV पॅटर्न पसंत करतो, अन्यथा मार्कोव/फेज.",
-    "tz_rule_mid": "मार्कोव चेन आणि फेज संक्रमण सुरू ठेवते; स्लॉट गहाळ असल्यास ब्रिजद्वारे भरते.",
-    "tz_rule_last": "दैनिक चक्र बंद करते; स्त्रोत/चेन तपासते आणि डेटा गहाळ असल्यास फॉलबॅक वापरते."
+    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
+    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
+    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
   },
   "widget": {
     "title": "व्यापारी स्थान",

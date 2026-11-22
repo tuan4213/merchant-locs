@@ -61,9 +61,9 @@
     "tz_day_prev": "Tile tɛmɛnen",
     "tz_day_same": "Tile kelen",
     "tz_day_next": "Tile nata",
-    "tz_rule_first": "Tile kɔlɔsili daminɛ; a bɛ CSV minɛ, n'a tɛ Markov/phase.",
-    "tz_rule_mid": "A bɛ Markov ni phase ta; a bɛ gba fara n'a cɛ.",
-    "tz_rule_last": "Tile kɔlɔsili laban; a bɛ kɔlɔsili kɛ ka sen fɔlɔ ta."
+    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
+    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
+    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
   },
   "widget": {
     "title": "Merchant yɔrɔ",

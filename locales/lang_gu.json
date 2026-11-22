@@ -61,9 +61,9 @@
     "tz_day_prev": "પાછલો દિવસ",
     "tz_day_same": "સમાન દિવસ",
     "tz_day_next": "આગલો દિવસ",
-    "tz_rule_first": "દૈનિક ચક્ર શરૂઆત; વાસ્તવિક CSV પેટર્ન પસંદ કરે છે, અન્યથા માર્કોવ/ફેઝ.",
-    "tz_rule_mid": "માર્કોવ ચેઇન અને ફેઝ ટ્રાન્ઝિશન ચાલુ રાખે છે; ખાલી જગ્યા પુરી કરે છે.",
-    "tz_rule_last": "દૈનિક ચક્ર બંધ કરે છે; સ્ત્રોતો ચકાસે છે અને ડેટા ખૂટે તો ફોલબેક વાપરે છે."
+    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
+    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
+    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
   },
   "widget": {
     "title": "વેપારીનું સ્થાન",

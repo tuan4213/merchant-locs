@@ -61,9 +61,9 @@
     "tz_day_prev": "前一天",
     "tz_day_same": "同一天",
     "tz_day_next": "后一天",
-    "tz_rule_first": "每日周期开始；优先实际 CSV 模式，否则用 Markov。",
-    "tz_rule_mid": "继续 Markov 链与相位转换；桥接填补空白。",
-    "tz_rule_last": "关闭每日周期；交叉检查来源，缺失时使用回退。"
+    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
+    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
+    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
   },
   "widget": {
     "title": "商人位置",
