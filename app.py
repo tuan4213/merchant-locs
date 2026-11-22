@@ -194,9 +194,28 @@ def load_default_csv():
     return _load_local_csv_v1220()
 
 # === LANG_BAR_PATCH_START ===
-_detected_lang = detect_default_lang()
+def _is_vn_timezone():
+    try:
+        from zoneinfo import ZoneInfo
+        tz_name = (getattr(st.context, "timezone", None) or "").strip()
+        if tz_name.lower() in ("asia/ho_chi_minh", "asia/saigon", "vietnam", "etc/gmt-7"):
+            return True
+        if tz_name:
+            off = datetime.now(ZoneInfo(tz_name)).utcoffset()
+            if off is not None and off.total_seconds() == 7 * 3600:
+                return True
+    except Exception:
+        pass
+    try:
+        loc_off = datetime.now().astimezone().utcoffset()
+        if loc_off is not None and loc_off.total_seconds() == 7 * 3600:
+            return True
+    except Exception:
+        pass
+    return False
+
 if "app_lang" not in st.session_state:
-    st.session_state.app_lang = _detected_lang
+    st.session_state.app_lang = "vi" if _is_vn_timezone() else detect_default_lang()
 
 def _set_lang(l_code):
     st.session_state.app_lang = l_code
@@ -238,26 +257,24 @@ st.markdown(
         flex: 1 1 auto !important;
         flex-wrap: wrap !important;
         align-items: center !important;
+        overflow: visible !important;
     }
     .lang-bar-wrap div[data-baseweb="select"] > div > div {
         padding-top: 6px !important;
         padding-bottom: 6px !important;
     }
-    .lang-bar-wrap div[data-baseweb="select"] [class*="placeholder"],
-    .lang-bar-wrap div[data-baseweb="select"] [class*="singleValue"],
-    .lang-bar-wrap div[data-baseweb="select"] [class*="ValueContainer"],
-    .lang-bar-wrap div[data-baseweb="select"] [class*="ValueContainer"] > div,
-    .lang-bar-wrap div[data-baseweb="select"] span,
-    .lang-bar-wrap div[data-baseweb="select"] input {
+    .lang-bar-wrap div[data-testid="stSelectbox"] * {
         white-space: normal !important;
         word-break: break-word !important;
         overflow-wrap: anywhere !important;
-        overflow: visible !important;
         text-overflow: clip !important;
         line-height: 1.35 !important;
         max-width: 100% !important;
         min-width: 0 !important;
-        flex: 1 1 auto !important;
+    }
+    .lang-bar-wrap div[data-baseweb="select"] input {
+        width: auto !important;
+        flex: 1 1 80px !important;
     }
     @media (max-width: 768px) {
         .lang-bar-wrap div[data-testid="stButton"] > button {
