@@ -47,11 +47,11 @@
     "err_widget_missing": "⚠️ Faili `widget_template.html` ei leitud.",
     "err_lang_files": "⚠️ Keelufailide tõrge:",
     "csv_logic_cols_html": "<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">CSV loogikaveerud:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(Snowflake ID, kui see on olemas — ei kasutata tsüklilisuse/pesade jaoks)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(6h pesa teisendamise ajatempel)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(mustri/eseme sisu)</span></span></div>",
-    "tz_milestone_guide": "Ajavöönd ja teisendus (UTC{tz_str}): Liugur muudab kuvatavat ajavaööndi; UTC muutmine võib kaupmehe nihutada eelnevale või järgmisele päevale.",
+    "tz_milestone_guide": "Ajavöönd ja teisendus (UTC{tz_str}): Liugur muudab vaadet; UTC nihutamine võib kaupmehe viia eelmisse või järgmisesse päeva.",
     "tz_col_slot": "Vahemiku tähis",
     "tz_col_vn": "VN aeg (UTC+7)",
     "tz_col_target": "UTC{tz_str} aeg ja päeva nihe",
-    "time_machine_guide": "🕰️ Ajamasin: Nihuta liuguriga päevi tagasi või edasi, et uurida mineviku/tuleviku andmeid, võrrelda ajalugu ja simuleerida stsenaariume. Ainult vaatamiseks; lähteandmed on puutumata.",
+    "time_machine_guide": "🕰️ Ajamasin: Nihuta päevi liuguril, et uurida mineviku või tuleviku andmeid/ennustusi, võrrelda ajalugu ja simuleerida stsenaariume. Ainult vaatamiseks.",
     "tz_col_merchant": "Kaupmees",
     "tz_col_rule": "Ennustusreegli kokkuvõte",
     "tz_m_first": "Esimene kaupmees",
@@ -62,8 +62,8 @@
     "tz_day_same": "Sama päev",
     "tz_day_next": "Järgmine päev",
     "tz_rule_first": "Päevatsükli algus; eelistab CSV mustrit, muidu Markov/faas.",
-    "tz_rule_mid": "Jätkab Markovi ahelat ja faase; täidab lüngad sillaga.",
-    "tz_rule_last": "Sulgeb päevatsükli; kontrollib allikaid ja kasutab varu."
+    "tz_rule_mid": "Jätkab Markovi ahelat ja faase; täidab lüngad silla abil.",
+    "tz_rule_last": "Lõpetab tsükli; kontrollib allikaid ja kasutab varuandmeid, kui midagi puudub."
   },
   "widget": {
     "title": "Kaupmehe asukoht",
