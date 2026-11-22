@@ -200,25 +200,25 @@ def _render_tz_milestone_table(utc_offset):
 
     r_first = _t_locale(
         "tz_rule_first",
-        "Mốc gốc 04:00 VN chia ca 6 tiếng; dò chuỗi pha & lịch sử gần nhất, nếu thiếu dữ liệu thì tự bù theo các ca trước.",
-        "04:00 VN base anchor for 6h slots; reads recent phase flow & history, filling missing slots from prior steps.",
+        "Mốc gốc 04:00 VN (slot % 4 = 0): dò chuỗi pha A1–A4/B3/C7 & cụm k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter theo bậc k, p; ghép MarkovB2 & TRANS, thiếu thì bù tiến +4.",
+        "04:00 VN base (slot % 4 = 0): reads A1–A4/B3/C7 chains & k*119 + p*j clusters (j ∈ ±6, ±12) / k*119 + jitter across k, p; pairs MarkovB2 & TRANS, forward-filling +4 if missing.",
     )
     r_mid = _t_locale(
         "tz_rule_mid",
-        "Thường đi theo nhịp lặp 119 ca; nếu rơi vào khoảng cách 16 / 116 / 132 ca hoặc chu kỳ dài 1.072 ca sẽ đổi sang pha tương ứng.",
-        "Usually follows the 119-slot rhythm; shifts to matching phase on 16 / 116 / 132 gaps or the 1,072-slot long cycle.",
+        "Mặc định nhịp 119 (k*119 + jitter); khi gặp gap 16 / 116 / 132 (hoặc chu kỳ 1072 / mẫu 14 bước) sẽ xét công thức k*116 + p*16 theo k, p để chuyển sang pha A (A4 / A3).",
+        "Defaults to 119 (k*119 + jitter); on gaps 16 / 116 / 132 (or cycle 1072 / 14-step pattern), uses k*116 + p*16 across k, p to shift into Phase A (A4 / A3).",
     )
     r_last = _t_locale(
         "tz_rule_last",
-        "Chốt ca cuối theo nhịp 119 ca; khi có dấu hiệu lệch nhịp (16 / 116 / 132 hoặc chu kỳ 1.072) sẽ ưu tiên pha điều chỉnh.",
-        "Wraps the day along the 119-slot rhythm; favors the adjusted phase when 16 / 116 / 132 or 1,072 shift cues appear.",
+        "Chốt ca theo nhịp 119 (k*119 + jitter); nếu lệch gap 16 / 116 / 132 hoặc chu kỳ 1072 (dùng k*116 + p*16 theo k, p) sẽ ưu tiên pha điều chỉnh A2 / C7.",
+        "Wraps along 119 (k*119 + jitter); when gaps 16 / 116 / 132 or cycle 1072 hit (k*116 + p*16 across k, p), favors adjusted phase A2 / C7.",
     )
 
     merchants = [
-        (m_first, 4, 0, ["Mốc gốc 04:00", "Chuỗi pha", "Tự bù ca thiếu"], r_first, True),
-        (m_second, 10, 0, ["Nhịp 119", "Lệch 16/116/132", "Chu kỳ 1.072"], r_mid, False),
-        (m_third, 16, 0, ["Nhịp 119", "Lệch 16/116/132", "Chu kỳ 1.072"], r_mid, False),
-        (m_last, 22, 0, ["Nhịp 119", "Lệch 16/116/132", "Đổi pha dự phòng"], r_last, True),
+        (m_first, 4, 0, ["04:00 Base", "k*119+p*j", "k, p · A1–C7"], r_first, True),
+        (m_second, 10, 0, ["119 · Gap 16/116/132", "k*116+p*16", "1072 → A4 (k,p)"], r_mid, False),
+        (m_third, 16, 0, ["119 · Gap 16/116/132", "k*116+p*16", "1072 → A3 (k,p)"], r_mid, False),
+        (m_last, 22, 0, ["119 · Gap 16/116/132", "k*116+p*16", "1072 → A2/C7 (k,p)"], r_last, True),
     ]
 
     rows_html = []
