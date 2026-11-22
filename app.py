@@ -208,7 +208,8 @@ def _on_other_lang_change():
     if sel and sel in LANG_OPTIONS:
         st.session_state.app_lang = LANG_OPTIONS[sel]
 
-_other_placeholder = "🌐 Ngôn ngữ khác / Others"
+_T_bar = get_translator(st.session_state.app_lang)
+_other_placeholder = _T_bar("other_languages_placeholder", default="🌐 Ngôn ngữ khác / Others")
 
 st.markdown(
     """
@@ -224,29 +225,36 @@ st.markdown(
     .lang-bar-wrap div[data-testid="stSelectbox"],
     .lang-bar-wrap div[data-testid="stSelectbox"] > div,
     .lang-bar-wrap div[data-baseweb="select"],
-    .lang-bar-wrap div[data-baseweb="select"] > div:first-child {
+    .lang-bar-wrap div[data-baseweb="select"] > div,
+    .lang-bar-wrap div[data-baseweb="select"] > div > div {
         height: auto !important;
         min-height: 48px !important;
+        max-height: none !important;
         max-width: 100% !important;
-    }
-    .lang-bar-wrap div[data-baseweb="select"] > div:first-child > div {
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
         flex-wrap: wrap !important;
-        height: auto !important;
-        min-height: 36px !important;
+        align-items: center !important;
+    }
+    .lang-bar-wrap div[data-baseweb="select"] > div > div {
         padding-top: 6px !important;
         padding-bottom: 6px !important;
     }
     .lang-bar-wrap div[data-baseweb="select"] [class*="placeholder"],
     .lang-bar-wrap div[data-baseweb="select"] [class*="singleValue"],
+    .lang-bar-wrap div[data-baseweb="select"] [class*="ValueContainer"],
     .lang-bar-wrap div[data-baseweb="select"] [class*="ValueContainer"] > div,
+    .lang-bar-wrap div[data-baseweb="select"] span,
     .lang-bar-wrap div[data-baseweb="select"] input {
         white-space: normal !important;
         word-break: break-word !important;
-        overflow-wrap: break-word !important;
+        overflow-wrap: anywhere !important;
         overflow: visible !important;
         text-overflow: clip !important;
         line-height: 1.35 !important;
         max-width: 100% !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
     }
     @media (max-width: 768px) {
         .lang-bar-wrap div[data-testid="stButton"] > button {
@@ -257,7 +265,8 @@ st.markdown(
         .lang-bar-wrap div[data-testid="stSelectbox"],
         .lang-bar-wrap div[data-testid="stSelectbox"] > div,
         .lang-bar-wrap div[data-baseweb="select"],
-        .lang-bar-wrap div[data-baseweb="select"] > div:first-child {
+        .lang-bar-wrap div[data-baseweb="select"] > div,
+        .lang-bar-wrap div[data-baseweb="select"] > div > div {
             min-height: 42px !important;
         }
     }
