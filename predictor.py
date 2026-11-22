@@ -1219,19 +1219,6 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
         log.append(f"Markov err: {e}")
         import traceback; log.append(traceback.format_exc())
 
-    # Build widget
-    NOW = datetime.utcnow() + VN_OFFSET
-    current_next_slot = int((NOW - BASE).total_seconds() / (6*3600)) + 1
-    log.append(f"Next slot: {current_next_slot}")
-
-    try:
-        widget_html = build_widget_html(current_next_slot - 1, offset_days * 4, 12, lang, utc_offset, [])
-        log.append(f"Widget: {len(widget_html) if widget_html else 0} chars")
-    except Exception as e:
-        log.append(f"Widget err: {e}")
-        import traceback; log.append(traceback.format_exc())
-        widget_html = None
-
     # Tổng hợp pattern_items theo từng cặp vị trí có ưu tiên trọng số slot gần hơn
     _recency_scores = defaultdict(lambda: defaultdict(float))
     _max_item_slot = max((k for k in slot_to_items if isinstance(k, int)), default=0)
@@ -1255,4 +1242,17 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
         _sorted_vals = [k for k, _ in sorted(_sc_map.items(), key=lambda kv: -kv[1])]
         if _sorted_vals:
             pattern_items[_pr_key] = _sorted_vals
+    # Build widget
+    NOW = datetime.utcnow() + VN_OFFSET
+    current_next_slot = int((NOW - BASE).total_seconds() / (6*3600)) + 1
+    log.append(f"Next slot: {current_next_slot}")
+
+    try:
+        widget_html = build_widget_html(current_next_slot - 1, offset_days * 4, 12, lang, utc_offset, [])
+        log.append(f"Widget: {len(widget_html) if widget_html else 0} chars")
+    except Exception as e:
+        log.append(f"Widget err: {e}")
+        import traceback; log.append(traceback.format_exc())
+        widget_html = None
+
     return widget_html, "\n".join(log), "", {'total_missing_04': 0, 'static_acc': 100.0, 'adaptive_acc': 100.0}
