@@ -200,25 +200,25 @@ def _render_tz_milestone_table(utc_offset):
 
     r_first = _t_locale(
         "tz_rule_first",
-        "Slot 04:00 VN (base): dò chuỗi pha A1–A4/B3/C7 & cụm k, p (GAPS_04), kết hợp MarkovB2 / TRANS; thiếu thì bù tiến +4.",
-        "04:00 VN base slot: checks A1–A4/B3/C7 chains & k, p clusters (GAPS_04), MarkovB2 / TRANS; forward-fills +4 if needed.",
+        "Mốc gốc 04:00 VN chia ca 6 tiếng; dò chuỗi pha & lịch sử gần nhất, nếu thiếu dữ liệu thì tự bù theo các ca trước.",
+        "04:00 VN base anchor for 6h slots; reads recent phase flow & history, filling missing slots from prior steps.",
     )
     r_mid = _t_locale(
         "tz_rule_mid",
-        "Slot 10:00 / 16:00 VN: mặc định chu kỳ 119; xét gap 16 / 116 / 132 & chu kỳ 1072 (mẫu 14 bước) để chuyển sang Phase A (A4 / A3).",
-        "10:00 / 16:00 VN slots: defaults to 119; checks gaps 16 / 116 / 132 & macro 1072 (14-step pattern) to shift to Phase A (A4 / A3).",
+        "Thường đi theo nhịp lặp 119 ca; nếu rơi vào khoảng cách 16 / 116 / 132 ca hoặc chu kỳ dài 1.072 ca sẽ đổi sang pha tương ứng.",
+        "Usually follows the 119-slot rhythm; shifts to matching phase on 16 / 116 / 132 gaps or the 1,072-slot long cycle.",
     )
     r_last = _t_locale(
         "tz_rule_last",
-        "Slot 22:00 VN: chủ đạo bước 119; dò rủi ro gap 16 / 116 / 132 hoặc vị trí 1072 để ưu tiên Phase A (A2) khi có bất thường.",
-        "22:00 VN slot: primarily 119; checks gap 16 / 116 / 132 or macro 1072 positions to favor Phase A (A2) on anomaly risk.",
+        "Chốt ca cuối theo nhịp 119 ca; khi có dấu hiệu lệch nhịp (16 / 116 / 132 hoặc chu kỳ 1.072) sẽ ưu tiên pha điều chỉnh.",
+        "Wraps the day along the 119-slot rhythm; favors the adjusted phase when 16 / 116 / 132 or 1,072 shift cues appear.",
     )
 
     merchants = [
-        (m_first, 4, 0, ["04:00 Base", "Phase A1–A4/B3/C7", "k, p · MarkovB2"], r_first, True),
-        (m_second, 10, 0, ["Cycle 119", "Gap 16/116/132", "Macro 1072 → A4"], r_mid, False),
-        (m_third, 16, 0, ["Cycle 119", "Gap 16/116/132", "Macro 1072 → A3"], r_mid, False),
-        (m_last, 22, 0, ["Cycle 119", "Gap 16/116/132", "Macro 1072 → A2"], r_last, True),
+        (m_first, 4, 0, ["Mốc gốc 04:00", "Chuỗi pha", "Tự bù ca thiếu"], r_first, True),
+        (m_second, 10, 0, ["Nhịp 119", "Lệch 16/116/132", "Chu kỳ 1.072"], r_mid, False),
+        (m_third, 16, 0, ["Nhịp 119", "Lệch 16/116/132", "Chu kỳ 1.072"], r_mid, False),
+        (m_last, 22, 0, ["Nhịp 119", "Lệch 16/116/132", "Đổi pha dự phòng"], r_last, True),
     ]
 
     rows_html = []
