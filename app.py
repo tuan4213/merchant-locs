@@ -404,8 +404,6 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
             pass
 
     st.markdown("---")
-    st.warning(T("timezone_warning", default="⚠️ Times based on VN timezone"))
-    st.warning(T("gap_disabled_warning", default="⚠️ **Lưu ý:** Các tính năng xử lý gap (Bridge, Patch 1, Auto-Heal) đã bị vô hiệu hoá vĩnh viễn trong code để đảm bảo dữ liệu không bị nhiễu."))
 
     _settings_status_slot = st.container()
 # === PRED_SETTINGS_WITH_TZ_END ===
@@ -535,6 +533,7 @@ if _has_something:
                 T(
                     "gap_stats",
                     default="⚠️ **Thống kê thiếu data:** {n04} slot 04:00 bị thiếu (tổng {nall} slot thiếu trong khoảng dữ liệu).",
+                    n=_n_miss_04,
                     n04=_n_miss_04,
                     nall=_n_miss_all,
                 )
