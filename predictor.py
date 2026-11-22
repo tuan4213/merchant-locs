@@ -1292,12 +1292,29 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
     current_next_slot = int((NOW - BASE).total_seconds() / (6*3600)) + 1
     log.append(f"Next slot: {current_next_slot}")
 
+    _missing_04_list = []
+    _missing_all_count = 0
+    for _s_chk in range(min_slot, max_slot + 1):
+        if _s_chk not in REAL_SLOTS:
+            _missing_all_count += 1
+            if _s_chk % 4 == 0:
+                _missing_04_list.append({
+                    'slot': _s_chk,
+                    'iso': slot_to_ts(_s_chk).strftime('%Y-%m-%dT%H:%M:%S') + '+07:00',
+                })
+
     try:
-        widget_html = build_widget_html(current_next_slot - 1, offset_days * 4, 12, lang, utc_offset, [])
+        widget_html = build_widget_html(current_next_slot - 1, offset_days * 4, 12, lang, utc_offset, _missing_04_list)
         log.append(f"Widget: {len(widget_html) if widget_html else 0} chars")
     except Exception as e:
         log.append(f"Widget err: {e}")
         import traceback; log.append(traceback.format_exc())
         widget_html = None
 
-    return widget_html, "\n".join(log), "", {'total_missing_04': 0, 'static_acc': 100.0, 'adaptive_acc': 100.0}
+    return widget_html, "\n".join(log), "", {
+        'total_missing_04': len(_missing_04_list),
+        'missing_04': _missing_04_list[-50:],
+        'total_missing_all': _missing_all_count,
+        'static_acc': 100.0,
+        'adaptive_acc': 100.0,
+    }
