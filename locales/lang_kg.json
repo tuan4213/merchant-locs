@@ -67,5 +67,6 @@
     "real_badge": "KIELEKA",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Bikuma ya yantikulu mebika!</b> Mvitasu ya mambu. Bikuma kele ve na "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "TODELLINEN",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Alkuperäiset tiedot puuttuvat!</b> Kuvioennuste. Ei tietoja kohteessa "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

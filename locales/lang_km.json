@@ -67,5 +67,6 @@
     "real_badge": "ពិត",
     "bridge_badge": "ស្ពាន",
     "missing_data_warn": "⚠️ <b>ទិន្នន័យដើមត្រូវបានបាត់បង់!</b> កំពុងព្យាករណ៍ច្បាប់។ គ្មានទិន្នន័យនៅ "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

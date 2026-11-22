@@ -67,5 +67,6 @@
     "real_badge": "တကယ့်",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>မူလဒေတာ လစ်ဟာနေသည်!</b> စည်းမျဉ်းကို ခန့်မှန်းနေသည်။ တွင် ဒေတာမရှိပါ "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

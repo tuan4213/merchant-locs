@@ -67,5 +67,6 @@
     "real_badge": "GWIR",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Mankout a ra ar roadoù orin!</b> Pragmatizius ar patrom. Data ebet e "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

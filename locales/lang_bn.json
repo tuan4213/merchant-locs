@@ -67,5 +67,6 @@
     "real_badge": "আসল",
     "bridge_badge": "ব্রিজ",
     "missing_data_warn": "⚠️ <b>মূল ডেটা অনুপস্থিত!</b> নিয়ম অনুমান করা হচ্ছে। এখানে কোনো ডেটা নেই "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

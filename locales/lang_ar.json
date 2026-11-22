@@ -67,5 +67,6 @@
     "real_badge": "فعلي",
     "bridge_badge": "جسر",
     "missing_data_warn": "⚠️ <b>البيانات الأصلية مفقودة!</b> جاري التنبؤ بالقاعدة. لا توجد بيانات في "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

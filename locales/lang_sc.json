@@ -67,5 +67,6 @@
     "real_badge": "REALE",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Datos oraginarios mancanos!</b> Preditzione de su pattern. Perun datu a "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

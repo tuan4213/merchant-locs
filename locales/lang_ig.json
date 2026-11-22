@@ -67,5 +67,6 @@
     "real_badge": "N'EZIE",
     "bridge_badge": "AKWA",
     "missing_data_warn": "⚠️ <b>Data mbụ na-efu!</b> Na-ebu amụma iwu. Enweghị data na "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

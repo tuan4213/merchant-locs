@@ -67,5 +67,6 @@
     "real_badge": "वास्तविक",
     "bridge_badge": "ब्रिज",
     "missing_data_warn": "⚠️ <b>मूळ डेटा गहाळ आहे!</b> नियमाचा अंदाज. येथे डेटा नाही "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

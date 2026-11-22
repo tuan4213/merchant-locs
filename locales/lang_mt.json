@@ -67,5 +67,6 @@
     "real_badge": "ATTWALI",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Id-dejta oriġinali nieqsa!</b> Tbassir tar-regolarità. L-ebda dejta fi "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "વાસ્તવિક",
     "bridge_badge": "બ્રિજ",
     "missing_data_warn": "⚠️ <b>મૂળ ડેટા ખૂટે છે!</b> નિયમની આગાહી. અહીં કોઈ ડેટા નથી "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

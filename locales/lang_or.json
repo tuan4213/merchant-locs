@@ -67,5 +67,6 @@
     "real_badge": "REAL",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>ମୂଳ ଡାଟା ଅନୁପସ୍ଥିତ!</b> ପ୍ୟାଟର୍ନ୍ ପୂର୍ବାନୁମାନ କରାଯାଉଛି। କୌଣସି ଡାଟା ନାହିଁ "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

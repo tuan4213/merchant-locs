@@ -67,5 +67,6 @@
     "real_badge": "PIVIUSOQ",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Paasissutissat aallaqqaammut amigaatuupput!</b> Malittarisassat siulittorneqarput. Nassaassaangilaq ukunannga: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

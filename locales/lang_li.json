@@ -67,5 +67,6 @@
     "real_badge": "ECH",
     "bridge_badge": "BRUG",
     "missing_data_warn": "⚠️ <b>Basisgegevens ontbreke!</b> Vurspelling van patroon. Gein gegaove op "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "ངོ་མ",
     "bridge_badge": "ཟམ་པ",
     "missing_data_warn": "⚠️ <b>ངོ་མའི་གནས་སྡུད་ ཆད་འདུག!</b> ཚོད་དཔག་ པེ་ཊརན། གནས་སྡུད་མིན་འདུག་ ས་གནས "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "உண்மை",
     "bridge_badge": "பிரிட்ஜ்",
     "missing_data_warn": "⚠️ <b>மூல தரவு விடுபட்டுள்ளது!</b> விதி கணிப்பு. தரவு இல்லை "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

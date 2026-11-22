@@ -67,5 +67,6 @@
     "real_badge": "AKTUAL",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Data sumber hilang!</b> Prediksi pola. Tidak ada data pada "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

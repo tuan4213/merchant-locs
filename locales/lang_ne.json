@@ -67,5 +67,6 @@
     "real_badge": "वास्तविक",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>मूल डाटा छुटेको छ!</b> नियम भविष्यवाणी गर्दै। यहाँ डाटा छैन "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

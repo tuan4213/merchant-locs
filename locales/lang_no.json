@@ -68,5 +68,6 @@
     "real_badge": "FAKTISK",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Kildedata mangler!</b> Forutsier mønster. Ingen data på "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

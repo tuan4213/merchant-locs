@@ -67,5 +67,6 @@
     "real_badge": "DHUGAA",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Daataan jalqabaa hin jiru!</b> Raaga pattern. Daataan hin jiru "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

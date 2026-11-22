@@ -67,5 +67,6 @@
     "real_badge": "จริง",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>ຂໍ້ມູນຕົ້ນສະບັບຂາດຫາຍ!</b> ຄາດການກົດເກณฑ์. ບໍ່ມີ data ທີ່ "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

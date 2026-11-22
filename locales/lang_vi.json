@@ -67,5 +67,6 @@
     "real_badge": "THẬT",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Dữ liệu gốc bị thiếu!</b> Dự đoán quy luật. Không có data tại "
-  }
+  },
+  "other_languages_placeholder": "🌐 Ngôn ngữ khác"
 }

@@ -67,5 +67,6 @@
     "real_badge": "ئەمەلىي",
     "bridge_badge": "كۆۋرۈك",
     "missing_data_warn": "⚠️ <b>ئەسلى سانلىق مەلۇمات يوق!</b> پەرەز قائىدىسى. سانلىق مەلۇمات يوق ئورۇن: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

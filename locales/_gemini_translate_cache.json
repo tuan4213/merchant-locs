@@ -353,5 +353,6 @@
       "bridge_badge": "BRIDGE",
       "missing_data_warn": "⚠️ <b>¡Faltan datos originales!</b> Predicción basada en patrones. Sin datos en "
     }
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

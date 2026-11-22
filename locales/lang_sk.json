@@ -67,5 +67,6 @@
     "real_badge": "SKUTOČNÉ",
     "bridge_badge": "MOST",
     "missing_data_warn": "⚠️ <b>Pôvodné údaje chýbajú!</b> Predikcia pravidla. Žiadne údaje v "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

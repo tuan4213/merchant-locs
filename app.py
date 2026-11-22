@@ -227,7 +227,7 @@ def _on_other_lang_change():
     if sel and sel in LANG_OPTIONS:
         st.session_state.app_lang = LANG_OPTIONS[sel]
 
-_other_placeholder = "🌐 Ngôn ngữ khác" if st.session_state.app_lang == "vi" else "🌐 Other languages"
+_other_placeholder = get_translator(st.session_state.app_lang)("other_languages_placeholder", default="🌐 Ngôn ngữ khác" if st.session_state.app_lang == "vi" else "🌐 Other languages")
 
 st.markdown(
     """

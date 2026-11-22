@@ -67,5 +67,6 @@
     "real_badge": "实际",
     "bridge_badge": "桥接",
     "missing_data_warn": "⚠️ <b>原始数据缺失！</b>正在预测规律。此处无数据："
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

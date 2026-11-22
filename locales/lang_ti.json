@@ -67,5 +67,6 @@
     "real_badge": "ሓቀኛ",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>መሰረታዊ ሓበሬታ ጠፊኡ!</b> ብሕጊ ይትንበ። ኣብዚ ሓበሬታ የለን "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "TIKRAS",
     "bridge_badge": "TILTAS",
     "missing_data_warn": "⚠️ <b>Trūksta pradinių duomenų!</b> Prognozuojamas dėsningumas. Nėra duomenų adresu "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "OKWANGEMPELA",
     "bridge_badge": "IBHULOHO",
     "missing_data_warn": "⚠️ <b>Idatha yokuqala ayikho!</b> Kubikezelwa imithetho. Ayikho idatha ku-"
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "אמיתי",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>הנתונים המקוריים חסרים!</b> חיזוי תבניות. אין נתונים ב-"
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

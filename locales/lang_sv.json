@@ -67,5 +67,6 @@
     "real_badge": "FAKTISK",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Källdata saknas!</b> Förutspår mönster. Ingen data vid "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

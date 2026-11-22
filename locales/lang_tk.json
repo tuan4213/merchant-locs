@@ -67,5 +67,6 @@
     "real_badge": "HAKYKY",
     "bridge_badge": "KÖPRI",
     "missing_data_warn": "⚠️ <b>Asyl maglumat ýok!</b> Çaklama düzgüni. Maglumat ýok ýeri: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

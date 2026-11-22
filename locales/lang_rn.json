@@ -67,5 +67,6 @@
     "real_badge": "UKURI",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Amakuru y'itangiriro ariko arabura!</b> Ubuhanuzi bw'itegeko. Nta makuru kuri "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

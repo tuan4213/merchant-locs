@@ -67,5 +67,6 @@
     "real_badge": "ВИСТИНСКИ",
     "bridge_badge": "МОСТ",
     "missing_data_warn": "⚠️ <b>Оригиналните податоци недостасуваат!</b> Предвидување на шема. Нема податоци на "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

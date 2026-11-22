@@ -67,5 +67,6 @@
     "real_badge": "ANKASA",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Base data no ayera!</b> Nhyɛso mmara. Data nni hɔ wɔ "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

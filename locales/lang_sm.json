@@ -67,5 +67,6 @@
     "real_badge": "MONI",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Ua misia faʻamatalaga muamua!</b> Valoia tulafono. Leai ni faʻamatalaga i le "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

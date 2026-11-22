@@ -67,5 +67,6 @@
     "real_badge": "REAL",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Data original mancant!</b> Prediction de regul. Null data a "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

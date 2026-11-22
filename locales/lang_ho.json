@@ -67,5 +67,6 @@
     "real_badge": "REAL",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Original data lasi!</b> Predict pattern. Data lasi at "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "ನೈಜ",
     "bridge_badge": "ಬ್ರಿಡ್ಜ್",
     "missing_data_warn": "⚠️ <b>ಮೂಲ ಡೇಟಾ ಕಾಣೆಯಾಗಿದೆ!</b> ನಿಯಮದ ಮುನ್ಸೂಚನೆ. ಇಲ್ಲಿ ಯಾವುದೇ ಡೇಟಾ ಇಲ್ಲ "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

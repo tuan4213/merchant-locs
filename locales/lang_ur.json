@@ -67,5 +67,6 @@
     "real_badge": "اصل",
     "bridge_badge": "برج",
     "missing_data_warn": "⚠️ <b>اصل ڈیٹا غائب ہے!</b> قانون کی پیش گوئی۔ یہاں کوئی ڈیٹا نہیں ہے "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

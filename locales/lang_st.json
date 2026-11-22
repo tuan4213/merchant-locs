@@ -67,5 +67,6 @@
     "real_badge": "SEBELE",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Dintlha tsa qalo di haella!</b> Ho inahaneloa mokgwa. Ha ho dintlha ho "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

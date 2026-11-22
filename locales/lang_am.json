@@ -67,5 +67,6 @@
     "real_badge": "ትክክለኛ",
     "bridge_badge": "ድልድይ",
     "missing_data_warn": "⚠️ <b>የመነሻ ውሂብ ጠፍቷል!</b> ህጎችን በመተንበይ ላይ። በዚህ ቦታ ውሂብ የለም "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

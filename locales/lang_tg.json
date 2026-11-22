@@ -67,5 +67,6 @@
     "real_badge": "ВОҚЕӢ",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Маълумоти аслӣ гум шудааст!</b> Пешгӯӣ аз рӯи қоидаҳо. Маълумот дар ин ҷо нест: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

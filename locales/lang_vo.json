@@ -67,5 +67,6 @@
     "real_badge": "MELIK",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Datamäbem primik bözon!</b> Sätham lönöfik. Datamäbem no dabinon in "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

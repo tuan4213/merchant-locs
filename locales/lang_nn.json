@@ -67,5 +67,6 @@
     "real_badge": "EKTE",
     "bridge_badge": "BRU",
     "missing_data_warn": "⚠️ <b>Manglande rådata!</b> Predikert regel. Ingen data ved "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

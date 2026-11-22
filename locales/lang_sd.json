@@ -67,5 +67,6 @@
     "real_badge": "اصل",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>اصل ڊيٽا غائب آهي!</b> قانون جي اڳڪٿي. هتي ڊيٽا ناهي "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

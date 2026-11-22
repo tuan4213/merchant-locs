@@ -67,5 +67,6 @@
     "real_badge": "БАҚЪ",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>ТӀетовжаран хаамаш эшаш бу!</b> Прогноз коьрта канонца. Хаамаш бац кхузахь: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

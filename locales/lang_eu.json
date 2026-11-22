@@ -67,5 +67,6 @@
     "real_badge": "BENETAKOA",
     "bridge_badge": "ZUBIA",
     "missing_data_warn": "⚠️ <b>Jatorrizko datuak falta dira!</b> Eredua iragartzen. Daturik ez hemen: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

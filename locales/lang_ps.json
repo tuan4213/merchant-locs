@@ -67,5 +67,6 @@
     "real_badge": "واقعي",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>اصلي ډاټا ورکه ده!</b> د قاعدې وړاندوېینه. ډاټا نشته په "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

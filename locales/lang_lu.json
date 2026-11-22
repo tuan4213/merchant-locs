@@ -67,5 +67,6 @@
     "real_badge": "BUSHUWA",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Mianda ya kumpala mminyike!</b> Diakula malu. Kakuena mianda ku "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "ЧӐН",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Тӗп даннӑйсем ҫук!</b> Йӗркелӗх прогнозе. Даннӑйсем ҫук вырӑн: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

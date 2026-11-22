@@ -67,5 +67,6 @@
     "real_badge": "GWAYAK",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Gwayak data noondeshkam!</b> Inebadizid pattern. Gaawiin data "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

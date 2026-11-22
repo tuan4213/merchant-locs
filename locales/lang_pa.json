@@ -67,5 +67,6 @@
     "real_badge": "ਅਸਲ",
     "bridge_badge": "ਬ੍ਰਿਜ",
     "missing_data_warn": "⚠️ <b>ਅਸਲ ਡਾਟਾ ਗਾਇਬ ਹੈ!</b> ਨਿਯਮ ਦੀ ਭਵਿੱਖਬਾਣੀ। ਇੱਥੇ ਕੋਈ ਡਾਟਾ ਨਹੀਂ ਹੈ "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

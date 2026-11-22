@@ -67,5 +67,6 @@
     "real_badge": "REAL",
     "bridge_badge": "PUENTE",
     "missing_data_warn": "⚠️ <b>¡Faltan datos originales!</b> Prediciendo regla. No hay datos en "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

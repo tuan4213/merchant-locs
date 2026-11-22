@@ -67,5 +67,6 @@
     "real_badge": "GWIR",
     "bridge_badge": "PONT",
     "missing_data_warn": "⚠️ <b>Fowt kedhlow dalleth!</b> Heolek patternt. Nyns eus kedhlow dhe "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

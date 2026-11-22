@@ -67,5 +67,6 @@
     "real_badge": "НАҚТЫ",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Бастапқы деректер жоқ!</b> Заңдылық болжануда. Мына жерде деректер жоқ: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

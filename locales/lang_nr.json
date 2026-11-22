@@ -67,5 +67,6 @@
     "real_badge": "OKWANGEMPELA",
     "bridge_badge": "IBHULOHO",
     "missing_data_warn": "⚠️ <b>Idatha engeyona!</b> Akukho idatha ku-"
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "REAL",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Orijinal məlumat çatışmır!</b> Qanunauyğunluq proqnozlaşdırılır. Burada məlumat yoxdur "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

@@ -67,5 +67,6 @@
     "real_badge": "РЭАЛЬНЫ",
     "bridge_badge": "МОСТ",
     "missing_data_warn": "⚠️ <b>Зыходныя даныя адсутнічаюць!</b> Прагназаванне па правілах. Няма даных у "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

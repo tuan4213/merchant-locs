@@ -67,5 +67,6 @@
     "real_badge": "NYATA",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Data asli kurang!</b> Prediksi aturan. Ora ana data ing "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

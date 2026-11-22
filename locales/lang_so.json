@@ -67,5 +67,6 @@
     "real_badge": "DHAB AH",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Xogta asalka ah waa tusaale ahaan maqan!</b> Mantaqadda la rooday. Ma jirto xog lagu "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

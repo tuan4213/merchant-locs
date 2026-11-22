@@ -67,5 +67,6 @@
     "real_badge": "GIDI",
     "bridge_badge": "AFARA",
     "missing_data_warn": "⚠️ <b>Data akọkọ ti sonu!</b> Asọtẹlẹ awọn ofin. Ko si data ni "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

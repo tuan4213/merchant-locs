@@ -67,5 +67,6 @@
     "real_badge": "AKTUAL",
     "bridge_badge": "URA",
     "missing_data_warn": "⚠️ <b>Të dhënat origjinale mungojnë!</b> Parashikimi i rregullsisë. Nuk ka të dhëna në "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

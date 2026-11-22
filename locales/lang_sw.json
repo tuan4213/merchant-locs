@@ -67,5 +67,6 @@
     "real_badge": "HALISI",
     "bridge_badge": "DARAJA",
     "missing_data_warn": "⚠️ <b>Data ya asili imekosekana!</b> Inatabiri sheria. Hakuna data katika "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

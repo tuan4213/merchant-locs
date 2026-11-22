@@ -67,5 +67,6 @@
     "real_badge": "実際",
     "bridge_badge": "ブリッジ",
     "missing_data_warn": "⚠️ <b>元データがありません！</b> ルールを予測しています。データなし: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

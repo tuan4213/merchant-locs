@@ -67,5 +67,6 @@
     "real_badge": "SKUTEČNÝ",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>Původní data chybí!</b> Předpověď vzoru. Žádná data na "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

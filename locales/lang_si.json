@@ -67,5 +67,6 @@
     "real_badge": "සැබෑ",
     "bridge_badge": "BRIDGE",
     "missing_data_warn": "⚠️ <b>මුල් දත්ත මඟ හැරී ඇත!</b> රටාව පුරෝකථනය කරමින් පවතී. මෙහි දත්ත නොමැත "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }

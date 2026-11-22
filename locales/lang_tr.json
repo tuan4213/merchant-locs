@@ -67,5 +67,6 @@
     "real_badge": "GERÇEK",
     "bridge_badge": "KÖPRÜ",
     "missing_data_warn": "⚠️ <b>Orijinal veri eksik!</b> Kural tahmin ediliyor. Veri yok: "
-  }
+  },
+  "other_languages_placeholder": "🌐 Other languages"
 }
