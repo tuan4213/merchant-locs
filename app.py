@@ -194,26 +194,80 @@ def load_default_csv():
         if result: return result
     return _load_local_csv_v1220()
 
+# === LANG_BAR_PATCH_START ===
 _detected_lang = detect_default_lang()
-if "app_lang" not in st.session_state: st.session_state.app_lang = _detected_lang
+if "app_lang" not in st.session_state:
+    st.session_state.app_lang = _detected_lang
+
 
 def _set_lang(l_code):
-    st.session_state.app_lang = l_code; st.rerun()
+    st.session_state.app_lang = l_code
+    st.rerun()
 
-col_vi, col_en, col_other, _ = st.columns([1.2, 1.2, 2.5, 5])
+
+st.markdown(
+    """
+    <style>
+    .lang-bar-wrap div[data-testid="stButton"] > button {
+        min-height: 48px !important;
+        padding: 8px 16px !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
+        white-space: nowrap !important;
+    }
+    @media (max-width: 768px) {
+        .lang-bar-wrap div[data-testid="stButton"] > button {
+            min-height: 42px !important;
+            padding: 6px 8px !important;
+            font-size: 13.5px !important;
+        }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown('<div class="lang-bar-wrap">', unsafe_allow_html=True)
+col_vi, col_en, col_other = st.columns([1.35, 1.35, 3.3], vertical_alignment="bottom")
+
 with col_vi:
-    st.button("🇻🇳 Tiếng Việt", on_click=_set_lang, args=("vi",), use_container_width=True, type="primary" if st.session_state.app_lang == "vi" else "secondary")
+    st.button(
+        "🇻🇳 VI",
+        on_click=_set_lang,
+        args=("vi",),
+        use_container_width=True,
+        type="primary" if st.session_state.app_lang == "vi" else "secondary",
+    )
+
 with col_en:
-    st.button("🇺🇸 English", on_click=_set_lang, args=("en",), use_container_width=True, type="primary" if st.session_state.app_lang == "en" else "secondary")
+    st.button(
+        "🇺🇸 EN",
+        on_click=_set_lang,
+        args=("en",),
+        use_container_width=True,
+        type="primary" if st.session_state.app_lang == "en" else "secondary",
+    )
+
 with col_other:
     _other_langs = {k: v for k, v in LANG_OPTIONS.items() if v not in ("vi", "en")}
     if _other_langs:
-        _options = [""] + list(_other_langs.keys())
-        _idx = _options.index(next((k for k, v in _other_langs.items() if v == st.session_state.app_lang), ""))
-        _sel = st.selectbox("🌐 Khác / Others", _options, index=_idx, label_visibility="collapsed")
-        if _sel and st.session_state.app_lang != _other_langs[_sel]: _set_lang(_other_langs[_sel])
+        _options = ["🌐 Ngôn ngữ khác / Others"] + list(_other_langs.keys())
+        _cur_other_key = next((k for k, v in _other_langs.items() if v == st.session_state.app_lang), None)
+        _idx = _options.index(_cur_other_key) if _cur_other_key in _options else 0
+        _sel = st.selectbox(
+            "🌐 Ngôn ngữ / Language",
+            _options,
+            index=_idx,
+            label_visibility="collapsed",
+            key="lang_other_select",
+        )
+        if _sel != _options[0] and st.session_state.app_lang != _other_langs[_sel]:
+            _set_lang(_other_langs[_sel])
+st.markdown("</div>", unsafe_allow_html=True)
 
 lang = st.session_state.app_lang
+# === LANG_BAR_PATCH_END ===
 
 # ==========================================
 
