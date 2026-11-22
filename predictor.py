@@ -1322,3 +1322,4 @@ def run_pipeline(files_data, default_rows, used_files=None, offset_days=0, use_d
         'static_acc': 100.0,
         'adaptive_acc': 100.0,
     }
+# [WATCH-TEST] minor test comment
