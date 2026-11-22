@@ -25,6 +25,7 @@
 #mwidget .ch .local{font-size:11px;color:#888;margin-left:6px}
 #mwidget .ch .tag{font-size:11px;padding:1px 6px;border-radius:3px;background:rgba(122,183,255,.15);color:#7ab7ff}
 #mwidget .ch .tag.phase{background:rgba(255,158,100,.15);color:#ff9e64}
+#mwidget .ch .tag.reason{background:rgba(122,183,255,.16);color:#9cc9ff;max-width:460px;white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-height:1.3}
 #mwidget .ch .tag.actual{background:rgba(144,238,144,.25);color:#90ee90;font-weight:700}
 #mwidget .ch .tag.bridge{background:rgba(138,124,255,.25);color:#8a7cff;font-weight:700}
 #mwidget .ch .cd{color:#90ee90;font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
@@ -152,7 +153,7 @@
     else if (patRow && !isPatActive) patRow.classList.add('active');
     else if (itemsList && !isItemsActive) itemsList.classList.add('active');
   });
-  function renderTopCol(top, patStr, itemStr, now){
+  function renderTopCol(top, patStr, itemStr, now, isLastMerch){
     if(!top)return '<div class="fb-empty">'+esc(L.no_cand)+'</div>';
     let patCls = 'pat';
     if(top.type === 'actual') patCls = 'pat actual';
@@ -181,9 +182,11 @@
             h += `<div class="missing-warn">${L.missing_data_warn || '⚠️ <b>Dữ liệu gốc bị thiếu!</b> Dự đoán quy luật. Không có data tại '}${missDate} ${missParts.timeStr}</div>`;
         }
     }
-    const topReasonTxt = formatCandMeta(top, top && top.type === 'actual');
-    if (topReasonTxt) {
-      h += '<div class="fb-hint" style="margin-top:8px;color:#7ab7ff">💡 ' + esc(topReasonTxt) + '</div>';
+    if (isLastMerch) {
+      const topReasonTxt = formatCandMeta(top, top && top.type === 'actual');
+      if (topReasonTxt) {
+        h += '<div class="fb-hint" style="margin-top:8px;color:#7ab7ff">💡 ' + esc(topReasonTxt) + '</div>';
+      }
     }
     return h;
   }
@@ -268,6 +271,7 @@
       const isNext = (i === bigIdx);
       const isActual = s.is_actual;
       const isBridge = s.is_bridge;
+      const isLastMerch = (Number(s.slot) % 4 === 0);
       let cardCls='card'+(isNext?' next':'')+(dd<0?' past':'');
       if(isActual) cardCls += ' actual';
       else if(isBridge) cardCls += ' bridge';
@@ -282,6 +286,10 @@
       const sParts = getTimeParts(s.iso, utc_offset);
       let tags='';
       if(s.phase)tags+='<span class="tag phase">'+esc(s.phase)+'</span>';
+      if(!isLastMerch){
+        const topReasonTxt = formatCandMeta(s.top, isActual || (top && top.type === 'actual'));
+        if(topReasonTxt)tags+='<span class="tag reason">'+esc(topReasonTxt)+'</span>';
+      }
       let cdDisplay;
       if(isActual || isBridge){ cdDisplay = '<span class="'+cdCls+'">✓</span>'; }
       else if(dd > 0){ cdDisplay = '<span class="'+cdCls+'">'+fmt(dd)+'</span>'; }
@@ -289,7 +297,7 @@
       let strPat = compactPattern(top.pattern);
       let strItems = (top.positions && top.positions.length) ? compactItems(top.positions) : '';
       let strAll = strPat + (strItems ? '|' + strItems : '');
-      let topHtml = renderTopCol(s.top, strPat, strItems, now);
+      let topHtml = renderTopCol(s.top, strPat, strItems, now, isLastMerch);
       let second = null;
       let restFallbacks = s.fallbacks || [];
       if (restFallbacks.length > 0) {
