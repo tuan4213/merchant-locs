@@ -42,11 +42,21 @@ st.markdown(
 )
 
 
-def _render_tz_milestone_table(utc_offset: int):
+def _fmt_utc_offset(utc_offset) -> str:
+    val = float(utc_offset)
+    sign = "+" if val >= 0 else "-"
+    abs_val = abs(val)
+    if abs_val.is_integer():
+        return f"{sign}{int(abs_val)}"
+    return f"{sign}{abs_val:g}"
+
+
+def _render_tz_milestone_table(utc_offset):
     from datetime import datetime, timezone, timedelta
-    tz_cur = timezone(timedelta(hours=int(utc_offset)))
+    off_val = float(utc_offset)
+    tz_str = _fmt_utc_offset(off_val)
+    tz_cur = timezone(timedelta(hours=off_val))
     tz_vn = timezone(timedelta(hours=7))
-    sign = "+" if int(utc_offset) >= 0 else ""
     base_slots = [
         ("Slot 1 (04:00 VN)", 4, 0),
         ("Slot 2 (10:00 VN)", 10, 0),
@@ -61,22 +71,27 @@ def _render_tz_milestone_table(utc_offset: int):
             f"<tr>"
             f"<td>{label}</td>"
             f"<td>{dt_vn.strftime('%H:%M')} (UTC+7)</td>"
-            f"<td><b>{dt_cur.strftime('%H:%M')}</b> (UTC{sign}{int(utc_offset)})</td>"
+            f"<td><b>{dt_cur.strftime('%H:%M')}</b> (UTC{tz_str})</td>"
             f"</tr>"
         )
+    guide_txt = T(
+        "tz_milestone_guide",
+        default="Mốc giờ & quy đổi (UTC{tz_str}): Thanh trượt điều chỉnh múi giờ hiển thị; mốc chuẩn 4 slot/ngày quy đổi tự động theo offset đang chọn.",
+    ).format(tz_str=tz_str)
+    col_slot = T("tz_col_slot", default="Mốc slot")
+    col_vn = T("tz_col_vn", default="Giờ VN")
+    col_target = T("tz_col_target", default="Giờ UTC{tz_str}").format(tz_str=tz_str)
     html = (
         f"<div class='mc-wrap-box' style='margin-top:6px;margin-bottom:10px;'>"
-        f"<div style='font-size:12.5px;opacity:0.92;margin-bottom:6px;'>"
-        f"<b>Mốc giờ &amp; quy đổi (UTC{sign}{int(utc_offset)}):</b> Thanh trượt điều chỉnh múi giờ hiển thị; "
-        f"mốc chuẩn 4 slot/ngày quy đổi tự động theo offset đang chọn."
-        f"</div>"
+        f"<div style='font-size:12.5px;opacity:0.92;margin-bottom:6px;'>{guide_txt}</div>"
         f"<table class='mc-grid-table'>"
-        f"<thead><tr><th>Mốc slot</th><th>Giờ VN</th><th>Giờ UTC{sign}{int(utc_offset)}</th></tr></thead>"
+        f"<thead><tr><th>{col_slot}</th><th>{col_vn}</th><th>{col_target}</th></tr></thead>"
         f"<tbody>{''.join(rows_html)}</tbody>"
         f"</table>"
         f"</div>"
     )
     st.markdown(html, unsafe_allow_html=True)
+
 
 
 def _render_time_machine_guide():
