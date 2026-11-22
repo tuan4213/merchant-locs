@@ -200,7 +200,15 @@ if "app_lang" not in st.session_state:
 
 def _set_lang(l_code):
     st.session_state.app_lang = l_code
-    st.rerun()
+    if l_code in ("vi", "en") and "lang_other_select" in st.session_state:
+        st.session_state.lang_other_select = None
+
+def _on_other_lang_change():
+    sel = st.session_state.get("lang_other_select")
+    if sel and sel in LANG_OPTIONS:
+        st.session_state.app_lang = LANG_OPTIONS[sel]
+
+_other_placeholder = "🌐 Ngôn ngữ khác / Others"
 
 st.markdown(
     """
@@ -213,11 +221,44 @@ st.markdown(
         border-radius: 10px !important;
         white-space: nowrap !important;
     }
+    .lang-bar-wrap div[data-testid="stSelectbox"],
+    .lang-bar-wrap div[data-testid="stSelectbox"] > div,
+    .lang-bar-wrap div[data-baseweb="select"],
+    .lang-bar-wrap div[data-baseweb="select"] > div:first-child {
+        height: auto !important;
+        min-height: 48px !important;
+        max-width: 100% !important;
+    }
+    .lang-bar-wrap div[data-baseweb="select"] > div:first-child > div {
+        flex-wrap: wrap !important;
+        height: auto !important;
+        min-height: 36px !important;
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+    }
+    .lang-bar-wrap div[data-baseweb="select"] [class*="placeholder"],
+    .lang-bar-wrap div[data-baseweb="select"] [class*="singleValue"],
+    .lang-bar-wrap div[data-baseweb="select"] [class*="ValueContainer"] > div,
+    .lang-bar-wrap div[data-baseweb="select"] input {
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        line-height: 1.35 !important;
+        max-width: 100% !important;
+    }
     @media (max-width: 768px) {
         .lang-bar-wrap div[data-testid="stButton"] > button {
             min-height: 42px !important;
             padding: 6px 8px !important;
             font-size: 13.5px !important;
+        }
+        .lang-bar-wrap div[data-testid="stSelectbox"],
+        .lang-bar-wrap div[data-testid="stSelectbox"] > div,
+        .lang-bar-wrap div[data-baseweb="select"],
+        .lang-bar-wrap div[data-baseweb="select"] > div:first-child {
+            min-height: 42px !important;
         }
     }
     </style>
@@ -249,18 +290,19 @@ with col_en:
 with col_other:
     _other_langs = {k: v for k, v in LANG_OPTIONS.items() if v not in ("vi", "en")}
     if _other_langs:
-        _options = ["🌐 Ngôn ngữ khác / Others"] + list(_other_langs.keys())
+        _other_keys = list(_other_langs.keys())
         _cur_other_key = next((k for k, v in _other_langs.items() if v == st.session_state.app_lang), None)
-        _idx = _options.index(_cur_other_key) if _cur_other_key in _options else 0
-        _sel = st.selectbox(
-            "🌐 Ngôn ngữ / Language",
-            _options,
-            index=_idx,
+        if _cur_other_key is None and st.session_state.get("lang_other_select") is not None:
+            st.session_state.lang_other_select = None
+        st.selectbox(
+            _other_placeholder,
+            _other_keys,
+            index=_other_keys.index(_cur_other_key) if _cur_other_key in _other_keys else None,
+            placeholder=_other_placeholder,
             label_visibility="collapsed",
             key="lang_other_select",
+            on_change=_on_other_lang_change,
         )
-        if _sel != _options[0] and st.session_state.app_lang != _other_langs[_sel]:
-            _set_lang(_other_langs[_sel])
 st.markdown("</div>", unsafe_allow_html=True)
 
 lang = st.session_state.app_lang
