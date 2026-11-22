@@ -208,19 +208,22 @@ def _on_other_lang_change():
     if sel and sel in LANG_OPTIONS:
         st.session_state.app_lang = LANG_OPTIONS[sel]
 
-_T_bar = get_translator(st.session_state.app_lang)
-_other_placeholder = _T_bar("other_languages_placeholder", default="🌐 Ngôn ngữ khác / Others")
+_other_placeholder = "🌐 Ngôn ngữ khác" if st.session_state.app_lang == "vi" else "🌐 Other languages"
 
 st.markdown(
     """
     <style>
     .lang-bar-wrap div[data-testid="stButton"] > button {
         min-height: 48px !important;
-        padding: 8px 16px !important;
-        font-size: 15px !important;
+        height: auto !important;
+        padding: 8px 14px !important;
+        font-size: 14.5px !important;
         font-weight: 700 !important;
         border-radius: 10px !important;
-        white-space: nowrap !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        line-height: 1.3 !important;
     }
     .lang-bar-wrap div[data-testid="stSelectbox"],
     .lang-bar-wrap div[data-testid="stSelectbox"] > div,
@@ -260,7 +263,7 @@ st.markdown(
         .lang-bar-wrap div[data-testid="stButton"] > button {
             min-height: 42px !important;
             padding: 6px 8px !important;
-            font-size: 13.5px !important;
+            font-size: 13px !important;
         }
         .lang-bar-wrap div[data-testid="stSelectbox"],
         .lang-bar-wrap div[data-testid="stSelectbox"] > div,
@@ -276,11 +279,11 @@ st.markdown(
 )
 
 st.markdown('<div class="lang-bar-wrap">', unsafe_allow_html=True)
-col_vi, col_en, col_other = st.columns([1.35, 1.35, 3.3], vertical_alignment="bottom")
+col_vi, col_en, col_other = st.columns([1.45, 1.45, 3.1], vertical_alignment="bottom")
 
 with col_vi:
     st.button(
-        "🇻🇳 VI",
+        "🇻🇳 Tiếng Việt",
         on_click=_set_lang,
         args=("vi",),
         use_container_width=True,
@@ -289,7 +292,7 @@ with col_vi:
 
 with col_en:
     st.button(
-        "🇺🇸 EN",
+        "🇺🇸 English",
         on_click=_set_lang,
         args=("en",),
         use_container_width=True,
