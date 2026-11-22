@@ -992,10 +992,13 @@ def _slot_candidates(slot):
             pair = p.strip()
             positions.append({'pos': pair, 'items': items_map.get(pair, '—')})
         
+        raw_prob = c.get('prob', '')
+        prob_str = f"{raw_prob * 100:.0f}%" if isinstance(raw_prob, (int, float)) and raw_prob <= 1 else (str(raw_prob) if raw_prob != '' else '')
         out.append({
             'pattern': pat,
             'positions': positions,
-            'prob': '',
+            'prob': prob_str,
+            'offset': c.get('offset'),
             'source': src,
             'reason': (c.get('reason') or (f"nguồn {src}" if isinstance(src, int) else "dự đoán chuẩn")),
             'phases': c.get('phases', []),
