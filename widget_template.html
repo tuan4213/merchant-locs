@@ -193,7 +193,7 @@
       const fbCopyStr = compactPattern(second.pattern) + '|' + compactItems([checkPos]);
       const hasItem = checkPos.items && checkPos.items !== '—';
       const itHtml = hasItem ? esc(checkPos.items) : '<span style="opacity:.35;font-style:italic">—</span>';
-      const reasonTxt = second.reason || ('phase ' + (second.phases || []).join('/'));
+      const reasonTxt = formatCandMeta(second, second.type === 'actual');
       h += '<div class="fb-item top2">' + mkBtn(fbCopyStr, '📋', true) +
            '<div class="fb-head">' +
              '<span class="fb-prob">[' + esc(second.prob) + ']</span>' +
@@ -207,7 +207,7 @@
       h += '<div class="fb-title" style="margin-top:' + (second ? '14px' : '0') + '">' + esc(L.fallback) + '</div>';
       for (const f of fallbacks) {
         const cls = 'fb-item' + (f.type === 'real' ? ' real' : '');
-        const reason = f.reason || ('phase ' + (f.phases || []).join('/'));
+        const reason = formatCandMeta(f, f.type === 'actual');
         const checkPos = f.positions.length ? f.positions[0] : {pos:'?', items:'—'};
         const fbCopyStr = compactPattern(f.pattern) + '|' + compactItems([checkPos]);
         const hasItem = checkPos.items && checkPos.items !== '—';
@@ -311,4 +311,30 @@
   }
   render();
 })();
+
+function formatOffsetFormula(off, cycle = 119) {
+  if (off === null || off === undefined || off === "" || Number.isNaN(Number(off))) return "";
+  const n = Number(off);
+  if (!Number.isInteger(n) || n <= 0) return `off=${n}`;
+  const k = Math.floor(n / cycle);
+  const rem = n - k * cycle;
+  if (k <= 0) return `${n}`;
+  if (rem === 0) return `${k}×${cycle} = ${n}`;
+  const sign = rem > 0 ? "+" : "-";
+  return `${k}×${cycle} ${sign} ${Math.abs(rem)} = ${n}`;
+}
+
+function formatCandMeta(cand, isActual = false) {
+  if (!cand) return "Không có lý do / chưa có ứng viên";
+  if (isActual || cand.type === "actual") return "Dữ liệu thật từ CSV (Actual)";
+  const baseReason = (cand.reason && String(cand.reason).trim())
+    || (cand.source !== undefined && cand.source !== null && String(cand.source).trim() !== ""
+        ? `Nguồn slot ${cand.source}`
+        : "Quy tắc dự đoán");
+  const formula = formatOffsetFormula(cand.offset, 119);
+  const srcPart = (cand.source !== undefined && cand.source !== null && String(cand.source).trim() !== "")
+    ? `src=${cand.source}`
+    : "";
+  return [baseReason, formula, srcPart].filter(Boolean).join(" · ");
+}
 </script>
