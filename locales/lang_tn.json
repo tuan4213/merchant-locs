@@ -51,7 +51,7 @@
     "tz_col_slot": "Ditiragalo tsa slot",
     "tz_col_vn": "Nako ya VN (UTC+7)",
     "tz_col_target": "Nako le Phetogo ya Letsatsi ya UTC{tz_str}",
-    "time_machine_guide": "🕰️ Time Machine: Shift days backward or forward on the slider to inspect past or future data/predictions, compare history, and simulate scenarios. View-only; source data is untouched.",
+    "time_machine_guide": "🕰️ Motšine wa Nako: Suthela malatsi morago kgotsa pele mo sekirining go lebelela datha ya nako e e fetileng kgotsa e e tlang/diponelopele, bapisa histori, le go etisa maemo. Go lebelela fela; datha ya motheo ga e amisiwe.",
     "tz_col_merchant": "Mabenkele",
     "tz_col_rule": "Kakaretso ya Molao wa Kaelo",
     "tz_m_first": "Morekisi wa Ntlha",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Letsatsi le fetileng",
     "tz_day_same": "Letsatsi le le tshwanang",
     "tz_day_next": "Letsatsi le latelang",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN motheo: e ratang datha ya nnete, e leba phela ya dikgaolo & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter go ralala k, p; mo dikgaoganyong 16 / 116 / 132 kgotsa potologo 1072 e dirisa k*116 + p*16 go ralala k, p go tshwanelana le phela, e tlatisa dikgaoganyong pele fa e le sieo.",
+    "tz_rule_mid": "E dirisa mokgwa wa 119 ka dinako tsotlhe (k*119 + jitter); fa kgaoganyo e le 16 / 116 / 132 kgotsa e fitlha mo potologong 1072 (mokgwa wa dikgato di le 14), e dirisa k*116 + p*16 go ralala k, p go suthela mo Phase A e e tshwanang (A4 / A3).",
+    "tz_rule_last": "E dikologa go ralala mokgwa wa 119 (k*119 + jitter); mo dikgaoganyong 16 / 116 / 132 kgotsa potologo 1072 (k*116 + p*16 go ralala k, p), e rata phela e e siamisiweng ya A2 / C7 mme e boela morago fa datha e seyo."
   },
   "widget": {
     "title": "Lefelo la Merchant",
@@ -82,7 +82,7 @@
     "dup_hint": "E netefaditswe ke motswedi o sele",
     "check": "Tlhatlhoba",
     "real_badge": "NNETE",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "BORORO",
     "missing_data_warn": "⚠️ <b>Tshedimosetso ya ntlha e duile!</b> Bolelopele bo dirwa go ya ka melao. Ga go na data kwa "
   },
   "other_languages_placeholder": "🌐 Puo tse dingwe"

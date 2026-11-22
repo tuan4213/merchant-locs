@@ -48,7 +48,7 @@
     "err_lang_files": "⚠️ ভাষা ফাইলৰ ত্ৰুটি:",
     "csv_logic_cols_html": "<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">CSV তৰ্ক স্তম্ভসমূহ:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(যদি উপলব্ধ থাকে স্নোফ্লেক আইডি — পৰ্যায়ক্ৰমিকতা/স্লট ব্যৱহাৰ কৰা নহয়)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(৬ ঘণ্টীয়া স্লট ৰূপান্তৰৰ সময়)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(পেটাৰ্ণ/আইটেম সমল)</span></span></div>",
     "tz_milestone_guide": "সময়ৰ অঞ্চল আৰু পৰিৱৰ্তন (UTC{tz_str}): স্লাইডাৰে প্ৰদৰ্শন সময় নিয়ন্ত্ৰণ কৰে; UTC সলনি কৰিলে এটা মাৰ্চেণ্ট আগৰ বা পিছৰ দিনলৈ যাব পাৰে।",
-    "tz_col_slot": "Slot milestone",
+    "tz_col_slot": "স্লট মাইলষ্টোন",
     "tz_col_vn": "VN সময় (UTC+7)",
     "tz_col_target": "UTC{tz_str} সময় আৰু দিনৰ পৰিৱৰ্তন",
     "time_machine_guide": "🕰️ সময় মেচিন: অতীত বা ভৱিষ্যতৰ তথ্য পৰীক্ষা কৰিবলৈ দিনবোৰ আগলৈ বা পিছলৈ নিয়ক। কেৱল চোৱাৰ বাবে।",
@@ -61,9 +61,9 @@
     "tz_day_prev": "আগৰ দিন",
     "tz_day_same": "একে দিন",
     "tz_day_next": "পিছৰ দিন",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN বেচ: প্ৰকৃত ডাটা পছন্দ কৰে, ফেজ ফ্ল' আৰু k*119 + p*j (j ∈ ±6, ±12) / k*119 + k, p ৰ জুৰি জিটাৰ পৰীক্ষা কৰে; ব্যৱধান 16 / 116 / 132 বা চাইকেল 1072 ত ফেজ মিলাবলৈ k, p ত k*116 + p*16 ব্যৱহাৰ কৰে, নথকাৰ ক্ষেত্ৰত আগলৈ ব্যৱধান পূৰণ কৰে।",
+    "tz_rule_mid": "ডিফল্টভাৱে 119 ছন্দ (k*119 + jitter); যেতিয়া ব্যৱধান 16 / 116 / 132 হয় বা চাইকেল 1072 (14-step pattern) স্পৰ্শ কৰে, তেতিয়া মিল থকা ফেজ A (A4 / A3) লৈ স্থানান্তৰিত হ'বলৈ k, p ত k*116 + p*16 ব্যৱহাৰ কৰে।",
+    "tz_rule_last": "119 ছন্দৰ মাজেৰে মেৰিয়াই লয় (k*119 + jitter); ব্যৱধান 16 / 116 / 132 বা চাইকেল 1072 (k, p ত k*116 + p*16) ত, পৰিৱৰ্তিত ফেজ A2 / C7 ক পক্ষপাতিত্ব কৰে আৰু ডাটা নাথাকিলে বেকআপ লয়।"
   },
   "widget": {
     "title": "মাৰ্চেণ্ট অৱস্থান",

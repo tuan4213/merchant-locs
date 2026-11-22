@@ -61,9 +61,9 @@
     "tz_day_prev": "Día anterior",
     "tz_day_same": "Mesmo día",
     "tz_day_next": "Día seguinte",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "Base 04:00 VN: prefire os datos reais, comproba o fluxo de fase e k*119 + p*j (j ∈ ±6, ±12) / k*119 + fluctuación en k, p; en lagoas 16 / 116 / 132 ou ciclo 1072 usa k*116 + p*16 en k, p para coincidir coa fase, enchendo as lagoas cara adiante se faltan.",
+    "tz_rule_mid": "Predeterminado ao ritmo 119 (k*119 + fluctuación); cando a lagoa é 16 / 116 / 132 ou alcanza o ciclo 1072 (patrón de 14 pasos), usa k*116 + p*16 en k, p para cambiar á Fase A coincidente (A4 / A3).",
+    "tz_rule_last": "Axústase ao ritmo 119 (k*119 + fluctuación); en lagoas 16 / 116 / 132 ou ciclo 1072 (k*116 + p*16 en k, p), prefire a fase axustada A2 / C7 e recorre a alternativas se faltan datos."
   },
   "widget": {
     "title": "Localización do comerciante",

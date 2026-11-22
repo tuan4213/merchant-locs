@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 Statický TRANS přepsán",
     "trans_using_static": "✅ Používá se statický TRANS",
     "trans_scanned_caption": "📥 Naskenováno: **{used}** slotů (požadováno: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Trénink: {train} | Test: {test}",
     "trans_edit": "Upravit obsah:",
     "err_widget_missing": "⚠️ Soubor `widget_template.html` nebyl nalezen.",
     "err_lang_files": "⚠️ Chyba jazykového souboru:",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Předchozí den",
     "tz_day_same": "Stejný den",
     "tz_day_next": "Následující den",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN základ: preferuje aktuální data, kontroluje tok fází & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter napříč k, p; při mezerách 16 / 116 / 132 nebo cyklu 1072 používá k*116 + p*16 napříč k, p pro shodu fází, přičemž mezery doplňuje dopředu, pokud chybí.",
+    "tz_rule_mid": "Standardně používá rytmus 119 (k*119 + jitter); když je mezera 16 / 116 / 132 nebo dosáhne cyklu 1072 (14krokový vzor), používá k*116 + p*16 napříč k, p pro přechod do odpovídající fáze A (A4 / A3).",
+    "tz_rule_last": "Zalamuje se podle rytmu 119 (k*119 + jitter); při mezerách 16 / 116 / 132 nebo cyklu 1072 (k*116 + p*16 napříč k, p) upřednostňuje upravenou fázi A2 / C7 a v případě chybějících dat se vrací k záložnímu řešení."
   },
   "widget": {
     "title": "Poloha Merchantu",

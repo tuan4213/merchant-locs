@@ -38,7 +38,7 @@
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 TRANS сканерлау",
     "trans_scan_slots": "Кире сканерлау слоттары һаны",
-    "adaptive_toggled": "✅ Adaptive offset {status}",
+    "adaptive_toggled": "✅ Адаптивлы урыны {status}",
     "trans_overridden": "🚀 Статик TRANS алмаштырылды",
     "trans_using_static": "✅ Статик TRANS ҡулланыла",
     "trans_scanned_caption": "📥 Сканерланды: **{used}** слот (кирәк: {req})",
@@ -48,7 +48,7 @@
     "err_lang_files": "⚠️ Тел файлы хатаһы:",
     "csv_logic_cols_html": "<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">CSV логик бағаналары:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(Snowflake ID, әгәр бар икән — периодиклыҡ/слоттар өсөн ҡулланылмай)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(6 сәғәтлек слотҡа әйләндереү ваҡыты)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(шаблон/әйбер эстәлеге)</span></span></div>",
     "tz_milestone_guide": "Ваҡыт бүлкәте һәм үҙгәртеү (UTC{tz_str}): Слайдер ваҡытты көйләй; UTC үҙгәреүе һатыусыны алдағы йә киләһе көнгә күсерергә мөмкин.",
-    "tz_col_slot": "Slot milestone",
+    "tz_col_slot": "Слот сиге",
     "tz_col_vn": "VN Ваҡыты (UTC+7)",
     "tz_col_target": "UTC{tz_str} Ваҡыты һәм Көн Күсеше",
     "time_machine_guide": "🕰️ Ваҡыт машинаһы: Үткән йәки киләсәк мәғлүмәттәрҙе ҡарау өсөн көндәрҙе күсерегеҙ. Бары тик ҡарау өсөн генә.",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Үткән көн",
     "tz_day_same": "Шул уҡ көн",
     "tz_day_next": "Киләһе көн",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN базаһы: фактик мәғлүмәттәрҙе өҫтөн күрә, фаза ағымын & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter тикшерә; 16 / 116 / 132 бушлыҡтарҙа йәки 1072 циклында фазаға ярашлы k, p буйынса k*116 + p*16 ҡуллана, юғалған осраҡта алға ҡарай тултыра.",
+    "tz_rule_mid": "119 ритмы буйынса эшләй (k*119 + jitter); бушлыҡ 16 / 116 / 132 булғанда йәки 1072 циклына барып еткәндә (14-аҙымлы үрнәк), ярашлы Фазаға (A4 / A3) күсеү өсөн k, p буйынса k*116 + p*16 ҡуллана.",
+    "tz_rule_last": "119 ритмы буйынса урап уҙа (k*119 + jitter); 16 / 116 / 132 бушлыҡтарҙа йәки 1072 циклында (k, p буйынса k*116 + p*16), көйләнгән A2 / C7 фазаһын һайлай һәм мәғлүмәт булмағанда кире ҡайта."
   },
   "widget": {
     "title": "Мерчант урыны",

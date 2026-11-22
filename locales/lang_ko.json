@@ -48,7 +48,7 @@
     "err_lang_files": "⚠️ 언어 파일 오류:",
     "csv_logic_cols_html": "<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">CSV 로직 열:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(사용 가능한 경우 Snowflake ID — 주기성/슬롯에 사용되지 않음)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(6시간 슬롯 변환 타임스탬프)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(패턴/아이템 콘텐츠)</span></span></div>",
     "tz_milestone_guide": "시간대 및 변환 (UTC{tz_str}): 슬라이더로 표시 시간대 조절; UTC 변경 시 가맹점이 전날이나 다음 날로 이동할 수 있음.",
-    "tz_col_slot": "Slot milestone",
+    "tz_col_slot": "슬롯 마일스톤",
     "tz_col_vn": "VN 시간 (UTC+7)",
     "tz_col_target": "UTC{tz_str} 시간 및 요일 변경",
     "time_machine_guide": "🕰️ 타임머신: 슬라이더로 날짜를 앞뒤로 이동하여 과거/미래 데이터 및 예측을 검토하고 시나리오를 비교하세요. 보기 전용이며 원본 데이터는 변경되지 않습니다.",
@@ -61,9 +61,9 @@
     "tz_day_prev": "전일",
     "tz_day_same": "당일",
     "tz_day_next": "다음날",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN 기준: 실제 데이터를 선호하며, 위상 흐름 및 k*119 + p*j (j ∈ ±6, ±12) / k*119 + k, p 전반의 지터를 확인합니다. 간격 16 / 116 / 132 또는 주기 1072에서는 k, p 전반에 걸쳐 k*116 + p*16을 사용하여 위상에 맞추고, 누락된 경우 앞으로 채워 넣습니다.",
+    "tz_rule_mid": "기본값은 119 리듬(k*119 + 지터)입니다. 간격이 16 / 116 / 132이거나 주기 1072(14단계 패턴)에 도달하면, k, p 전반에 걸쳐 k*116 + p*16을 사용하여 일치하는 위상 A(A4 / A3)로 전환합니다.",
+    "tz_rule_last": "119 리듬(k*119 + 지터)을 따라 감싸며, 간격 16 / 116 / 132 또는 주기 1072(k, p 전반의 k*116 + p*16) 시 조정된 위상 A2 / C7을 선호하고 데이터가 누락되면 대체(fallback)합니다."
   },
   "widget": {
     "title": "상인 위치",

@@ -61,9 +61,9 @@
     "tz_day_prev": "Deiz kent",
     "tz_day_same": "Hevelep deiz",
     "tz_day_next": "Deiz war-lerc'h",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 bazenn VN: gwelloc'h eo kaout roadennoù wirion, gwiriañ red ar fazenn & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter dre k, p; war an toulloù 16 / 116 / 132 pe kelc'h 1072 e implij k*116 + p*16 dre k, p evit klotañ gant ar fazenn, en em leuniañ an toulloù war-raok ma n'eus ket.",
+    "tz_rule_mid": "Dre ziouer war ritm 119 (k*119 + jitter); pa vez un toull 16 / 116 / 132 pe er c'helc'h 1072 (rumm 14 pazenn), e implij k*116 + p*16 dre k, p evit mont d'ar Fazenn A dereat (A4 / A3).",
+    "tz_rule_last": "A endro dre ritm 119 (k*119 + jitter); war an toulloù 16 / 116 / 132 pe kelc'h 1072 (k*116 + p*16 dre k, p), e plij fazenn A2 / C7 reizhet ha distreiñ a ra ma vank roadennoù."
   },
   "widget": {
     "title": "Lec'hiadur ar Marc'hadour",
@@ -82,7 +82,7 @@
     "dup_hint": "Kadarnaet gant ur mammenn all",
     "check": "Gwiriañ",
     "real_badge": "GWIR",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "PON",
     "missing_data_warn": "⚠️ <b>Mankout a ra ar roadoù orin!</b> Raktreset eo ar patrom. Titour ebet e"
   },
   "other_languages_placeholder": "🌐 Yezhoù all"

@@ -51,7 +51,7 @@
     "tz_col_slot": "Slot milestone",
     "tz_col_vn": "Waktu VN (UTC+7)",
     "tz_col_target": "Waktu & Geseran Hari UTC{tz_str}",
-    "time_machine_guide": "🕰️ Time Machine: Geser hari maju/mundur untuk cek data/prediksi lalu/depan, bandingkan riwayat, & simulasi skenario. Hanya lihat; data asli aman.",
+    "time_machine_guide": "🕰️ Time Machine: Shift days backward or forward on the slider to inspect past or future data/predictions, compare history, and simulate scenarios. View-only; source data is untouched.",
     "tz_col_merchant": "Merchant",
     "tz_col_rule": "Ringkasan Aturan Prediksi",
     "tz_m_first": "Merchant Pertama",

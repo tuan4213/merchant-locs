@@ -61,9 +61,9 @@
     "tz_day_prev": "Hari sebelumnya",
     "tz_day_same": "Hari yang sama",
     "tz_day_next": "Hari berikutnya",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 asas VN: mengutamakan data sebenar, menyemak aliran fasa & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter merentas k, p; pada jurang 16 / 116 / 132 atau kitaran 1072 menggunakan k*116 + p*16 merentas k, p untuk memadankan fasa, mengisi jurang ke hadapan jika tiada.",
+    "tz_rule_mid": "Lalai kepada irama 119 (k*119 + jitter); apabila jurang ialah 16 / 116 / 132 atau mencapai kitaran 1072 (corak 14 langkah), menggunakan k*116 + p*16 merentas k, p untuk beralih ke Fasa A yang sepadan (A4 / A3).",
+    "tz_rule_last": "Membungkus sepanjang irama 119 (k*119 + jitter); pada jurang 16 / 116 / 132 atau kitaran 1072 (k*116 + p*16 merentas k, p), mengutamakan fasa A2 / C7 yang dilaraskan dan kembali kepada lalai apabila data hilang."
   },
   "widget": {
     "title": "Lokasi Merchant",

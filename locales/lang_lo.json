@@ -61,9 +61,9 @@
     "tz_day_prev": "ມື້ກ່ອນ",
     "tz_day_same": "ມື້ດຽວກັນ",
     "tz_day_next": "ມື້ຖັດໄປ",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN ພື້ນຖານ: ມັກຂໍ້ມູນຕົວຈິງ, ກວດສອບການໄຫຼຂອງຼຊົ່ວໂມງ & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter ຂ້າມ k, p; ເມື່ອມີຊ່ອງຫວ່າງ 16 / 116 / 132 ຫຼື ຮອບວຽນ 1072 ຈະໃຊ້ k*116 + p*16 ຂ້າມ k, p ເພື່ອໃຫ້ກົງກັບຊົ່ວໂມງ, ຕື່ມຊ່ອງຫວ່າງໄປຂ້າງໜ້າຖ້າຫາກຂາດ.",
+    "tz_rule_mid": "ຄ່າເລີ່ມຕົ້ນເປັນຈັງຫວະ 119 (k*119 + jitter); ເມື່ອຊ່ອງຫວ່າງແມ່ນ 16 / 116 / 132 ຫຼື ຮອດຮອບວຽນ 1072 (ຮູບແບບ 14 ຂັ້ນຕອນ), ໃຊ້ k*116 + p*16 ຂ້າມ k, p ເພື່ອປ່ຽນໄປสู่ Phase A (A4 / A3) ທີ່ກົງກัน.",
+    "tz_rule_last": "ຫໍ່ຕາມຈັງຫວະ 119 (k*119 + jitter); ໃນຊ່ອງຫວ່າງ 16 / 116 / 132 ຫຼື ຮອບວຽນ 1072 (k*116 + p*16 ຂ້າມ k, p), ມັກ Phase A2 / C7 ທີ່ປັບແລ້ວ ແລະ ສຳຮອງຂໍ້ມູນເມື່ອຂໍ້ມູນຂາດ."
   },
   "widget": {
     "title": "ຕຳແหน່ງ Merchant",

@@ -48,7 +48,7 @@
     "err_lang_files": "⚠️ ಭಾಷಾ ಫೈಲ್ ದೋಷ:",
     "csv_logic_cols_html": "<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">CSV ಲಾಜಿಕ್ ಕಾಲಮ್‌ಗಳು:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(ಲಭ್ಯವಿದ್ದರೆ Snowflake ID — ಆವರ್ತಕತೆ/ಸ್ಲಾಟ್ ಬಳಸಲಾಗುವುದಿಲ್ಲ)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(6ಗಂಟೆಗಳ ಸ್ಲಾಟ್ ಪರಿವರ್ತನೆ ಸಮಯ)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(ಮಾದರಿ/ವಸ್ತುವಿನ ವಿಷಯ)</span></span></div>",
     "tz_milestone_guide": "ಸಮಯ ವಲಯ & ಪರಿವರ್ತನೆ (UTC{tz_str}): ಸ್ಲೈಡರ್ ಪ್ರದರ್ಶನ ಸಮಯ ವಲಯವನ್ನುಹೊಂದಿಸುತ್ತದೆ; UTC ಬದಲಾಯಿಸುವುದು ವ್ಯಾಪಾರಿಯನ್ನು ಹಿಂದಿನ ಅಥವಾ ಮುಂದಿನ ದಿನಕ್ಕೆ ಕೊಂಡೊಯ್ಯಬಹುದು.",
-    "tz_col_slot": "Slot milestone",
+    "tz_col_slot": "ಸ್ಲಾಟ್ ಮೈಲಿಗಲ್ಲು",
     "tz_col_vn": "VN ಸಮಯ (UTC+7)",
     "tz_col_target": "UTC{tz_str} ಸಮಯ ಮತ್ತು ದಿನ ಬದಲಾವಣೆ",
     "time_machine_guide": "🕰️ ಟೈಮ್ ಮೆಷಿನ್: ಹಿಂದಿನ ಅಥವಾ ಭವಿಷ್ಯದ ಡೇಟಾ ಪರಿಶೀಲಿಸಲು ಸ್ಲೈಡರ್ ಬಳಸಿ ದಿನಗಳನ್ನು ಹಿಂದೆ ಅಥವಾ ಮುಂದೆ ಸರಿಸಿ. ವೀಕ್ಷಣೆಗೆ ಮಾತ್ರ; ಮೂಲ ಡೇಟಾ ಹಾಗೆಯೇ ಇರುತ್ತದೆ.",
@@ -61,9 +61,9 @@
     "tz_day_prev": "ಹಿಂದಿನ ದಿನ",
     "tz_day_same": "ಅದೇ ದಿನ",
     "tz_day_next": "ಮುಂದಿನ ದಿನ",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN ಬೇಸ್: ನಿಜವಾದ ಡೇಟಾವನ್ನು ಆದ್ಯತೆ ನೀಡುತ್ತದೆ, ಹಂತದ ಹರಿವನ್ನು ಮತ್ತು k*119 + p*j (j ∈ ±6, ±12) / k*119 + k, p ನಾದ್ಯಂತ ಜಿಟರ್ ಅನ್ನು ಪರಿಶೀಲಿಸುತ್ತದೆ; 16 / 116 / 132 ಅಂತರಗಳಲ್ಲಿ ಅಥವಾ 1072 ಚಕ್ರದಲ್ಲಿ ಹಂತವನ್ನು ಹೊಂದಿಸಲು k, p ನಾದ್ಯಂತ k*116 + p*16 ಅನ್ನು ಬಳಸುತ್ತದೆ, ಕಾಣೆಯಾಗಿದ್ದರೆ ಮುಂದಕ್ಕೆ ಅಂತರಗಳನ್ನು ತುಂಬುತ್ತದೆ.",
+    "tz_rule_mid": "ಡೀಫಾಲ್ಟ್ ಆಗಿ 119 ಲಯಕ್ಕೆ (k*119 + jitter); ಅಂತರವು 16 / 116 / 132 ಆಗಿದ್ದಾಗ ಅಥವಾ 1072 ಚಕ್ರವನ್ನು (14-ಹಂತದ ಮಾದರಿ) ತಲುಪಿದಾಗ, ಹೊಂದಾಣಿಕೆಯ ಹಂತ A (A4 / A3) ಗೆ ಬದಲಾಯಿಸಲು k, p ನಾದ್ಯಂತ k*116 + p*16 ಅನ್ನು ಬಳಸುತ್ತದೆ.",
+    "tz_rule_last": "119 ಲಯದ ಉದ್ದಕ್ಕೂ ಸುತ್ತಿಕೊಳ್ಳುತ್ತದೆ (k*119 + jitter); 16 / 116 / 132 ಅಂತರಗಳಲ್ಲಿ ಅಥವಾ 1072 ಚಕ್ರದಲ್ಲಿ (k, p ನಾದ್ಯಂತ k*116 + p*16), ಸರಿಹೊಂದಿಸಿದ ಹಂತ A2 / C7 ಅನ್ನು ಆದ್ಯತೆ ನೀಡುತ್ತದೆ ಮತ್ತು ಡೇಟಾ ಕಾಣೆಯಾದಾಗ ಹಿಂದಿನದಕ್ಕೆ ಸರಿಯುತ್ತದೆ."
   },
   "widget": {
     "title": "ವ್ಯಾಪಾರಿ ಸ್ಥಳ",

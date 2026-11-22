@@ -61,9 +61,9 @@
     "tz_day_prev": "Ranar da ta gabata",
     "tz_day_same": "Rana daya",
     "tz_day_next": "Ranar gobe",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 tuskin VN: ya fi son bayanan gaske, yana bincika kwararar mataki & k*119 + p*j (j ∈ ±6, ±12) / k*119 + rawar jiki a fadin k, p; idan akwai gibɓa 16 / 116 / 132 ko zagaye 1072 yana amfani da k*116 + p*16 a fadin k, p don daidaita mataki, yana cika gibɓa gaba idan sun bace.",
+    "tz_rule_mid": "Asali yana amfani da bugun 119 (k*119 + rawar jiki); idan gibɓa ta zama 16 / 116 / 132 ko ta bugi zagaye 1072 (tsarin mataki 14), yana amfani da k*116 + p*16 a fadin k, p don komawa cikin Mataki mai dacewa A (A4 / A3).",
+    "tz_rule_last": "Yana kunnuwa tare da bugun 119 (k*119 + rawar jiki); akan gibɓa 16 / 116 / 132 ko zagaye 1072 (k*116 + p*16 a fadin k, p), yana son mataki da aka daidaita A2 / C7 kuma yana komawa baya idan bayanai sun bace."
   },
   "widget": {
     "title": "Wurin Merchant",

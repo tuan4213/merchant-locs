@@ -51,7 +51,7 @@
     "tz_col_slot": "Milestone slot",
     "tz_col_vn": "Waktu VN (UTC+7)",
     "tz_col_target": "Waktu & Pergeseran Hari UTC{tz_str}",
-    "time_machine_guide": "🕰️ Time Machine: Geser hari ke belakang/depan untuk cek data/prediksi lalu/depan, bandingkan riwayat, dan simulasi skenario. Hanya lihat; data asli aman.",
+    "time_machine_guide": "🕰️ Mesin Waktu: Geser hari ke belakang atau ke depan pada penggeser untuk memeriksa data/prediksi masa lalu atau masa depan, membandingkan riwayat, dan mensimulasikan skenario. Hanya lihat; data sumber tidak diubah.",
     "tz_col_merchant": "Merchant",
     "tz_col_rule": "Ringkasan Aturan Prediksi",
     "tz_m_first": "Merchant Pertama",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Hari sblm",
     "tz_day_same": "Hari sama",
     "tz_day_next": "Hari brkt",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "Dasar VN 04:00: lebih menyukai data aktual, memeriksa aliran fase & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter di seluruh k, p; pada jeda 16 / 116 / 132 atau siklus 1072 menggunakan k*116 + p*16 di seluruh k, p agar sesuai dengan fase, mengisi jeda ke depan jika hilang.",
+    "tz_rule_mid": "Default ke ritme 119 (k*119 + jitter); ketika jeda adalah 16 / 116 / 132 atau mencapai siklus 1072 (pola 14 langkah), menggunakan k*116 + p*16 di seluruh k, p untuk beralih ke Fase A yang cocok (A4 / A3).",
+    "tz_rule_last": "Membungkus sepanjang ritme 119 (k*119 + jitter); pada jeda 16 / 116 / 132 atau siklus 1072 (k*116 + p*16 di seluruh k, p), menyukai fase A2 / C7 yang disesuaikan dan kembali ke opsi cadangan saat data tidak ada."
   },
   "widget": {
     "title": "Lokasi Merchant",

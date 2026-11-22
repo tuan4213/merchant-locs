@@ -42,13 +42,13 @@
     "trans_overridden": "🚀 TRANS aalajangersimasoq taarserneqarpoq",
     "trans_using_static": "✅ TRANS aalajangersimasoq atorneqarpoq",
     "trans_scanned_caption": "📥 Misissorneqartut: **{used}** slot (piumasaqaat: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Iliniaq: {train} | Misiligiaq: {test}",
     "trans_edit": "Imarai aaqqissukkit:",
     "err_widget_missing": "⚠️ `widget_template.html` nassaassaanngilaq.",
     "err_lang_files": "⚠️ Oqaatsit fiiliinik kukkussut:",
     "csv_logic_cols_html": "<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">CSV tulleriinneri:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(Snowflake ID pisariaqarpat - piffissap kaajallattarnera/slot atornagu)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(piffissaq slot 6h-mut naatsorsugaq)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(imalaa pattern/pequtit)</span></span></div>",
     "tz_milestone_guide": "Nalunaaqutaq & nutserineq (UTC{tz_str}): Slideri nalunaaquttap nalaanik naleqqussisarpoq; UTC nuunneratigut niartoq ullormut siornatigumut tullermulluunniit nuussinnaavoq.",
-    "tz_col_slot": "Slot milestone",
+    "tz_col_slot": "Inissat uuttuut",
     "tz_col_vn": "VN Nalunaaqutaq (UTC+7)",
     "tz_col_target": "UTC{tz_str} Nalunaaqutaq & Ullormik Nuuttoq",
     "time_machine_guide": "🕰️ Piffissami Maskina: Slideri atorlugu ullut kingumut siumulluunniit nuuguk kingumut siunissamilu paasissutissat misissorniarlugit. Takutitsisuinnaavoq; paasissutissat toqqortaatit allanngortinneqanngillat.",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Ulloq siulleq",
     "tz_day_same": "Ulloq taanna",
     "tz_day_next": "Ulloq tuttoq",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN tunngavik: kisitsisit piviusut torersut piorusuppai, phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter k, p akornanni misissorlugit; amigaataasuni 16 / 116 / 132 imaluunniit cycle 1072 atorlugu k*116 + p*16 k, p akornanni phase naapertorniarlugu, amigaataasut siumut immersorlugit.",
+    "tz_rule_mid": "119 rhythm (k*119 + jitter) atorneqarpoq; amigaat 16 / 116 / 132 ikkuppat imaluunniit cycle 1072 (14-step pattern) aniguineqarluni, k*116 + p*16 k, p akornanni atorlugu Phase A (A4 / A3)-mut nuuttoqartarpoq.",
+    "tz_rule_last": "119 rhythm (k*119 + jitter) malillugu kaajallalluni; amigaataasuni 16 / 116 / 132 imaluunniit cycle 1072 (k*116 + p*16 k, p akornanni), phase A2 / C7 naleqqussagaq pingaarnerutinneqarlunilu kisitsisit amigaatigineqartillugit uteqqittoqartarpoq."
   },
   "widget": {
     "title": "Merchantip najugaa",

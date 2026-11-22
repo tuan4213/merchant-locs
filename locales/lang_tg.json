@@ -61,9 +61,9 @@
     "tz_day_prev": "Рӯзи пеш",
     "tz_day_same": "Хди ҳамон рӯз",
     "tz_day_next": "Рӯзи оянда",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "Аasosи 04:00 VN: маълумотҳои воқеиро афзал медонад, ҷараёни фаза ва k*119 + p*j (j ∈ ±6, ±12) / k*119 + ларзишро дар байни k, p тафтиш мекунад; дар фосилаҳои 16 / 116 / 132 ё давраи 1072 k*116 + p*16-ро дар саросари k, p барои мувофиқати фаза истифода мебарад ва дар сурати набудан фосилаҳоро ба пеш пур мекунад.",
+    "tz_rule_mid": "Пешфарз ритми 119 (k*119 + ларзиш) аст; вақте ки фосила 16 / 116 / 132 аст ё ба давраи 1072 (намунаи 14-қадам) мерасад, k*116 + p*16-ро дар байни k, p истифода мебарад то ба Фазаи мувофиқи А (A4 / A3) гузарад.",
+    "tz_rule_last": "Дар қади ритми 119 (k*119 + ларзиш) ҷойгир мешавад; дар фосилаҳои 16 / 116 / 132 ё давраи 1072 (k*116 + p*16 дар байни k, p), ба фазаи танзимшудаи A2 / C7 афзалият медиҳад ва ҳангоми набудани маълумот ба ҳолати пешина бармегардад."
   },
   "widget": {
     "title": "Мавқеи Merchant",

@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS ebongolami",
     "trans_using_static": "✅ Ozali kosalela TRANS ya static",
     "trans_scanned_caption": "📥 Eketami: **{used}** bisika (esɛngami: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Etonga: {train} | Test: {test}",
     "trans_edit": "Bongola makambo:",
     "err_widget_missing": "⚠️ Emonani te `widget_template.html`.",
     "err_lang_files": "⚠️ Mbeba ya fichier ya lokota:",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Mokolo moye passé",
     "tz_day_same": "Mokolo moko",
     "tz_day_next": "Mokolo elandi",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN base: eponaka data ya solo, tala molunge ya ba phase & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter na k, p; na ba ngenga 16 / 116 / 132 to cycle 1072 esalelaka k*116 + p*16 na k, p mpo na kokokisa molunge, tondisa ba ngenga na ntwala soki ebungani.",
+    "tz_rule_mid": "Ezwaka lokola ebete ya 119 (k*119 + jitter); soki ngenga ezali 16 / 116 / 132 to ekomi cycle 1072 (lolenge ya ba ntango 14), esalelaka k*116 + p*16 na k, p mpo na kokende na Phase A (A4 / A3) ebongi.",
+    "tz_rule_last": "Ezengaka na ebete ya 119 (k*119 + jitter); na ba ngenga 16 / 116 / 132 to cycle 1072 (k*116 + p*16 na k, p), epesaka mabaku na phase A2 / C7 ebongisami mpe ezongaka na sima soki data ezanga."
   },
   "widget": {
     "title": "Esika ya Moteki",

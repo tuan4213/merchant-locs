@@ -48,7 +48,7 @@
     "err_lang_files": "⚠️ භාෂා ගොනු දෝෂයකි:",
     "csv_logic_cols_html": "<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">CSV තර්ක තීරුව (Logic cols):</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(පවතී නම් Snowflake ID — ආවර්තිතා/slot භාවිතා නොකරයි)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(පැය 6 ක slot පරිවර්තන ලක්ෂ්‍යය)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(රටාව/භාණ්ඩ අන්තර්ගතය)</span></span></div>",
     "tz_milestone_guide": "කලාපය සහ පරිවර්තනය (UTC{tz_str}): ස්ලයිඩරය කලාපය සකසයි; UTC මාරු කිරීමෙන් වෙළෙන්දෙකු පෙර හෝ පසු දිනයකට යා හැක.",
-    "tz_col_slot": "Slot milestone",
+    "tz_col_slot": "කඩඉම් කට්ටලය",
     "tz_col_vn": "VN වේලාව (UTC+7)",
     "tz_col_target": "UTC{tz_str} වේලාව සහ දිනය",
     "time_machine_guide": "🕰️ කාල යන්ත්‍රය: අතීත හෝ අනාගත දත්ත පරීක්ෂා කිරීමට ස්ලයිඩරය මඟින් දින ඉදිරියට හෝ පසුපසට ගෙන යන්න. නැරඹීමට පමණි.",
@@ -61,9 +61,9 @@
     "tz_day_prev": "පෙර දිනය",
     "tz_day_same": "එම දිනය",
     "tz_day_next": "මීළඟ දිනය",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN පදනම: සැබෑ දත්ත වලට අභිරුචි දක්වයි, අදියර ප්‍රවාහය සහ k*119 + p*j (j ∈ ±6, ±12) / k*119 + k, p හරහා වෙව්ලීම පරීක්ෂා කරයි; 16 / 116 / 132 හිඩැස් වලදී හෝ 1072 චක්‍රයේදී අදියර ගැළපීමට k, p හරහා k*116 + p*16 භාවිතා කරයි, මඟ හැරී ඇත්නම් ඉදිරියට හිඩැස් පුරවයි.",
+    "tz_rule_mid": "පෙරනිමියෙන් 119 රිද්මයට යයි (k*119 + වෙව්ලීම); හිඩැස 16 / 116 / 132 වූ විට හෝ 1072 චක්‍රයට (පියවර 14 ක රටාවක්) ළඟා වූ විට, ගැළපෙන අදියර A (A4 / A3) වෙත මාරුවීමට k, p හරහා k*116 + p*16 භාවිතා කරයි.",
+    "tz_rule_last": "119 රිද්මය දිගේ ආවරණය කරයි (k*119 + වෙව්ලීම); 16 / 116 / 132 හිඩැස් වලදී හෝ 1072 චක්‍රයේදී (k, p හරහා k*116 + p*16), සීරුමාරු කළ A2 / C7 අදියරට අනුග්‍රහය දක්වන අතර දත්ත මඟ හැරී ඇති විට පෙර තත්ත්වයට වැටේ."
   },
   "widget": {
     "title": "වෙළෙන්දාගේ පිහිටීම",
@@ -82,7 +82,7 @@
     "dup_hint": "වෙනත් මූලාශ්‍රයක් මඟින් තහවුරු කර ඇත",
     "check": "පරීක්ෂා කරන්න",
     "real_badge": "සැබෑ",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "බ්‍රිජ්",
     "missing_data_warn": "⚠️ <b>මුල් දත්ත මඟ හැරී ඇත!</b> රටාව පුරෝකථනය කරමින් පවතී. මෙහි දත්ත නොමැත "
   },
   "other_languages_placeholder": "🌐 අනෙකුත් භාෂා"

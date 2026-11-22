@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS static suprascris",
     "trans_using_static": "✅ Se utilizează TRANS static",
     "trans_scanned_caption": "📥 Scanat: **{used}** sloturi (necesar: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Antrenare: {train} | Test: {test}",
     "trans_edit": "Editează conținutul:",
     "err_widget_missing": "⚠️ `widget_template.html` nu a fost găsit.",
     "err_lang_files": "⚠️ Eroare fișier de limbă:",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Ziua anterioară",
     "tz_day_same": "Aceeași zi",
     "tz_day_next": "Ziua următoare",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "Baza 04:00 VN: preferă datele reale, verifică fluxul de fază și k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter în funcție de k, p; pe pauzele 16 / 116 / 132 sau ciclul 1072 utilizează k*116 + p*16 în funcție de k, p pentru a se potrivi cu faza, umplând pauzele înainte dacă lipsesc.",
+    "tz_rule_mid": "Revine implicit la ritmul 119 (k*119 + jitter); când pauza este 16 / 116 / 132 sau atinge ciclul 1072 (model în 14 pași), utilizează k*116 + p*16 în funcție de k, p pentru a trece în Faza A corespunzătoare (A4 / A3).",
+    "tz_rule_last": "Se încadrează în ritmul 119 (k*119 + jitter); pe pauzele 16 / 116 / 132 sau ciclul 1072 (k*116 + p*16 în funcție de k, p), favorizează faza ajustată A2 / C7 și revine la starea anterioară când lipsesc datele."
   },
   "widget": {
     "title": "Locație Merchant",
@@ -82,7 +82,7 @@
     "dup_hint": "Confirmat de o altă sursă",
     "check": "Verifică",
     "real_badge": "REAL",
-    "bridge_badge": "BRIDGE",
+    "bridge_badge": "PUNTE",
     "missing_data_warn": "⚠️ <b>Datele originale lipsesc!</b> Predicție de model. Fără date la"
   },
   "other_languages_placeholder": "🌐 Alte limbi"

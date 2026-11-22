@@ -42,7 +42,7 @@
     "trans_overridden": "🚀 TRANS staticum praetermissum est",
     "trans_using_static": "✅ TRANS statico utitur",
     "trans_scanned_caption": "📥 Scrutata: **{used}** spatia (postulatum: {req})",
-    "trans_train_test": "📊 Train: {train} | Test: {test}",
+    "trans_train_test": "📊 Exercitium: {train} | Probatio: {test}",
     "trans_edit": "Mutare contentum:",
     "err_widget_missing": "⚠️ Non inventum est `widget_template.html`.",
     "err_lang_files": "⚠️ Error fasciculorum linguae:",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Dies prior",
     "tz_day_same": "Idem dies",
     "tz_day_next": "Dies sequens",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN fundamentum: data actualia praefert, fluxum phaseos & k*119 + p*j (j ∈ ±6, ±12) / k*119 + trepidationem per k, p probat; in hiatibus 16 / 116 / 132 vel cyclo 1072 utitur k*116 + p*16 per k, p ad phasin accommodandam, hiatus in posterum complens si desunt.",
+    "tz_rule_mid": "Ad rhythmum 119 deficit (k*119 + trepidatio); cum hiatus est 16 / 116 / 132 vel cyclum 1072 pervenit (forma 14-graduum), utitur k*116 + p*16 per k, p ut se transferat in Phasin A congruentem (A4 / A3).",
+    "tz_rule_last": "Circumvolvitur secundum rhythmum 119 (k*119 + trepidatio); in hiatibus 16 / 116 / 132 vel cyclo 1072 (k*116 + p*16 per k, p), phasin accommodatam A2 / C7 favet et deficit cum data desunt."
   },
   "widget": {
     "title": "Situs Mercatoris",

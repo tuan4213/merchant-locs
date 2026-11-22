@@ -61,9 +61,9 @@
     "tz_day_prev": "วันก่อนหน้า",
     "tz_day_same": "วันเดียวกัน",
     "tz_day_next": "วันถัดไป",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "ฐาน 04:00 VN: ชอบข้อมูลจริง, ตรวจสอบการไหลของเฟส & k*119 + p*j (j ∈ ±6, ±12) / k*119 + จิตเตอร์ทั่วทั้ง k, p; เมื่อมีช่องว่าง 16 / 116 / 132 หรือรอบ 1072 จะใช้ k*116 + p*16 ทั่วทั้ง k, p เพื่อให้ตรงกับเฟส, เติมช่องว่างไปข้างหน้าหากขาดหาย",
+    "tz_rule_mid": "ค่าเริ่มต้นคือจังหวะ 119 (k*119 + จิตเตอร์); เมื่อช่องว่างคือ 16 / 116 / 132 หรือถึงรอบ 1072 (รูปแบบ 14 ขั้นตอน) จะใช้ k*116 + p*16 ทั่วทั้ง k, p เพื่อเลื่อนเข้าสู่เฟส A ที่ตรงกัน (A4 / A3)",
+    "tz_rule_last": "วนตามจังหวะ 119 (k*119 + จิตเตอร์); เมื่อมีช่องว่าง 16 / 116 / 132 หรือรอบ 1072 (k*116 + p*16 ทั่วทั้ง k, p) จะสนับสนุนเฟส A2 / C7 ที่ปรับแล้วและสำรองข้อมูลเมื่อข้อมูลขาดหาย"
   },
   "widget": {
     "title": "ตำแหน่งพ่อค้า",

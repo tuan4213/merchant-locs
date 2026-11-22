@@ -61,9 +61,9 @@
     "tz_day_prev": "ਪਿਛਲਾ ਦਿਨ",
     "tz_day_same": "ਉਸੇ ਦਿਨ",
     "tz_day_next": "ਅਗਲਾ ਦਿਨ",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN ਬੇਸ: ਅਸਲ ਡੇਟਾ ਨੂੰ ਤਰجیਹ ਦਿੰਦਾ ਹੈ, ਪੜਾਅ ਦੇ ਪ੍ਰਵਾਹ ਅਤੇ k*119 + p*j (j ∈ ±6, ±12) / k*119 + k, p ਵਿੱਚ ਜਿੱਟਰ ਦੀ ਜਾਂਚ ਕਰਦਾ ਹੈ; 16 / 116 / 132 ਦੇ ਗੈਪਾਂ ਜਾਂ 1072 ਚੱਕਰ 'ਤੇ ਪੜਾਅ ਨਾਲ ਮੇਲ ਕਰਨ ਲਈ k, p ਵਿੱਚ k*116 + p*16 ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ, ਜੇਕਰ ਗਾਇਬ ਹੋਵੇ ਤਾਂ ਗੈਪਾਂ ਨੂੰ ਅੱਗੇ ਵੱਲ ਭਰਦਾ ਹੈ।",
+    "tz_rule_mid": "ਡਿਫਾਲਟ ਤੌਰ 'ਤੇ 119 ਰਿਥਮ (k*119 + ਜਿੱਟਰ) ਹੁੰਦਾ ਹੈ; ਜਦੋਂ ਗੈਪ 16 / 116 / 132 ਹੁੰਦਾ ਹੈ ਜਾਂ 1072 ਚੱਕਰ (14-ਪੜਾਅ ਪੈਟਰਨ) ਨਾਲ ਟਕਰਾਉਂਦਾ ਹੈ, ਤਾਂ ਮੇਲ ਖਾਂਦੇ ਫੇਜ਼ A (A4 / A3) ਵਿੱਚ ਤਬਦੀਲ ਹੋਣ ਲਈ k, p ਵਿੱਚ k*116 + p*16 ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ।",
+    "tz_rule_last": "119 ਰਿਥਮ (k*119 + ਜਿੱਟਰ) ਦੇ ਨਾਲ ਲਪੇਟਦਾ ਹੈ; 16 / 116 / 132 ਦੇ ਗੈਪਾਂ ਜਾਂ 1072 ਚੱਕਰ (k, p ਵਿੱਚ k*116 + p*16) 'ਤੇ, ਐਡਜਸਟ ਕੀਤੇ ਫੇਜ਼ A2 / C7 ਦਾ ਪੱਖ ਲੈਂਦਾ ਹੈ ਅਤੇ ਡੇਟਾ ਗਾਇਬ ਹੋਣ 'ਤੇ ਵਾਪਸ ਮੁੜਦਾ ਹੈ।"
   },
   "widget": {
     "title": "ਵਪਾਰੀ ਦਾ ਸਥਾਨ",

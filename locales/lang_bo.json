@@ -61,9 +61,9 @@
     "tz_day_prev": "ཉིན་སྔོན་མ།",
     "tz_day_same": "ཉིན་གཅིག",
     "tz_day_next": "ཉིན་རྗེས་མ།",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN གཞི་རིམ།: དངོས་ཡོད་གཞི་གྲངས་ལ་ ಆದུ་རྒྱུ་གཙིགས་འཛིན་བྱེད་ཅིང་། དུས་མཚམས་ཀྱི་རྒྱུན་འགྲོས་ & k*119 + p*j (j ∈ ±6, ±12) / k*119 + k, p ཁྱབ་ཁོངས་ཀྱི་འགྱུར་ཚད་བརྟག་དཔྱད་བྱེད། སྟོང་ཆ་ 16 / 116 / 132 ཡང་ན་ 1072 འཁོར་ཡུག་སྐབས་ k, p ཁྱབ་ཁོངས་སུ་ k*116 + p*16 བེད་སྤྱད་དེ་དུས་མཚམས་དང་མཐུན་པར་བྱེད་པ་དང་། ཆད་པ་ཡོད་ཚེ་མདུན་ཕྱོགས་སུ་གསབ་པར་བྱེད།",
+    "tz_rule_mid": "སྔོན་སྒྲིག་ལྟར་ 119 རོལ་དབྱངས་ (k*119 + jitter) བེད་སྤྱོད། སྟོང་ཆ་ 16 / 116 / 132 ཡང་ན་ 1072 (14 རིམ་པའི་དཔེ་དྲེས།) འཁོར་ཡུག་སྐབས་ k, p ཁྱབ་ཁོངས་སུ་ k*116 + p*16 བེད་སྤྱད་དེ་འཚམ་པའི་དུས་མཚམས་ A (A4 / A3) ནང་སྤོ་བར་བྱེད།",
+    "tz_rule_last": "119 རོལ་དབྱངས་ (k*119 + jitter) དང་བསྟུན་ནས་སྒྲིལ། སྟོང་ཆ་ 16 / 116 / 132 ཡང་ན་ 1072 (k, p ཁྱབ་ཁོངས་སུ་ k*116 + p*16) འཁོར་ཡུག་སྐབས་བཟོ་བཅོས་བྱས་པའི་དུས་མཚམས་ A2 / C7 ལ་དགའ་མོས་བྱེད་ཅིང་། གཞི་གྲངས་ཆད་ཚེ་ཕྱིར་ལོག་བྱེད།"
   },
   "widget": {
     "title": "ཚོང་པའི་གནས་ས།",

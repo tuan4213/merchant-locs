@@ -48,7 +48,7 @@
     "err_lang_files": "⚠️ Памылка файлаў мовы:",
     "csv_logic_cols_html": "<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">Лагічныя слупкі CSV:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(Snowflake ID, калі ёсць — не выкарыстоўваецца для цыклічнасці/слотаў)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(метка часу пераўтварэння слота на 6 гадзін)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(змесціва патэрна/прадмета)</span></span></div>",
     "tz_milestone_guide": "Часавы пояс і пераўтварэнне (UTC{tz_str}): Слайдэр рэгулюе час адлюстравання; змяненне UTC можа перанесці прадаўца на папярэдні ці наступны дзень.",
-    "tz_col_slot": "Slot milestone",
+    "tz_col_slot": "Эталённы слот",
     "tz_col_vn": "Час VN (UTC+7)",
     "tz_col_target": "Час UTC{tz_str} і змяненне дня",
     "time_machine_guide": "🕰️ Машына часу: Перамяшчайце дні назад ці наперад на слайдэры, каб праверыць мінулыя ці будучыя даныя і зыходныя мадэлі.",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Папярэдні дзень",
     "tz_day_same": "Той самы дзень",
     "tz_day_next": "Наступны дзень",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "База 04:00 VN: аддае перавагу фактычным даным, правярае паток фаз і k*119 + p*j (j ∈ ±6, ±12) / k*119 + дрыгаценне па k, p; пры прабелах 16 / 116 / 132 або цыкле 1072 выкарыстоўвае k*116 + p*16 па k, p для супадзення фазы, запаўняючы прабелы наперад пры адсутнасці.",
+    "tz_rule_mid": "Па змаўчанні рытм 119 (k*119 + дрыгаценне); калі прабел складае 16 / 116 / 132 ці дасягаецца цыкл 1072 (14-крокавы шаблон), выкарыстоўвае k*116 + p*16 па k, p для пераходу ў адпаведную фазу A (A4 / A3).",
+    "tz_rule_last": "Абгортваецца ўздоўж рытму 119 (k*119 + дрыгаценне); на прабелах 16 / 116 / 132 або цыкле 1072 (k*116 + p*16 па k, p) аддае перавагу скарэкціраванай фазе A2 / C7 і пераходзіць да рэзервовага варыянта пры адсутнасці даных."
   },
   "widget": {
     "title": "Пазіцыя Merchant",

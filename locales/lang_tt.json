@@ -51,7 +51,7 @@
     "tz_col_slot": "Слот этабы",
     "tz_col_vn": "ВН вакыты (UTC+7)",
     "tz_col_target": "UTC{tz_str} вакыты һәм көн күчеше",
-    "time_machine_guide": "🕰️ Time Machine: Shift days backward or forward on the slider to inspect past or future data/predictions, compare history, and simulate scenarios. View-only; source data is untouched.",
+    "time_machine_guide": "🕰️ Вакыт машинасы: Узган яки киләчәк мәгълүматларны/фаразларны карау, тарихны чагыштыру һәм сценарийларны симуляцияләү өчен слайдерда көннәрне артка яки алга күчерегез. Тик карау өчен генә; башлангыч мәгълүматларга кагылмый.",
     "tz_col_merchant": "Сәүдәгәр",
     "tz_col_rule": "Фаразлау кагыйдәсе кыскача",
     "tz_m_first": "Беренче сәүдәгәр",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Үткән көн",
     "tz_day_same": "Шул ук көн",
     "tz_day_next": "Киләсе көн",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN нигезе: чын мәгълүматларга өстенлек бирә, фаза агымын һәм k*119 + p*j (j ∈ ±6, ±12) / k*119 + k, p буенча дёрганье (jitter) тикшерә; 16 / 116 / 132 бушлыкларында яки 1072 циклында фазага туры килү өчен k, p буенча k*116 + p*16 куллана, булмаганда бушлыкларны алга таба тутыра.",
+    "tz_rule_mid": "119 ритмы буенча килешү буенча эшли (k*119 + jitter); бушлык 16 / 116 / 132 булганда яки 1072 циклына (14 адымлы үрнәк) җиткәндә, тиешле А Фазасына (A4 / A3) күчү өчен k, p буенча k*116 + p*16 куллана.",
+    "tz_rule_last": "119 ритмы буйлап эшли (k*119 + jitter); 16 / 116 / 132 бушлыкларында яки 1072 циклында (k, p буенча k*116 + p*16), көйләнгән A2 / C7 фазасына өстенлек бирә һәм мәгълүмат булмаганда кире кайта."
   },
   "widget": {
     "title": "Merchant урыны",

@@ -38,7 +38,7 @@
     "predict_settings_md": "",
     "trans_scan_title": "#### 🔍 TRANS skanirleme",
     "trans_scan_slots": "Yza skanirleme slotlary",
-    "adaptive_toggled": "✅ Adaptive offset {status}",
+    "adaptive_toggled": "✅ Ukylaşdyrylan süýşme {status}",
     "trans_overridden": "🚀 Statik TRANS üýtgedildi",
     "trans_using_static": "✅ Statik TRANS ulanylýar",
     "trans_scanned_caption": "📥 Skanirlendi: **{used}** slot (talap edilýär: {req})",
@@ -51,7 +51,7 @@
     "tz_col_slot": "Slot etaby",
     "tz_col_vn": "WNM wagty (UTC+7)",
     "tz_col_target": "UTC{tz_str} wagty we gün süýşmesi",
-    "time_machine_guide": "🕰️ Time Machine: Shift days backward or forward on the slider to inspect past or future data/predictions, compare history, and simulate scenarios. View-only; source data is untouched.",
+    "time_machine_guide": "🕰️ Wagt mašyny: Geçmiş ýa-da geljekki maglumatlary/çaklamalary barlamak, taryhy deňeşdirmek we ssenariýleri synag etmek üçin sürgünçäni yza ýa-da öňe süýşüriň. Diňe görüp bolar; çeşme maglumatlaryna el degirilmeýär.",
     "tz_col_merchant": "Söwdagär",
     "tz_col_rule": "Çaklama düzgüniniň gysgaça mazmuny",
     "tz_m_first": "Ilkinji söwdagär",
@@ -61,9 +61,9 @@
     "tz_day_prev": "Öňki gün",
     "tz_day_same": "Şol bir gün",
     "tz_day_next": "Indiki gün",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 WN binazasy: hakyky maglumatlary makul bilýär, faza akymyny & k*119 + p*j (j ∈ ±6, ±12) / k*119 + k we p boýunça yzygiderli durnuksyzlygy barlaýar; 16 / 116 / 132 boşluklarda ýa-da 1072 siklinde faza laýyk gelmek üçin k we p boýunça k*116 + p*16 ulanýar, eger ýok bolsa boşluklary öňe tarap doldurýar.",
+    "tz_rule_mid": "Deslapky 119 ritmine eýerýär (k*119 + durnuksyzlyk); boşluk 16 / 116 / 132 bolanda ýa-da 1072 sikline (14 ädimli nusga) ýetende, laýyk gelýän A fazasyna (A4 / A3) geçmek üçin k we p boýunça k*116 + p*16 ulanýar.",
+    "tz_rule_last": "119 ritmi boýunça gutarnýar (k*119 + durnuksyzlyk); 16 / 116 / 132 boşluklarda ýa-da 1072 siklinde (k we p boýunça k*116 + p*16), sazlanan A2 / C7 fazasyny makul bilýär we maglumat ýok wagty yza gaýdýar."
   },
   "widget": {
     "title": "Söwda edaranyň ýeri",

@@ -61,9 +61,9 @@
     "tz_day_prev": "Пдонти кун",
     "tz_day_same": "Пĕр кун",
     "tz_day_next": "Тепĕр кун",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN база: чăн даннăйсене пуянлăрах тухать, фаза юххине тата k*119 + p*j (j ∈ ±6, ±12) / k*119 + k, p тăрăх титреве тĕрĕсет; 16 / 116 / 132 татăкĕсенче е 1072 çавранура k, p тăрăх k*116 + p*16 усă курать, фазăпа пĕр килчĕр тесе, çухалнă чухне малашне тултарать.",
+    "tz_rule_mid": "Пĕлтерĕшсемпе 119 ритм (k*119 + титрев); татăк 16 / 116 / 132 пулсан е 1072 çаврануна кĕрсен (14 утăмлă паттерн), k, p тăрăх k*116 + p*16 усă курать килĕшекен А Фазăна (A4 / A3) куçма.",
+    "tz_rule_last": "119 ритм тăрăх çаврăнать (k*119 + титрев); 16 / 116 / 132 татăкĕсенче е 1072 çавранура (k, p тăрăх k*116 + p*16), тӳрлетнĕ А2 / C7 фазăна суйлать тата даннăй çук чухне малти кăтарту патне таврăнать."
   },
   "widget": {
     "title": "Merchant вырӑнӗ",
