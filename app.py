@@ -200,25 +200,25 @@ def _render_tz_milestone_table(utc_offset):
 
     r_first = _t_locale(
         "tz_rule_first",
-        "Mở đầu ngày theo Phase A; ưu tiên dữ liệu thật từ CSV, thiếu thì tính theo k*119 + jitter.",
-        "Starts day in Phase A; prefers real CSV data, else k*119 + jitter.",
+        "Mốc chuẩn thường dùng 119 (k*119); ưu tiên khớp gap 14 hoặc macro cycle (1072 / 16) để lấy A tương ứng (k, p).",
+        "Default step uses 119 (k*119); prioritizes gap 14 or macro cycle (1072 / 16) to pick matching A (k, p).",
     )
     r_mid = _t_locale(
         "tz_rule_mid",
-        "Nối nhịp Phase B theo công thức k*116 + p*16; nếu thiếu slot thì bù theo mốc lân cận.",
-        "Continues Phase B via k*116 + p*16; fills missing slots from nearby milestones.",
+        "Đối chiếu gap 14 & chu kỳ macro (1072 / 16) theo bậc k, p; khớp gap thì lấy đúng A liên kết thay vì ép mốc tĩnh.",
+        "Checks gap 14 & macro cycle (1072 / 16) across k, p indices; picks matched A on gap hit instead of fixed slots.",
     )
     r_last = _t_locale(
         "tz_rule_last",
-        "Chốt cuối ngày theo Phase C; đối chiếu lại chuỗi trước và dùng mốc dự phòng nếu thiếu data.",
-        "Wraps day in Phase C; cross-checks prior sequence and falls back if data is missing.",
+        "Chốt cuối ngày theo chuỗi 119 và đối chiếu gap 14 / macro (1072 / 16) để xác nhận A ở các chỉ số k, p gần nhất.",
+        "Closes day along 119 step and checks gap 14 / macro (1072 / 16) to confirm A across recent k, p indices.",
     )
 
     merchants = [
-        (m_first, 4, 0, ["Phase A", "k*119 + jitter"], r_first, True),
-        (m_second, 10, 0, ["Phase B", "k*116 + p*16"], r_mid, False),
-        (m_third, 16, 0, ["Phase B", "k*116 + p*16"], r_mid, False),
-        (m_last, 22, 0, ["Phase C", "Fallback"], r_last, True),
+        (m_first, 4, 0, ["Step 119", "Gap 14 · Macro 1072/16", "k, p → A"], r_first, True),
+        (m_second, 10, 0, ["Gap 14", "Macro 16 / 1072", "Match A (k, p)"], r_mid, False),
+        (m_third, 16, 0, ["Gap 14", "Macro 1072 / 16", "Match A (k, p)"], r_mid, False),
+        (m_last, 22, 0, ["Step 119", "Gap 14 / Macro 1072", "Verify A (k, p)"], r_last, True),
     ]
 
     rows_html = []
