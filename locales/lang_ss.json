@@ -61,9 +61,9 @@
     "tz_day_prev": "Lusuku loludlule",
     "tz_day_same": "Lolunye lusuku",
     "tz_day_next": "Lusuku lolulandelako",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN base: ikhetsa imininingwane lephilisako, ihlola kuhamba kwesigaba & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter ku k, p; etikhaleni leti 16 / 116 / 132 loswayo 1072 lusebentisa k*116 + p*16 ku k, p kute kutsi kufanane sigaba, licosha tikhatsi embili nasetiswe.",
+    "tz_rule_mid": "Ibuyela esigabeni sa 119 rhythm (k*119 + jitter); nasitikha 16 / 116 / 132 loswayo 1072 (14-step pattern), lusebentisa k*116 + p*16 ku k, p kute lishINTSHE lisinge kwiSigaba A (A4 / A3) lesifanako.",
+    "tz_rule_last": "Luyasangana nge 119 rhythm (k*119 + jitter); etikhaleni 16 / 116 / 132 loswayo 1072 (k*116 + p*16 ku k, p), luthanda sigaba lesilungisiwe A2 / C7 bese lubuyela emuva nasetiswe."
   },
   "widget": {
     "title": "Insimbo ye-Merchant",

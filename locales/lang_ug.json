@@ -61,9 +61,9 @@
     "tz_day_prev": "ئالدىنقى كۈن",
     "tz_day_same": "ئوخشاش كۈن",
     "tz_day_next": "كېيىنكى كۈن",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN ئاساسى: ئەمەلىي سانلىق مەلۇماتنى ياخشى كۆرىدۇ، باسقۇچ ئېقىمى ۋە k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter نى k, p ئارقىلىق تەكشۈرىدۇ؛ بوشلۇق 16 / 116 / 132 ياكى دەۋرىيلىك 1072 دە k, p ئارقىلىق k*116 + p*16 نى ئىشلىتىپ باسقۇچقا ماسلاشتۇرىدۇ، كەم بولسا ئالدىغا تولدۇرىدۇ.",
+    "tz_rule_mid": "كۆڭۈلدىكىسى 119 رىتىم (k*119 + jitter)؛ بوشلۇق 16 / 116 / 132 بولغاندا ياكى 1072 دەۋرىيلىككە يەتكەندە (14 قەدەم ئەندىزىسى)، k, p ئارقىلىق k*116 + p*16 نى ئىشلىتىپ ماس كېلىدىغان باسقۇچ A (A4 / A3) گە ئۆزگىرىدۇ.",
+    "tz_rule_last": "119 رىتىم بويىچە ئورالىدۇ (k*119 + jitter)؛ بوشلۇق 16 / 116 / 132 ياكى دەۋرىيلىك 1072 دە (k, p ئارقىلىق k*116 + p*16)، تەڭشەلگەن باسقۇچ A2 / C7 نى ئاساس قىلىدۇ ۋە سانلىق مەلۇمات كەم بولسا چېكىنىدۇ."
   },
   "widget": {
     "title": "سودىگەر ئورنى",

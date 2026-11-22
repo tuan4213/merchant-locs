@@ -61,9 +61,9 @@
     "tz_day_prev": "আগের দিন",
     "tz_day_same": "একই দিন",
     "tz_day_next": "পরের দিন",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN বেস: আসল ডেটা পছন্দ করে, ফেজ ফ্লো ও k*119 + p*j (j ∈ ±6, ±12) / k*119 + k, p জুড়ে জিটার চেক করে; 16 / 116 / 132 ফাঁকে বা 1072 চক্রে ফেজ মেলানোর জন্য k, p জুড়ে k*116 + p*16 ব্যবহার করে, অনুপস্থিত থাকলে ফাঁک সামনে পূরণ করে।",
+    "tz_rule_mid": "ডিফল্টভাবে 119 ছন্দ (k*119 + জিটার); ফাঁک 16 / 116 / 132 হলে বা 1072 চক্রে (14-ধাপের প্যাটার্ন) পৌঁছালে, মিলে যাওয়া ফেজ A (A4 / A3)-এ শিفت করতে k, p জুড়ে k*116 + p*16 ব্যবহার করে।",
+    "tz_rule_last": "119 ছন্দ বরাবর মোড় নেয় (k*119 + জিটার); 16 / 116 / 132 ফাঁকে বা 1072 চক্রে (k, p জুড়ে k*116 + p*16), সামঞ্জস্যপূর্ণ ফেজ A2 / C7 কে প্রাধান্য দেয় এবং ডেটা অনুপস্থিত থাকলে ফলব্যাক করে।"
   },
   "widget": {
     "title": "মার्चেন্টের অবস্থান",

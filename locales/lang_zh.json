@@ -61,9 +61,9 @@
     "tz_day_prev": "前一天",
     "tz_day_same": "同一天",
     "tz_day_next": "后一天",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN 基准：优先使用实际数据，检查相位流及 k*119 + p*j (j ∈ ±6, ±12) / k*119 + 跨 k, p 的抖动；在间隙 16 / 116 / 132 或周期 1072 时，使用跨 k, p 的 k*116 + p*16 来匹配相位，若缺失则向前方填充间隙。",
+    "tz_rule_mid": "默认为 119 节律（k*119 + 抖动）；当间隙为 16 / 116 / 132 或达到周期 1072（14 步模式）时，使用跨 k, p 的 k*116 + p*16 切换至匹配的相位 A（A4 / A3）。",
+    "tz_rule_last": "沿 119 节律缠绕（k*119 + 抖动）；在间隙 16 / 116 / 132 或周期 1072（跨 k, p 的 k*116 + p*16）时，偏好调整后的相位 A2 / C7，数据缺失时进行回退。"
   },
   "widget": {
     "title": "商人位置",

@@ -61,9 +61,9 @@
     "tz_day_prev": "ކުރީ ދުވަސް",
     "tz_day_same": "ހަމަ އެ ދުވަސް",
     "tz_day_next": "ފަހު ދުވަސް",
-    "tz_rule_first": "04:00 VN base: prefers actual data, checks phase flow & k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter across k, p; on gaps 16 / 116 / 132 or cycle 1072 uses k*116 + p*16 across k, p to match phase, filling gaps forward if missing.",
-    "tz_rule_mid": "Defaults to 119 rhythm (k*119 + jitter); when gap is 16 / 116 / 132 or hits cycle 1072 (14-step pattern), uses k*116 + p*16 across k, p to shift into the matching Phase A (A4 / A3).",
-    "tz_rule_last": "Wraps along 119 rhythm (k*119 + jitter); on gaps 16 / 116 / 132 or cycle 1072 (k*116 + p*16 across k, p), favors adjusted phase A2 / C7 and falls back when data is missing."
+    "tz_rule_first": "04:00 VN ބޭސް: އަސްލު ޑޭޓާ އިސްކުރ1އި، ފޭސް ފްލޯ އަދި k*119 + p*j (j ∈ ±6, ±12) / k*119 + jitter (k, p ގައި) ޗެކްކުރޭ؛ 16 / 116 / 132 ގެ ގ్యాޕްތަކުގައި ނުވަތަ 1072 ސައިކަލްގައި ފޭސް ދިماާކުރުމަށް k, p ގައި k*116 + p*16 ބޭނުންކުރޭ.",
+    "tz_rule_mid": "ޑިފాల్ଟ୍ކޮށް 119 ރިދމް (k*119 + jitter)؛ ގ్యాޕަކީ 16 / 116 / 132 ކަމަށް ވެއްޖެނަމަ ނުވަތަ 1072 ސައިކަލަށް އަރައިފިނަމަ، މެޗުވާ ފޭސް A (A4 / A3) އަށް ބަދަލުވުމަށް k, p ގައި k*116 + p*16 ބޭނުންކުރޭ.",
+    "tz_rule_last": "119 ރިދމްގެ މަތިން ރެޕްކުރޭ (k*119 + jitter)؛ 16 / 116 / 132 ގ్యాޕްތަކުގައި ނުވަތަ 1072 ސައިކަލްގައި (k, p ގައި k*116 + p*16)، އެדޖަސްޓްކޮށްފައިވާ ފޭސް A2 / C7 އަށް އިސްކަންދީ ޑޭޓާ ގެއްލިފައިވާނަމަ ފޯލްބެކް ކުރޭ."
   },
   "widget": {
     "title": "މާޗެންޓް ލޮކޭޝަން",
