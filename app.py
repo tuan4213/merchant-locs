@@ -200,25 +200,25 @@ def _render_tz_milestone_table(utc_offset):
 
     r_first = _t_locale(
         "tz_rule_first",
-        "Mốc chuẩn thường dùng 119 (k*119); ưu tiên khớp gap 14 hoặc macro cycle (1072 / 16) để lấy A tương ứng (k, p).",
-        "Default step uses 119 (k*119); prioritizes gap 14 or macro cycle (1072 / 16) to pick matching A (k, p).",
+        "Slot 04:00 VN (base): dò chuỗi pha A1–A4/B3/C7 & cụm k, p (GAPS_04), kết hợp MarkovB2 / TRANS; thiếu thì bù tiến +4.",
+        "04:00 VN base slot: checks A1–A4/B3/C7 chains & k, p clusters (GAPS_04), MarkovB2 / TRANS; forward-fills +4 if needed.",
     )
     r_mid = _t_locale(
         "tz_rule_mid",
-        "Đối chiếu gap 14 & chu kỳ macro (1072 / 16) theo bậc k, p; khớp gap thì lấy đúng A liên kết thay vì ép mốc tĩnh.",
-        "Checks gap 14 & macro cycle (1072 / 16) across k, p indices; picks matched A on gap hit instead of fixed slots.",
+        "Slot 10:00 / 16:00 VN: mặc định chu kỳ 119; xét gap 16 / 116 / 132 & chu kỳ 1072 (mẫu 14 bước) để chuyển sang Phase A (A4 / A3).",
+        "10:00 / 16:00 VN slots: defaults to 119; checks gaps 16 / 116 / 132 & macro 1072 (14-step pattern) to shift to Phase A (A4 / A3).",
     )
     r_last = _t_locale(
         "tz_rule_last",
-        "Chốt cuối ngày theo chuỗi 119 và đối chiếu gap 14 / macro (1072 / 16) để xác nhận A ở các chỉ số k, p gần nhất.",
-        "Closes day along 119 step and checks gap 14 / macro (1072 / 16) to confirm A across recent k, p indices.",
+        "Slot 22:00 VN: chủ đạo bước 119; dò rủi ro gap 16 / 116 / 132 hoặc vị trí 1072 để ưu tiên Phase A (A2) khi có bất thường.",
+        "22:00 VN slot: primarily 119; checks gap 16 / 116 / 132 or macro 1072 positions to favor Phase A (A2) on anomaly risk.",
     )
 
     merchants = [
-        (m_first, 4, 0, ["Step 119", "Gap 14 · Macro 1072/16", "k, p → A"], r_first, True),
-        (m_second, 10, 0, ["Gap 14", "Macro 16 / 1072", "Match A (k, p)"], r_mid, False),
-        (m_third, 16, 0, ["Gap 14", "Macro 1072 / 16", "Match A (k, p)"], r_mid, False),
-        (m_last, 22, 0, ["Step 119", "Gap 14 / Macro 1072", "Verify A (k, p)"], r_last, True),
+        (m_first, 4, 0, ["04:00 Base", "Phase A1–A4/B3/C7", "k, p · MarkovB2"], r_first, True),
+        (m_second, 10, 0, ["Cycle 119", "Gap 16/116/132", "Macro 1072 → A4"], r_mid, False),
+        (m_third, 16, 0, ["Cycle 119", "Gap 16/116/132", "Macro 1072 → A3"], r_mid, False),
+        (m_last, 22, 0, ["Cycle 119", "Gap 16/116/132", "Macro 1072 → A2"], r_last, True),
     ]
 
     rows_html = []
