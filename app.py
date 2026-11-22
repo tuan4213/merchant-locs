@@ -862,29 +862,6 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
     st.button(T("reset_time_travel", default="🔄 Reset Time Travel"), on_click=reset_time_travel)
 
     st.markdown("---")
-    use_default = st.checkbox(T("use_default", default="📚 Use default baseline"), value=True)
-    st.markdown(
-        T(
-            'csv_logic_cols_html',
-            default="<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">Cột logic CSV:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(Snowflake ID nếu có — không dùng tính chu kỳ/slot)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(mốc thời gian quy đổi slot 6h)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(nội dung pattern/vật phẩm)</span></span></div>"
-        ),
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        """
-        <div style="font-size:12px;line-height:1.55;color:#cbd5e1;background:rgba(30,41,59,0.45);border:1px solid rgba(148,163,184,0.22);border-radius:8px;padding:8px 10px;margin:4px 0 8px 0;">
-          <div><b>📚 Chế độ mặc định (Use default baseline):</b> Khi bật, app ưu tiên lấy dữ liệu từ nhánh remote <code>_DATA_BRANCH</code> (<code>main</code>) theo SHA mới nhất; nếu remote lỗi/không có SHA thì tự fallback sang các file <code>.csv</code> local. Mỗi dòng hợp lệ được parse mốc thời gian qua <code>predictor.parse_ts</code> và khử trùng lặp theo bộ <code>(dt, username, content)</code>.</div>
-          <div style="margin-top:4px;"><b>🧩 Các hàm nạp dữ liệu (<code>def</code>):</b>
-            <code>list_default_files()</code> (tìm file <code>.csv</code> hợp lệ, đưa <code>data.csv</code> xuống cuối danh sách),
-            <code>_get_main_sha()</code> (lấy SHA nhánh <code>main</code> qua <code>git ls-remote</code>, cache 60s),
-            <code>_load_at_sha(sha)</code> (clone shallow <code>--depth 1</code> nhánh <code>main</code> vào <code>/tmp/main_repo_data_v1220</code>, gom CSV &amp; lọc trùng, cache 3600s),
-            <code>_load_local_csv_v1220()</code> (đọc &amp; lọc trùng trực tiếp từ file <code>.csv</code> local khi fallback),
-            <code>load_default_csv()</code> (gọi <code>_get_main_sha()</code> → <code>_load_at_sha(sha)</code>, nếu không có thì gọi <code>_load_local_csv_v1220()</code>).
-          </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
     uploaded = st.file_uploader(T("uploader", default="Upload CSV"), type=["csv"], accept_multiple_files=True)
 
     if uploaded:
@@ -904,6 +881,23 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
         except Exception:
             pass
 
+    use_default = st.checkbox(T("use_default", default="📚 Use default baseline"), value=True)
+    st.markdown(
+        T(
+            'csv_logic_cols_html',
+            default="<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">Cột logic CSV:</b></span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(Snowflake ID nếu có — không dùng tính chu kỳ/slot)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(mốc thời gian quy đổi slot 6h)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(nội dung pattern/vật phẩm)</span></span></div>"
+        ),
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        """
+        <div style="font-size:12px;line-height:1.55;color:#cbd5e1;background:rgba(30,41,59,0.45);border:1px solid rgba(148,163,184,0.22);border-radius:8px;padding:8px 10px;margin:4px 0 8px 0;">
+          <div><b>📚 Khi dùng dữ liệu mặc định:</b> App tự tải bộ dữ liệu chuẩn mới nhất từ máy chủ; nếu mất kết nối hoặc không tải được từ máy chủ thì tự dùng bản dữ liệu lưu sẵn trên hệ thống. Dữ liệu sẽ được chuẩn hóa múi giờ và tự loại bỏ các dòng bị trùng.</div>
+          <div style="margin-top:4px;"><b>🧩 Cách nạp dữ liệu tóm tắt:</b> Quét các file bảng dữ liệu hợp lệ, kiểm tra bản cập nhật mới, gom dữ liệu và lọc dòng trùng trước khi tính toán dự đoán (có lưu tạm để mở nhanh ở các lần sau).</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     st.markdown("---")
 
     _settings_status_slot = st.container()
