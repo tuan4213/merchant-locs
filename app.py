@@ -1,6 +1,6 @@
 import streamlit as st
 
-# --- 🎨 Clean Wrap Text + 4-Column Merchant Timezone Table + Time Machine Card ---
+# --- ✨ Accent UI: Pill Time, Shift Badges, Rule Tags & Time Machine Banner ---
 st.markdown(
     """
     <style>
@@ -11,84 +11,133 @@ st.markdown(
     .stSelectbox, .stSelectbox label, .stSelectbox div[data-baseweb="select"],
     .stSelectbox div[data-baseweb="select"] span,
     div[data-baseweb="popover"] li, div[data-baseweb="menu"] div,
-    .mc-wrap-box, .mc-wrap-box * {
+    .mc-accent-wrap, .mc-accent-wrap * {
         white-space: normal !important;
         word-break: normal !important;
         overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
-    .mc-tz-card {
-        margin: 8px 0 12px 0;
-        padding: 10px 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(148, 163, 184, 0.25);
-        background: rgba(15, 23, 42, 0.28);
-    }
-    .mc-tz-note {
+    .mc-tz-header {
+        margin: 8px 0 8px 0;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: linear-gradient(90deg, rgba(56, 189, 248, 0.12), rgba(148, 163, 184, 0.04));
+        border-left: 3px solid #38bdf8;
         font-size: 12.5px;
-        line-height: 1.5;
-        color: #cbd5e1;
-        margin-bottom: 8px;
+        line-height: 1.48;
+        color: #e2e8f0;
     }
-    .mc-table-scroll {
+    .mc-table-frame {
         width: 100%;
         overflow-x: auto;
-        border-radius: 8px;
-        border: 1px solid rgba(148, 163, 184, 0.32);
+        border-radius: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.34);
+        margin-bottom: 10px;
+        background: rgba(15, 23, 42, 0.22);
     }
     table.mc-grid-table {
         width: 100%;
         border-collapse: collapse;
-        margin: 0;
         font-size: 12px;
         line-height: 1.45;
     }
     table.mc-grid-table th,
     table.mc-grid-table td {
-        border: 1px solid rgba(148, 163, 184, 0.28);
+        border: 1px solid rgba(148, 163, 184, 0.26);
         padding: 7px 8px;
         text-align: left;
         vertical-align: top;
-        white-space: normal !important;
-        word-break: normal !important;
-        overflow-wrap: break-word !important;
     }
     table.mc-grid-table th {
-        background: rgba(56, 189, 248, 0.12);
-        color: #e2e8f0;
+        background: rgba(30, 41, 59, 0.72);
+        color: #f8fafc;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+    }
+    table.mc-grid-table tr.mc-row-anchor td {
+        background: rgba(56, 189, 248, 0.05);
+    }
+    .mc-m-name {
+        font-weight: 700;
+        color: #f8fafc;
+        display: block;
+    }
+    .mc-vn-time {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11.5px;
+        color: #cbd5e1;
+        background: rgba(148, 163, 184, 0.14);
+        padding: 2px 6px;
+        border-radius: 6px;
+        display: inline-block;
+    }
+    .mc-target-pill {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+        font-weight: 700;
+        color: #7dd3fc;
+        background: rgba(14, 165, 233, 0.16);
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        padding: 2px 7px;
+        border-radius: 6px;
+        display: inline-block;
+    }
+    .mc-badge {
+        display: inline-block;
+        margin-top: 4px;
+        padding: 1px 7px;
+        border-radius: 999px;
+        font-size: 10.5px;
         font-weight: 700;
     }
-    table.mc-grid-table tr:nth-child(even) td {
-        background: rgba(148, 163, 184, 0.05);
+    .mc-badge-prev {
+        background: rgba(251, 146, 60, 0.16);
+        color: #fdba74;
+        border: 1px solid rgba(251, 146, 60, 0.35);
     }
-    .mc-shift-badge {
+    .mc-badge-next {
+        background: rgba(167, 139, 250, 0.16);
+        color: #c4b5fd;
+        border: 1px solid rgba(167, 139, 250, 0.35);
+    }
+    .mc-badge-same {
+        background: rgba(52, 211, 153, 0.14);
+        color: #6ee7b7;
+        border: 1px solid rgba(52, 211, 153, 0.32);
+    }
+    .mc-rule-chip {
         display: inline-block;
-        margin-top: 3px;
+        font-size: 10.5px;
+        font-weight: 700;
         padding: 1px 6px;
-        border-radius: 999px;
-        font-size: 11px;
-        font-weight: 600;
+        border-radius: 5px;
+        margin-right: 4px;
+        margin-bottom: 3px;
         background: rgba(250, 204, 21, 0.14);
         color: #fde047;
         border: 1px solid rgba(250, 204, 21, 0.28);
     }
-    .mc-shift-same {
-        background: rgba(74, 222, 128, 0.12);
-        color: #86efac;
-        border-color: rgba(74, 222, 128, 0.25);
-    }
-    .mc-tm-card {
-        margin: 8px 0 12px 0;
-        padding: 10px 12px;
+    .mc-tm-banner {
+        margin: 8px 0 10px 0;
+        padding: 9px 11px;
         border-radius: 10px;
-        border-left: 3px solid #38bdf8;
-        border-top: 1px solid rgba(148, 163, 184, 0.22);
-        border-right: 1px solid rgba(148, 163, 184, 0.22);
-        border-bottom: 1px solid rgba(148, 163, 184, 0.22);
-        background: rgba(56, 189, 248, 0.07);
+        background: linear-gradient(120deg, rgba(168, 85, 247, 0.12), rgba(56, 189, 248, 0.08));
+        border: 1px solid rgba(192, 132, 252, 0.28);
+        border-left: 3px solid #c084fc;
         font-size: 12.5px;
-        line-height: 1.52;
-        color: #e2e8f0;
+        line-height: 1.5;
+        color: #f1f5f9;
+    }
+    .mc-tm-tag {
+        display: inline-block;
+        font-size: 10.5px;
+        font-weight: 700;
+        padding: 1px 7px;
+        border-radius: 999px;
+        margin-bottom: 4px;
+        background: rgba(192, 132, 252, 0.18);
+        color: #e9d5ff;
+        border: 1px solid rgba(192, 132, 252, 0.35);
     }
     </style>
     """,
@@ -138,6 +187,7 @@ def _render_tz_milestone_table(utc_offset):
     tz_str = _fmt_utc_offset(off_val)
     tz_cur = timezone(timedelta(hours=off_val))
     tz_vn = timezone(timedelta(hours=7))
+    is_vi = str(st.session_state.get("app_lang") or "vi").lower().startswith("vi")
 
     day_prev = _t_locale("tz_day_prev", "Hôm trước", "Prev day")
     day_same = _t_locale("tz_day_same", "Cùng ngày", "Same day")
@@ -165,56 +215,59 @@ def _render_tz_milestone_table(utc_offset):
     )
 
     merchants = [
-        (m_first, 4, 0, r_first),
-        (m_second, 10, 0, r_mid),
-        (m_third, 16, 0, r_mid),
-        (m_last, 22, 0, r_last),
+        (m_first, 4, 0, ["CSV", "Markov/Phase"], r_first, True),
+        (m_second, 10, 0, ["Markov", "Bridge"], r_mid, False),
+        (m_third, 16, 0, ["Markov", "Bridge"], r_mid, False),
+        (m_last, 22, 0, ["Cross-check", "Fallback"], r_last, True),
     ]
 
     rows_html = []
-    for m_label, vn_h, vn_m, rule_desc in merchants:
+    for m_label, vn_h, vn_m, chips, rule_desc, is_anchor in merchants:
         dt_vn = datetime(2026, 5, 10, vn_h, vn_m, tzinfo=tz_vn)
         dt_cur = dt_vn.astimezone(tz_cur)
         day_delta = (dt_cur.date() - dt_vn.date()).days
         if day_delta < 0:
             day_badge = day_prev
-            badge_cls = "mc-shift-badge"
+            badge_cls = "mc-badge mc-badge-prev"
         elif day_delta > 0:
             day_badge = day_next
-            badge_cls = "mc-shift-badge"
+            badge_cls = "mc-badge mc-badge-next"
         else:
             day_badge = day_same
-            badge_cls = "mc-shift-badge mc-shift-same"
+            badge_cls = "mc-badge mc-badge-same"
 
+        chips_html = "".join(f"<span class='mc-rule-chip'>{c}</span>" for c in chips)
+        row_cls = " class='mc-row-anchor'" if is_anchor else ""
         rows_html.append(
-            f"<tr>"
-            f"<td><b>{m_label}</b></td>"
-            f"<td>{dt_vn.strftime('%H:%M')}</td>"
-            f"<td><b>{dt_cur.strftime('%H:%M')}</b><br><span class='{badge_cls}'>{day_badge}</span></td>"
-            f"<td>{rule_desc}</td>"
+            f"<tr{row_cls}>"
+            f"<td><span class='mc-m-name'>{m_label}</span></td>"
+            f"<td><span class='mc-vn-time'>{dt_vn.strftime('%H:%M')}</span></td>"
+            f"<td><span class='mc-target-pill'>{dt_cur.strftime('%H:%M')}</span><br><span class='{badge_cls}'>{day_badge}</span></td>"
+            f"<td><div>{chips_html}</div><div>{rule_desc}</div></td>"
             f"</tr>"
         )
 
     guide_txt = _t_locale(
         "tz_milestone_guide",
-        "🧭 Mốc giờ & quy đổi (UTC{tz_str}): Thanh trượt chỉnh múi giờ hiển thị; đổi UTC có thể đẩy mốc sang ngày hôm trước hoặc ngày hôm sau.",
-        "🧭 Timezone & conversion (UTC{tz_str}): Slider adjusts display timezone; shifting UTC may move a merchant into the previous or next day.",
+        "Mốc giờ & quy đổi (UTC{tz_str}): Thanh trượt chỉnh múi giờ hiển thị; đổi UTC có thể đẩy mốc sang ngày hôm trước hoặc ngày hôm sau.",
+        "Timezone & conversion (UTC{tz_str}): Slider adjusts display timezone; shifting UTC may move a merchant into the previous or next day.",
     ).format(tz_str=tz_str)
     col_m = _t_locale("tz_col_merchant", "Merchant", "Merchant")
     col_vn = _t_locale("tz_col_vn", "VN (UTC+7)", "VN (UTC+7)")
     col_target = _t_locale("tz_col_target", "UTC{tz_str} & Lệch ngày", "UTC{tz_str} & Shift").format(tz_str=tz_str)
     col_rule = _t_locale("tz_col_rule", "Tóm tắt quy tắc đoán", "Prediction Rule Summary")
+    hdr_badge = "🧭 Mốc & Lệch ngày" if is_vi else "🧭 Milestones & Shift"
 
     html = (
-        f"<div class='mc-wrap-box mc-tz-card'>"
-        f"<div class='mc-tz-note'>{guide_txt}</div>"
-        f"<div class='mc-table-scroll'>"
+        f"<div class='mc-accent-wrap'>"
+        f"<div class='mc-tz-header'><span class='mc-tm-tag'>{hdr_badge}</span><br>{guide_txt}</div>"
+        f"<div class='mc-table-frame'>"
         f"<table class='mc-grid-table'>"
         f"<colgroup>"
-        f"<col style='width: 21%;'>"
-        f"<col style='width: 15%;'>"
+        f"<col style='width: 20%;'>"
+        f"<col style='width: 14%;'>"
         f"<col style='width: 22%;'>"
-        f"<col style='width: 42%;'>"
+        f"<col style='width: 44%;'>"
         f"</colgroup>"
         f"<thead><tr><th>{col_m}</th><th>{col_vn}</th><th>{col_target}</th><th>{col_rule}</th></tr></thead>"
         f"<tbody>{''.join(rows_html)}</tbody>"
@@ -226,12 +279,18 @@ def _render_tz_milestone_table(utc_offset):
 
 
 def _render_time_machine_guide():
+    is_vi = str(st.session_state.get("app_lang") or "vi").lower().startswith("vi")
+    chip_lbl = "🕰️ Time Machine · Chỉ xem" if is_vi else "🕰️ Time Machine · View-Only"
     tm_txt = _t_locale(
         "time_machine_guide",
-        "🕰️ Time Machine (Du hành thời gian): Lùi hoặc tiến số ngày trên thanh trượt để xem dữ liệu/dự đoán ở quá khứ hoặc tương lai, đối chiếu lịch sử và mô phỏng kịch bản. Chỉ đổi góc nhìn hiển thị, không sửa dữ liệu gốc.",
-        "🕰️ Time Machine: Shift days backward or forward on the slider to inspect past or future data/predictions, compare history, and simulate scenarios. View-only; source data is untouched.",
+        "Lùi hoặc tiến số ngày trên thanh trượt để xem dữ liệu/dự đoán ở quá khứ hoặc tương lai, đối chiếu lịch sử và mô phỏng kịch bản. Chỉ đổi góc nhìn hiển thị, không sửa dữ liệu gốc.",
+        "Shift days backward or forward on the slider to inspect past or future data/predictions, compare history, and simulate scenarios. View-only; source data is untouched.",
     )
-    html = f"<div class='mc-wrap-box mc-tm-card'>{tm_txt}</div>"
+    html = (
+        f"<div class='mc-accent-wrap mc-tm-banner'>"
+        f"<span class='mc-tm-tag'>{chip_lbl}</span><br>{tm_txt}"
+        f"</div>"
+    )
     st.markdown(html, unsafe_allow_html=True)
 
 import streamlit.components.v1 as components
