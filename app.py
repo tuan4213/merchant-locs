@@ -1,4 +1,20 @@
 import streamlit as st
+import streamlit.components.v1 as components
+import csv, hashlib, json, os, glob, subprocess, shutil, base64, time
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+import threading as _threading
+
+from i18n import (LANG_LABELS as LANG_OPTIONS, get_translator,
+                  check_locales_errors, detect_default_lang)
+import predictor
+
+_PIPELINE_LOCK = _threading.Lock()
+_SYNC_WATCH_LOCK = _threading.Lock()
+_AUTO_APPLY_TIMEOUT_SEC = 30.0
+SHOW_ADVANCED_UI = True
+
+st.set_page_config(page_title="Merchant Location", layout="wide")
 
 # --- ✨ Accent UI: Pill Time, Shift Badges, Rule Tags & Time Machine Banner ---
 st.markdown(
@@ -139,10 +155,68 @@ st.markdown(
         color: #e9d5ff;
         border: 1px solid rgba(192, 132, 252, 0.35);
     }
+    div[data-testid="stCode"] pre, div[data-testid="stCode"] code, .stCode pre, .stCode code {
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+    }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
+components.html("""
+<script>
+(function() {
+    let hiddenAt = null;
+    let lastVisible = Date.now();
+    let heartbeatStuckCount = 0;
+    const HIDDEN_TIMEOUT_MS = 60 * 1000;
+    const RENDER_GRACE_MS   = 1500;
+    const HEARTBEAT_MS      = 30 * 1000;
+    const FOCUS_GRACE_MS    = 1500;
+    function isStuck() {
+        const appRoot = document.querySelector('[data-testid="stAppViewContainer"]');
+        const hasContent = appRoot && appRoot.children.length > 2;
+        const hasSpinner = document.querySelector('[data-testid="stSpinner"], [data-testid="stStatusWidget"]');
+        const hasError = document.querySelector('[data-testid="stException"]');
+        const hasInteractive = document.querySelector('[data-testid="stFileUploader"], [data-testid="stButton"], iframe, [data-testid="stSlider"]');
+        return (!hasContent) || hasSpinner || hasError || (!hasInteractive);
+    }
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) { hiddenAt = Date.now(); return; }
+        lastVisible = Date.now();
+        if (!hiddenAt) return;
+        const hiddenMs = Date.now() - hiddenAt;
+        hiddenAt = null;
+        if (hiddenMs < HIDDEN_TIMEOUT_MS) {
+            setTimeout(function() { if (isStuck()) window.location.reload(); }, FOCUS_GRACE_MS);
+            return;
+        }
+        setTimeout(function() {
+            if (isStuck()) { window.location.reload(); return; }
+            setTimeout(function() { if (isStuck()) window.location.reload(); }, 2000);
+        }, RENDER_GRACE_MS);
+    });
+    window.addEventListener('focus', function() {
+        if (document.hidden) return;
+        if (Date.now() - lastVisible < 2000) return;
+        lastVisible = Date.now();
+        setTimeout(function() { if (isStuck()) window.location.reload(); }, FOCUS_GRACE_MS);
+    });
+    setInterval(function() {
+        if (document.hidden) { heartbeatStuckCount = 0; return; }
+        if (isStuck()) {
+            heartbeatStuckCount++;
+            if (heartbeatStuckCount >= 2) window.location.reload();
+        } else { heartbeatStuckCount = 0; }
+    }, HEARTBEAT_MS);
+})();
+</script>
+""", height=0)
+
+REPO_NAME = predictor.REPO_NAME
+APP_DIR = Path(__file__).resolve().parent
 
 
 def _fmt_utc_offset(utc_offset) -> str:
@@ -182,7 +256,6 @@ def _t_locale(key: str, vi_default: str, en_default: str) -> str:
 
 
 def _render_tz_milestone_table(utc_offset):
-    from datetime import datetime, timezone, timedelta
     off_val = float(utc_offset)
     tz_str = _fmt_utc_offset(off_val)
     tz_cur = timezone(timedelta(hours=off_val))
@@ -292,87 +365,6 @@ def _render_time_machine_guide():
     )
     st.markdown(html, unsafe_allow_html=True)
 
-import streamlit.components.v1 as components
-import csv, os, glob, subprocess, shutil, base64
-from datetime import datetime, timedelta, timezone
-from pathlib import Path
-
-from i18n import (LANG_LABELS as LANG_OPTIONS, get_translator,
-                  check_locales_errors, detect_default_lang)
-import predictor
-
-# [PATCH-LOCK] Serialize run_pipeline calls
-import threading as _threading
-_PIPELINE_LOCK = _threading.Lock()
-
-# === CONFIG FLAGS (was missing after refactor) ===
-# Bật/tắt UI nâng cao cho block 'Quét TRANS' (verify offsets động)
-SHOW_ADVANCED_UI = True
-# === END CONFIG FLAGS ===
-
-st.set_page_config(page_title="Merchant Location", layout="wide")
-
-components.html("""
-<script>
-(function() {
-    let hiddenAt = null;
-    let lastVisible = Date.now();
-    let heartbeatStuckCount = 0;
-    const HIDDEN_TIMEOUT_MS = 60 * 1000;
-    const RENDER_GRACE_MS   = 1500;
-    const HEARTBEAT_MS      = 30 * 1000;
-    const FOCUS_GRACE_MS    = 1500;
-    function isStuck() {
-        const appRoot = document.querySelector('[data-testid="stAppViewContainer"]');
-        const hasContent = appRoot && appRoot.children.length > 2;
-        const hasSpinner = document.querySelector('[data-testid="stSpinner"], [data-testid="stStatusWidget"]');
-        const hasError = document.querySelector('[data-testid="stException"]');
-        const hasInteractive = document.querySelector('[data-testid="stFileUploader"], [data-testid="stButton"], iframe, [data-testid="stSlider"]');
-        return (!hasContent) || hasSpinner || hasError || (!hasInteractive);
-    }
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) { hiddenAt = Date.now(); return; }
-        lastVisible = Date.now();
-        if (!hiddenAt) return;
-        const hiddenMs = Date.now() - hiddenAt;
-        hiddenAt = null;
-        if (hiddenMs < HIDDEN_TIMEOUT_MS) {
-            setTimeout(function() { if (isStuck()) window.location.reload(); }, FOCUS_GRACE_MS);
-            return;
-        }
-        setTimeout(function() {
-            if (isStuck()) { window.location.reload(); return; }
-            setTimeout(function() { if (isStuck()) window.location.reload(); }, 2000);
-        }, RENDER_GRACE_MS);
-    });
-    window.addEventListener('focus', function() {
-        if (document.hidden) return;
-        if (Date.now() - lastVisible < 2000) return;
-        lastVisible = Date.now();
-        setTimeout(function() { if (isStuck()) window.location.reload(); }, FOCUS_GRACE_MS);
-    });
-    setInterval(function() {
-        if (document.hidden) { heartbeatStuckCount = 0; return; }
-        if (isStuck()) {
-            heartbeatStuckCount++;
-            if (heartbeatStuckCount >= 2) window.location.reload();
-        } else { heartbeatStuckCount = 0; }
-    }, HEARTBEAT_MS);
-})();
-</script>
-""", height=0)
-
-st.markdown("""
-<style>
-div[data-testid="stCode"] pre, div[data-testid="stCode"] code, .stCode pre, .stCode code {
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-REPO_NAME = predictor.REPO_NAME
 
 def format_missing_slots(missing_data, utc_off):
     res = []
@@ -381,52 +373,200 @@ def format_missing_slots(missing_data, utc_off):
             dt = datetime.strptime(m['iso'].split('+')[0], '%Y-%m-%dT%H:%M:%S')
             dt_local = dt - timedelta(hours=7) + timedelta(hours=utc_off)
             res.append((m['slot'], f"{m['slot']} ({dt_local.strftime('%Y/%m/%d %H:%M')})"))
-        except: res.append((m['slot'], str(m['slot'])))
+        except Exception:
+            res.append((m['slot'], str(m['slot'])))
     res.sort(key=lambda x: x[0])
     return "\n".join(r[1] for r in res)
 
+
 def list_default_files():
     found = set()
-    for pat in ["*.csv", "data/*.csv", "csv/*.csv", "data/**/*.csv", "csv/**/*.csv"]:
-        for f in glob.glob(pat, recursive=True):
-            if os.path.isfile(f) and os.path.getsize(f) > 0: found.add(f.replace('\\', '/').lstrip('./'))
+    search_roots = [Path("."), APP_DIR]
+    patterns = ["*.csv", "data/*.csv", "csv/*.csv", "data/**/*.csv", "csv/**/*.csv"]
+    for root in search_roots:
+        if not root.exists():
+            continue
+        for pat in patterns:
+            for p in root.glob(pat):
+                if p.is_file() and p.stat().st_size > 0:
+                    try:
+                        rel = str(p.relative_to(APP_DIR)).replace("\\", "/")
+                    except ValueError:
+                        rel = str(p).replace("\\", "/").lstrip("./")
+                    found.add(rel)
     sf = sorted(found)
-    if 'data.csv' in sf: sf.remove('data.csv'); sf.append('data.csv')
+    if 'data.csv' in sf:
+        sf.remove('data.csv')
+        sf.append('data.csv')
     return sf
 
-_DATA_BRANCH = "main"
+
+def _resolve_local_file(rel_path: str) -> Path:
+    p = Path(rel_path)
+    if p.is_absolute() and p.exists():
+        return p
+    p_app = APP_DIR / rel_path
+    if p_app.exists():
+        return p_app
+    return p
+
+
+def _build_git_cmd(subargs):
+    try:
+        token = st.secrets.get("GITHUB_TOKEN")
+    except Exception:
+        token = os.getenv("GITHUB_TOKEN")
+    git_url = f"https://github.com/{REPO_NAME}.git"
+    cmd = ["git"]
+    if token:
+        auth = base64.b64encode(f"x-access-token:{token}".encode()).decode()
+        cmd.extend(["-c", f"http.extraheader=AUTHORIZATION: basic {auth}"])
+    cmd.extend([git_url if x == "__GIT_URL__" else x for x in subargs])
+    return cmd, git_url
+
+
+def _get_local_runtime_commit() -> str:
+    for env_key in ("GIT_COMMIT_SHA", "STREAMLIT_GIT_COMMIT", "COMMIT_SHA", "GITHUB_SHA"):
+        val = (os.getenv(env_key) or "").strip()
+        if val:
+            return val[:12]
+    try:
+        r = subprocess.run(
+            ["git", "-C", str(APP_DIR), "rev-parse", "--short=12", "HEAD"],
+            capture_output=True, text=True, timeout=5
+        )
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout.strip()
+    except Exception:
+        pass
+    return "unknown"
+
 
 @st.cache_data(ttl=60, show_spinner=False)
-def _get_main_sha():
+def _inspect_repo_remote_status():
+    info = {
+        "local_head": _get_local_runtime_commit(),
+        "remote_sig": None,
+        "remote_short": None,
+        "ref_count": 0,
+        "error": None,
+        "checked_at": datetime.now().strftime("%H:%M:%S"),
+    }
     try:
-        try: token = st.secrets.get("GITHUB_TOKEN")
-        except Exception: token = os.getenv("GITHUB_TOKEN")
-        git_url = f"https://github.com/{REPO_NAME}.git"
-        cmd = ["git"]
-        if token:
-            auth = base64.b64encode(f"x-access-token:{token}".encode()).decode()
-            cmd.extend(["-c", f"http.extraheader=AUTHORIZATION: basic {auth}"])
-        cmd.extend(["ls-remote", git_url, f"refs/heads/{_DATA_BRANCH}"])
+        cmd, _ = _build_git_cmd(["ls-remote", "__GIT_URL__"])
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
-        if r.returncode == 0 and r.stdout.strip(): return r.stdout.strip().split()[0]
-    except Exception: pass
-    return None
+        if r.returncode == 0 and r.stdout.strip():
+            lines = sorted(line.strip() for line in r.stdout.strip().splitlines() if line.strip())
+            if lines:
+                info["ref_count"] = len(lines)
+                head_sha = next((ln.split()[0] for ln in lines if ln.endswith("\tHEAD")), None)
+                all_digest = hashlib.sha256("\n".join(lines).encode("utf-8")).hexdigest()[:12]
+                info["remote_sig"] = f"{head_sha or lines[0].split()[0]}:{all_digest}"
+                info["remote_short"] = all_digest
+                return info
+        err_txt = (r.stderr or r.stdout or f"exit={r.returncode}").strip()
+        info["error"] = err_txt[:120] if err_txt else "empty ls-remote"
+    except Exception as e:
+        info["error"] = str(e)[:120]
+    return info
 
-@st.cache_data(ttl=3600, show_spinner="⏳ Đang tải data mới...")
+
+def _get_repo_state_sha():
+    return _inspect_repo_remote_status().get("remote_sig")
+
+
+_get_main_sha = _get_repo_state_sha
+
+
+@st.cache_resource(show_spinner=False)
+def _get_sync_watch_store():
+    return {
+        "active_sig": None,
+        "last_files": {},
+        "pending_sig": None,
+        "detected_at": None,
+        "user_choice": None,  # None | "yes" | "no"
+        "changed_parts": [],
+    }
+
+
+def _compute_local_watch_sig():
+    parts_hash = {}
+    watch_files = ["predictor.py", "widget_template.html"] + list_default_files()
+    for rel in sorted(set(watch_files)):
+        p = _resolve_local_file(rel)
+        if p.exists() and p.is_file():
+            parts_hash[rel] = hashlib.sha256(p.read_bytes()).hexdigest()[:10]
+    return parts_hash
+
+
+def _evaluate_watch_changes(repo_sig):
+    store = _get_sync_watch_store()
+    local_map = _compute_local_watch_sig()
+    sig_str = hashlib.sha256(
+        json.dumps({"repo": repo_sig, "files": local_map}, sort_keys=True).encode("utf-8")
+    ).hexdigest()
+
+    with _SYNC_WATCH_LOCK:
+        if store["active_sig"] is None:
+            store["active_sig"] = sig_str
+            store["last_files"] = local_map
+            store["pending_sig"] = None
+            store["detected_at"] = None
+            store["user_choice"] = None
+            store["changed_parts"] = []
+            return sig_str, False, []
+
+        if sig_str == store["active_sig"]:
+            store["pending_sig"] = None
+            store["detected_at"] = None
+            store["user_choice"] = None
+            store["changed_parts"] = []
+            return sig_str, False, []
+
+        prev_files = store.get("last_files") or {}
+        changed = []
+        if any(k.endswith(".csv") and prev_files.get(k) != v for k, v in local_map.items()):
+            changed.append("data")
+        if prev_files.get("widget_template.html") != local_map.get("widget_template.html"):
+            changed.append("widget html")
+        if prev_files.get("predictor.py") != local_map.get("predictor.py"):
+            changed.append("predictor")
+        if not changed:
+            changed.append("data / repo")
+
+        if store["pending_sig"] != sig_str:
+            store["pending_sig"] = sig_str
+            store["detected_at"] = time.time()
+            store["user_choice"] = None
+            store["changed_parts"] = changed
+
+        return sig_str, True, list(store["changed_parts"])
+
+
+def _apply_sync_update(new_sig):
+    store = _get_sync_watch_store()
+    st.cache_data.clear()
+    with _SYNC_WATCH_LOCK:
+        store["active_sig"] = new_sig
+        store["last_files"] = _compute_local_watch_sig()
+        store["pending_sig"] = None
+        store["detected_at"] = None
+        store["user_choice"] = None
+        store["changed_parts"] = []
+    st.rerun()
+
+
+@st.cache_data(ttl=3600, show_spinner="⏳ Đang đồng bộ repo mới...")
 def _load_at_sha(sha):
     try:
-        try: token = st.secrets.get("GITHUB_TOKEN")
-        except Exception: token = os.getenv("GITHUB_TOKEN")
-        git_url = f"https://github.com/{REPO_NAME}.git"
         target_dir = "/tmp/main_repo_data_v1220"
-        if os.path.exists(target_dir): shutil.rmtree(target_dir, ignore_errors=True)
-        cmd = ["git"]
-        if token:
-            auth = base64.b64encode(f"x-access-token:{token}".encode()).decode()
-            cmd.extend(["-c", f"http.extraheader=AUTHORIZATION: basic {auth}"])
-        cmd.extend(["clone", "--depth", "1", "-b", _DATA_BRANCH, git_url, target_dir])
+        cmd, _ = _build_git_cmd(["clone", "--depth", "1", "__GIT_URL__", target_dir])
+        if os.path.exists(target_dir):
+            shutil.rmtree(target_dir, ignore_errors=True)
         r = subprocess.run(cmd, capture_output=True, timeout=30)
-        if r.returncode != 0: return None
+        if r.returncode != 0:
+            return None
         csv_files = glob.glob(f"{target_dir}/**/*.csv", recursive=True)
         csv_files.sort(key=lambda x: x.endswith('data.csv'))
         rows, used_files = [], []
@@ -434,57 +574,80 @@ def _load_at_sha(sha):
             try:
                 with open(path, "r", encoding="utf-8-sig") as fh:
                     reader = csv.DictReader(fh)
-                    if not reader.fieldnames: continue
+                    if not reader.fieldnames:
+                        continue
                     cols = {c.strip().lower(): c for c in reader.fieldnames}
-                    col_ts = cols.get("timestamp"); col_ct = cols.get("content"); col_us = cols.get("username")
-                    if not col_ts: continue
+                    col_ts = cols.get("timestamp")
+                    col_ct = cols.get("content")
+                    col_us = cols.get("username")
+                    if not col_ts:
+                        continue
                     n = 0
                     for row in reader:
                         dt = predictor.parse_ts(row.get(col_ts, ""))
-                        if dt is None: continue
+                        if dt is None:
+                            continue
                         rows.append((dt, row.get(col_ct, "") if col_ct else "", row.get(col_us, "?") if col_us else "?"))
                         n += 1
-                    if n: used_files.append((os.path.basename(path), n))
-            except Exception: pass
-        if not rows: return None
+                    if n:
+                        used_files.append((os.path.basename(path), n))
+            except Exception:
+                pass
+        if not rows:
+            return None
         seen = {(r[0], r[2], r[1]): r for r in rows}
         rows = list(seen.values())
         dts = [r[0] for r in rows]
         return rows, min(dts), max(dts), used_files
-    except Exception as e: return None
+    except Exception:
+        return None
+
 
 def _load_local_csv_v1220():
     files = list_default_files()
-    if not files: return [], None, None, []
+    if not files:
+        return [], None, None, []
     rows, used_files = [], []
-    for path in files:
+    for rel_path in files:
+        p = _resolve_local_file(rel_path)
         try:
-            with open(path, "r", encoding="utf-8-sig") as fh:
+            with open(p, "r", encoding="utf-8-sig") as fh:
                 reader = csv.DictReader(fh)
-                if not reader.fieldnames: continue
+                if not reader.fieldnames:
+                    continue
                 cols = {c.strip().lower(): c for c in reader.fieldnames}
-                col_ts = cols.get("timestamp"); col_ct = cols.get("content"); col_us = cols.get("username")
-                if not col_ts: continue
+                col_ts = cols.get("timestamp")
+                col_ct = cols.get("content")
+                col_us = cols.get("username")
+                if not col_ts:
+                    continue
                 n = 0
                 for row in reader:
                     dt = predictor.parse_ts(row.get(col_ts, ""))
-                    if dt is None: continue
+                    if dt is None:
+                        continue
                     rows.append((dt, row.get(col_ct, "") if col_ct else "", row.get(col_us, "?") if col_us else "?"))
                     n += 1
-                if n: used_files.append((path, n))
-        except Exception: pass
-    if not rows: return [], None, None, used_files
+                if n:
+                    used_files.append((rel_path, n))
+        except Exception:
+            pass
+    if not rows:
+        return [], None, None, used_files
     seen = {(r[0], r[2], r[1]): r for r in rows}
     rows = list(seen.values())
     dts = [r[0] for r in rows]
     return rows, min(dts), max(dts), used_files
 
+
 def load_default_csv():
-    sha = _get_main_sha()
+    sha = _get_repo_state_sha()
     if sha:
         result = _load_at_sha(sha)
-        if result: return result
+        if result:
+            return result
     return _load_local_csv_v1220()
+
 
 # === LANG_BAR_PATCH_START ===
 def _is_vn_timezone():
@@ -507,20 +670,27 @@ def _is_vn_timezone():
         pass
     return False
 
+
 if "app_lang" not in st.session_state:
     st.session_state.app_lang = "vi" if _is_vn_timezone() else detect_default_lang()
+
 
 def _set_lang(l_code):
     st.session_state.app_lang = l_code
     if l_code in ("vi", "en") and "lang_other_select" in st.session_state:
         st.session_state.lang_other_select = None
 
+
 def _on_other_lang_change():
     sel = st.session_state.get("lang_other_select")
     if sel and sel in LANG_OPTIONS:
         st.session_state.app_lang = LANG_OPTIONS[sel]
 
-_other_placeholder = get_translator(st.session_state.app_lang)("other_languages_placeholder", default="🌐 Ngôn ngữ khác" if st.session_state.app_lang == "vi" else "🌐 Other languages")
+
+_other_placeholder = get_translator(st.session_state.app_lang)(
+    "other_languages_placeholder",
+    default="🌐 Ngôn ngữ khác" if st.session_state.app_lang == "vi" else "🌐 Other languages"
+)
 
 st.markdown(
     """
@@ -630,8 +800,6 @@ st.markdown("</div>", unsafe_allow_html=True)
 lang = st.session_state.app_lang
 # === LANG_BAR_PATCH_END ===
 
-# ==========================================
-
 T = get_translator(lang)
 
 # === PRED_SETTINGS_WITH_TZ_START ===
@@ -647,14 +815,18 @@ except Exception:
 if "utc_offset" not in st.session_state:
     st.session_state.utc_offset = system_offset
 
+
 def reset_utc():
     st.session_state.utc_offset = system_offset
+
 
 if "time_travel_slider" not in st.session_state:
     st.session_state.time_travel_slider = 0
 
+
 def reset_time_travel():
     st.session_state.time_travel_slider = 0
+
 
 if predictor._WIDGET_TEMPLATE is None:
     st.error(T("err_widget_missing", default="⚠️ Không tìm thấy file `widget_template.html`."))
@@ -758,7 +930,8 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
             _sample_ts = []
             for _row in list(_csv.DictReader(_io.StringIO(uploaded[0].getvalue().decode('utf-8-sig', errors='replace'))))[:50]:
                 _t = _row.get('Timestamp') or _row.get('timestamp') or ''
-                if _t: _sample_ts.append(_t)
+                if _t:
+                    _sample_ts.append(_t)
             _tz_formats = predictor._check_mixed_timezones(_sample_ts)
             if len(_tz_formats) > 1:
                 st.warning(f"⚠️ **Cảnh báo:** File CSV chứa nhiều định dạng timezone: `{_tz_formats}`. App sẽ tự động convert.")
@@ -770,20 +943,35 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
             pass
 
     st.markdown("---")
-
     _settings_status_slot = st.container()
 # === PRED_SETTINGS_WITH_TZ_END ===
+
+_repo_diag = _inspect_repo_remote_status()
+_current_sha = _repo_diag.get("remote_sig")
 
 with st.sidebar:
     st.markdown(T("sidebar_config", default="### ⚙️ Config"))
     if st.button(T("sidebar_reload", default="🔄 Reload config files"), use_container_width=True, key="btn_reload_sidebar"):
-        st.cache_data.clear(); st.rerun()
+        _apply_sync_update(_current_sha)
     st.caption(T("sidebar_hint", default="Sửa config files → bấm Reload"))
-    
-    _current_sha = _get_main_sha()
-    if _current_sha: st.caption(f"🟢 GitHub: `{_current_sha[:7]}`")
-    else: st.caption("🔴 GitHub: Offline")
-    
+
+    _local_head = _repo_diag.get("local_head", "unknown")
+    _remote_short = _repo_diag.get("remote_short")
+    _ref_cnt = _repo_diag.get("ref_count", 0)
+    _chk_time = _repo_diag.get("checked_at", "--:--:--")
+    _diag_err = _repo_diag.get("error")
+
+    st.caption(f"🧬 Local HEAD: `{_local_head}` · 🕒 `{_chk_time}`")
+    if _remote_short:
+        st.caption(f"🟢 Remote SHA hash: `{_remote_short}` ({_ref_cnt} refs)")
+        _w_active = (_get_sync_watch_store() or {}).get("active_sig")
+        _w_active_short = _w_active.split(":")[-1] if isinstance(_w_active, str) and ":" in _w_active else (_w_active or "none")
+        st.caption(f"📌 Active sig: `{_w_active_short}`")
+        if _w_active and _current_sha and _w_active != _current_sha:
+            st.warning("⚡ Phát hiện SHA remote khác Active sig!")
+    else:
+        st.caption(f"🔴 GitHub check lỗi: `{_diag_err or 'Offline'}`")
+
     trans_lookback_input = predictor.TRANS_ADAPTIVE_LOOKBACK
     if SHOW_ADVANCED_UI:
         st.markdown(T("trans_scan_title", default="#### 🔍 Quét TRANS"))
@@ -796,7 +984,9 @@ with st.sidebar:
         if trans_text_ss:
             with st.expander("📊 TRANS động", expanded=False):
                 stats = st.session_state.get('trans_stats', {})
-                _s_acc = stats.get('static_acc', 0); _a_acc = stats.get('adaptive_acc', 0); _delta = _a_acc - _s_acc
+                _s_acc = stats.get('static_acc', 0)
+                _a_acc = stats.get('adaptive_acc', 0)
+                _delta = _a_acc - _s_acc
                 _d_icon = '🟢' if _delta > 0 else ('⚪' if _delta == 0 else '🔴')
                 st.caption(f'Static: **{_s_acc:.1f}%** | Adaptive: **{_a_acc:.1f}%** | Delta: {_d_icon} {_delta:+.1f}%')
                 _curr = predictor.get_adaptive_offset_state()
@@ -805,20 +995,29 @@ with st.sidebar:
                     predictor.set_adaptive_offset_state(_tog)
                     st.success(T("adaptive_toggled", default="✅ Đã {status} adaptive offset", status="BẬT" if _tog else "TẮT"))
                     st.rerun()
-                if stats.get('was_overridden', False): st.success(T('trans_overridden', default='🚀 Đã ghi đè TRANS tĩnh'))
-                else: st.info(T('trans_using_static', default='✅ Đang dùng TRANS tĩnh'))
+                if stats.get('was_overridden', False):
+                    st.success(T('trans_overridden', default='🚀 Đã ghi đè TRANS tĩnh'))
+                else:
+                    st.info(T('trans_using_static', default='✅ Đang dùng TRANS tĩnh'))
                 st.caption(T('trans_scanned_caption', default="📥 Đã quét: **{used}** slot (yêu cầu: {req})", used=stats.get('lookback_used', 0), req=stats.get('lookback_requested', 0)))
                 st.caption(T('trans_train_test', default="📊 Train: {train} | Test: {test}", train=stats.get('train_size', 0), test=stats.get('test_size', 0)))
                 edited = st.text_area(T('trans_edit', default='Sửa nội dung:'), value=trans_text_ss, height=200, key='trans_editor_v5')
                 st.markdown("**🎯 Auto-detected Offsets:**")
                 _current_offsets = predictor.ADAPTIVE_CANDIDATE_OFFSETS
-                if _current_offsets: st.code(", ".join(map(str, _current_offsets)), language="text")
-                else: st.caption("Chưa có (bấm nút bên dưới để quét)")
+                if _current_offsets:
+                    st.code(", ".join(map(str, _current_offsets)), language="text")
+                else:
+                    st.caption("Chưa có (bấm nút bên dưới để quét)")
                 if st.button("🔍 Chạy thử (Verify Offsets mới)", key="btn_verify_offsets", use_container_width=True):
                     with st.spinner("Đang quét và tính toán..."):
                         _old_offsets = list(predictor.ADAPTIVE_CANDIDATE_OFFSETS) if predictor.ADAPTIVE_CANDIDATE_OFFSETS else []
                         _new_offsets, _old_acc, _new_acc = predictor._auto_detect_offsets()
-                        st.session_state['offset_verify_result'] = {'old_offsets': _old_offsets, 'new_offsets': _new_offsets, 'old_acc': _old_acc, 'new_acc': _new_acc}
+                        st.session_state['offset_verify_result'] = {
+                            'old_offsets': _old_offsets,
+                            'new_offsets': _new_offsets,
+                            'old_acc': _old_acc,
+                            'new_acc': _new_acc,
+                        }
                     st.rerun()
                 if 'offset_verify_result' in st.session_state:
                     res = st.session_state['offset_verify_result']
@@ -829,23 +1028,64 @@ with st.sidebar:
                         st.success(f"✅ Bộ mới tốt hơn/ngang bằng (+{res['new_acc']-res['old_acc']:.1f}%)")
                         if st.button("🚀 Áp dụng Bộ Mới", type="primary", key="btn_apply_new", use_container_width=True):
                             predictor.ADAPTIVE_CANDIDATE_OFFSETS = res['new_offsets']
-                            predictor._build_context_offset_cache(); st.cache_data.clear(); del st.session_state['offset_verify_result']
-                            st.success("Đã áp dụng Offsets mới thành công!"); st.rerun()
+                            predictor._build_context_offset_cache()
+                            st.cache_data.clear()
+                            del st.session_state['offset_verify_result']
+                            st.success("Đã áp dụng Offsets mới thành công!")
+                            st.rerun()
                     else:
                         st.error(f"❌ Bộ mới KÉM HƠN ({res['new_acc']-res['old_acc']:.1f}%)")
                         if st.button("⚠️ Vẫn áp dụng (Không khuyến khích)", key="btn_apply_force", use_container_width=True):
                             predictor.ADAPTIVE_CANDIDATE_OFFSETS = res['new_offsets']
-                            predictor._build_context_offset_cache(); st.cache_data.clear(); del st.session_state['offset_verify_result']
-                            st.warning("Đã áp dụng Offsets mới (dù kém hơn)."); st.rerun()
+                            predictor._build_context_offset_cache()
+                            st.cache_data.clear()
+                            del st.session_state['offset_verify_result']
+                            st.warning("Đã áp dụng Offsets mới (dù kém hơn).")
+                            st.rerun()
                     if st.button("🗑️ Bỏ qua / Hủy kết quả", key="btn_discard_verify", use_container_width=True):
-                        del st.session_state['offset_verify_result']; st.rerun()
+                        del st.session_state['offset_verify_result']
+                        st.rerun()
+
+_cur_watch_sig, _has_watch_change, _watch_parts = _evaluate_watch_changes(_current_sha)
+if _has_watch_change:
+    _w_store = _get_sync_watch_store()
+    with _SYNC_WATCH_LOCK:
+        _det_ts = _w_store.get("detected_at") or time.time()
+        _choice = _w_store.get("user_choice")
+        _parts_txt = ", ".join(_w_store.get("changed_parts") or _watch_parts)
+
+    _elapsed_s = time.time() - _det_ts
+    _rem_s = max(0, int(_AUTO_APPLY_TIMEOUT_SEC - _elapsed_s))
+
+    if _choice is None and _elapsed_s >= _AUTO_APPLY_TIMEOUT_SEC:
+        _apply_sync_update(_cur_watch_sig)
+
+    with st.container(border=True):
+        if _choice == "no":
+            st.info(f"⏸️ **Đã hoãn cập nhật (`{_parts_txt}`)** theo lựa chọn No. Bấm **Cập nhật ngay** khi muốn áp dụng.")
+        else:
+            st.warning(f"🔔 **Phát hiện thay đổi ở `{_parts_txt}`.** Không ai chọn sau **{_rem_s}s** sẽ tự chạy cập nhật.")
+
+        _b1, _b2, _b3 = st.columns([1.4, 1.4, 4.2])
+        with _b1:
+            if st.button("✅ Cập nhật ngay", key="btn_watch_yes", use_container_width=True):
+                _apply_sync_update(_cur_watch_sig)
+        with _b2:
+            if st.button("⏸️ Hoãn (No)", key="btn_watch_no", use_container_width=True):
+                with _SYNC_WATCH_LOCK:
+                    _w_store["user_choice"] = "no"
+                st.rerun()
+
+    if _choice is None and _rem_s > 0:
+        time.sleep(1)
+        st.rerun()
 
 st.title(T("title", default="📍 Merchant Location"))
 
 if _default_files:
     if _loaded_default and _loaded_default[0]:
         _d_rows, _d_min, _d_max, _used = _loaded_default
-        total_mb = sum(os.path.getsize(f) for f in _default_files) / 1024 / 1024
+        total_mb = sum(_resolve_local_file(f).stat().st_size for f in _default_files if _resolve_local_file(f).exists()) / 1024 / 1024
         shown = ", ".join(f"`{f}` ({n:,})" for f, n in _used[:5]) + (f" … (+{len(_used)-5})" if len(_used) > 5 else "")
         info_text = T("info_header", default="📚 **Default baseline** ({n} file(s)):", n=len(_used)) + "\n\n" + f"- 📁 {shown}\n"
         info_text += T("info_from", default="- 🗓️ **From:** `{v}` (VN, UTC+7)", v=_d_min.strftime('%Y-%m-%d %H:%M')) + "\n"
@@ -883,7 +1123,8 @@ if _has_something:
         st.session_state['trans_text'] = trans_text
         st.session_state['trans_stats'] = trans_stats
         if (_stats_changed or _text_changed) and not st.session_state.get('_skip_rerun_flag'):
-            st.session_state['_skip_rerun_flag'] = True; st.rerun()
+            st.session_state['_skip_rerun_flag'] = True
+            st.rerun()
     else:
         st.session_state.pop('_skip_rerun_flag', None)
 
@@ -912,14 +1153,20 @@ if _has_something:
             st.success(T("gap_none", default="✅ Dữ liệu đầy đủ, không phát hiện slot thiếu nào."))
 
     if widget_html is None:
-        st.error(T("failed", default="❌ Pipeline failed")); st.code(log_text, language="text")
+        st.error(T("failed", default="❌ Pipeline failed"))
+        st.code(log_text, language="text")
     else:
         components.html(widget_html, height=1100, scrolling=True)
         with st.expander(T("expander", default="📋 Log"), expanded=False):
             col_log_a, col_log_b = st.columns([4, 1])
             with col_log_b:
-                st.download_button(T("log_download", default="💾 Tải log"), log_text, file_name=f"pipeline_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt", key="dl_log_btn", use_container_width=True)
+                st.download_button(
+                    T("log_download", default="💾 Tải log"),
+                    log_text,
+                    file_name=f"pipeline_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                    key="dl_log_btn",
+                    use_container_width=True,
+                )
             st.code(log_text, language="text")
 else:
     st.info(T("upload_hint", default="👆 Upload CSV to start"))
-
