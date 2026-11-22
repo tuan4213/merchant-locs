@@ -200,25 +200,25 @@ def _render_tz_milestone_table(utc_offset):
 
     r_first = _t_locale(
         "tz_rule_first",
-        "Mở đầu chu kỳ ngày; ưu tiên pattern thật từ CSV, thiếu thì dùng Markov/pha.",
-        "Daily cycle start; prefers actual CSV pattern, else Markov/phase.",
+        "Mở đầu ngày theo Phase A; ưu tiên dữ liệu thật từ CSV, thiếu thì tính theo k*119 + jitter.",
+        "Starts day in Phase A; prefers real CSV data, else k*119 + jitter.",
     )
     r_mid = _t_locale(
         "tz_rule_mid",
-        "Nối tiếp chuỗi Markov & quy luật chuyển pha; bù gap bằng bridge nếu thiếu slot.",
-        "Continues Markov chain & phase transitions; fills gaps via bridge if slot missing.",
+        "Nối nhịp Phase B theo công thức k*116 + p*16; nếu thiếu slot thì bù theo mốc lân cận.",
+        "Continues Phase B via k*116 + p*16; fills missing slots from nearby milestones.",
     )
     r_last = _t_locale(
         "tz_rule_last",
-        "Chốt phiên cuối ngày; đối chiếu chéo nguồn/chuỗi và dùng fallback nếu thiếu dữ liệu.",
-        "Closes daily cycle; cross-checks sources/chains and uses fallback if data missing.",
+        "Chốt cuối ngày theo Phase C; đối chiếu lại chuỗi trước và dùng mốc dự phòng nếu thiếu data.",
+        "Wraps day in Phase C; cross-checks prior sequence and falls back if data is missing.",
     )
 
     merchants = [
-        (m_first, 4, 0, ["CSV", "Markov/Phase"], r_first, True),
-        (m_second, 10, 0, ["Markov", "Bridge"], r_mid, False),
-        (m_third, 16, 0, ["Markov", "Bridge"], r_mid, False),
-        (m_last, 22, 0, ["Cross-check", "Fallback"], r_last, True),
+        (m_first, 4, 0, ["Phase A", "k*119 + jitter"], r_first, True),
+        (m_second, 10, 0, ["Phase B", "k*116 + p*16"], r_mid, False),
+        (m_third, 16, 0, ["Phase B", "k*116 + p*16"], r_mid, False),
+        (m_last, 22, 0, ["Phase C", "Fallback"], r_last, True),
     ]
 
     rows_html = []
