@@ -57,7 +57,14 @@
 #mwidget .fb-empty{color:#666;font-size:11px;font-style:italic;padding:8px 0}
 #mwidget .missing-warn {background:rgba(255,107,107,.1);border:1px solid #ff6b6b;color:#ff6b6b;padding:6px 10px;border-radius:4px;margin-top:8px;font-size:11px;line-height:1.4}
 @keyframes pulse{50%{opacity:.4}}
+
+#mwidget .fb-title, #mwidget .fb-head, #mwidget .fb-reason, #mwidget .fb-hint {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
 </style>
+
 <div id="mwidget"><div class="t" id="mtitle">—</div><div class="big" id="mbig">--</div><div class="sub" id="msub">—</div><div id="mrow"></div></div>
 <script>
 (function(){
