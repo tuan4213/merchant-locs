@@ -70,6 +70,299 @@ components.html("""
 </script>
 """, height=0)
 
+st.markdown("""
+<style>
+div[data-testid="stCode"] pre, div[data-testid="stCode"] code, .stCode pre, .stCode code {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+REPO_NAME = predictor.REPO_NAME
+
+def format_missing_slots(missing_data, utc_off):
+    res = []
+    for m in missing_data:
+        try:
+            dt = datetime.strptime(m['iso'].split('+')[0], '%Y-%m-%dT%H:%M:%S')
+            dt_local = dt - timedelta(hours=7) + timedelta(hours=utc_off)
+            res.append((m['slot'], f"{m['slot']} ({dt_local.strftime('%Y/%m/%d %H:%M')})"))
+        except: res.append((m['slot'], str(m['slot'])))
+    res.sort(key=lambda x: x[0])
+    return "\n".join(r[1] for r in res)
+
+def list_default_files():
+    found = set()
+    for pat in ["*.csv", "data/*.csv", "csv/*.csv", "data/**/*.csv", "csv/**/*.csv"]:
+        for f in glob.glob(pat, recursive=True):
+            if os.path.isfile(f) and os.path.getsize(f) > 0: found.add(f.replace('\\', '/').lstrip('./'))
+    sf = sorted(found)
+    if 'data.csv' in sf: sf.remove('data.csv'); sf.append('data.csv')
+    return sf
+
+_DATA_BRANCH = "main"
+
+@st.cache_data(ttl=60, show_spinner=False)
+def _get_main_sha():
+    try:
+        try: token = st.secrets.get("GITHUB_TOKEN")
+        except Exception: token = os.getenv("GITHUB_TOKEN")
+        git_url = f"https://github.com/{REPO_NAME}.git"
+        cmd = ["git"]
+        if token:
+            auth = base64.b64encode(f"x-access-token:{token}".encode()).decode()
+            cmd.extend(["-c", f"http.extraheader=AUTHORIZATION: basic {auth}"])
+        cmd.extend(["ls-remote", git_url, f"refs/heads/{_DATA_BRANCH}"])
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=10)
+        if r.returncode == 0 and r.stdout.strip(): return r.stdout.strip().split()[0]
+    except Exception: pass
+    return None
+
+@st.cache_data(ttl=3600, show_spinner="⏳ Đang tải data mới...")
+def _load_at_sha(sha):
+    try:
+        try: token = st.secrets.get("GITHUB_TOKEN")
+        except Exception: token = os.getenv("GITHUB_TOKEN")
+        git_url = f"https://github.com/{REPO_NAME}.git"
+        target_dir = "/tmp/main_repo_data_v1220"
+        if os.path.exists(target_dir): shutil.rmtree(target_dir, ignore_errors=True)
+        cmd = ["git"]
+        if token:
+            auth = base64.b64encode(f"x-access-token:{token}".encode()).decode()
+            cmd.extend(["-c", f"http.extraheader=AUTHORIZATION: basic {auth}"])
+        cmd.extend(["clone", "--depth", "1", "-b", _DATA_BRANCH, git_url, target_dir])
+        r = subprocess.run(cmd, capture_output=True, timeout=30)
+        if r.returncode != 0: return None
+        csv_files = glob.glob(f"{target_dir}/**/*.csv", recursive=True)
+        csv_files.sort(key=lambda x: x.endswith('data.csv'))
+        rows, used_files = [], []
+        for path in csv_files:
+            try:
+                with open(path, "r", encoding="utf-8-sig") as fh:
+                    reader = csv.DictReader(fh)
+                    if not reader.fieldnames: continue
+                    cols = {c.strip().lower(): c for c in reader.fieldnames}
+                    col_ts = cols.get("timestamp"); col_ct = cols.get("content"); col_us = cols.get("username")
+                    if not col_ts: continue
+                    n = 0
+                    for row in reader:
+                        dt = predictor.parse_ts(row.get(col_ts, ""))
+                        if dt is None: continue
+                        rows.append((dt, row.get(col_ct, "") if col_ct else "", row.get(col_us, "?") if col_us else "?"))
+                        n += 1
+                    if n: used_files.append((os.path.basename(path), n))
+            except Exception: pass
+        if not rows: return None
+        seen = {(r[0], r[2], r[1]): r for r in rows}
+        rows = list(seen.values())
+        dts = [r[0] for r in rows]
+        return rows, min(dts), max(dts), used_files
+    except Exception as e: return None
+
+def _load_local_csv_v1220():
+    files = list_default_files()
+    if not files: return [], None, None, []
+    rows, used_files = [], []
+    for path in files:
+        try:
+            with open(path, "r", encoding="utf-8-sig") as fh:
+                reader = csv.DictReader(fh)
+                if not reader.fieldnames: continue
+                cols = {c.strip().lower(): c for c in reader.fieldnames}
+                col_ts = cols.get("timestamp"); col_ct = cols.get("content"); col_us = cols.get("username")
+                if not col_ts: continue
+                n = 0
+                for row in reader:
+                    dt = predictor.parse_ts(row.get(col_ts, ""))
+                    if dt is None: continue
+                    rows.append((dt, row.get(col_ct, "") if col_ct else "", row.get(col_us, "?") if col_us else "?"))
+                    n += 1
+                if n: used_files.append((path, n))
+        except Exception: pass
+    if not rows: return [], None, None, used_files
+    seen = {(r[0], r[2], r[1]): r for r in rows}
+    rows = list(seen.values())
+    dts = [r[0] for r in rows]
+    return rows, min(dts), max(dts), used_files
+
+def load_default_csv():
+    sha = _get_main_sha()
+    if sha:
+        result = _load_at_sha(sha)
+        if result: return result
+    return _load_local_csv_v1220()
+
+_detected_lang = detect_default_lang()
+if "app_lang" not in st.session_state: st.session_state.app_lang = _detected_lang
+
+def _set_lang(l_code):
+    st.session_state.app_lang = l_code; st.rerun()
+
+col_vi, col_en, col_other, _ = st.columns([1.2, 1.2, 2.5, 5])
+with col_vi:
+    st.button("🇻🇳 Tiếng Việt", on_click=_set_lang, args=("vi",), use_container_width=True, type="primary" if st.session_state.app_lang == "vi" else "secondary")
+with col_en:
+    st.button("🇺🇸 English", on_click=_set_lang, args=("en",), use_container_width=True, type="primary" if st.session_state.app_lang == "en" else "secondary")
+with col_other:
+    _other_langs = {k: v for k, v in LANG_OPTIONS.items() if v not in ("vi", "en")}
+    if _other_langs:
+        _options = [""] + list(_other_langs.keys())
+        _idx = _options.index(next((k for k, v in _other_langs.items() if v == st.session_state.app_lang), ""))
+        _sel = st.selectbox("🌐 Khác / Others", _options, index=_idx, label_visibility="collapsed")
+        if _sel and st.session_state.app_lang != _other_langs[_sel]: _set_lang(_other_langs[_sel])
+
+lang = st.session_state.app_lang
+
+# ==========================================
+
+T = get_translator(lang)
+
+# ==========================================
+# TIMEZONE SETTINGS (TOP)
+# ==========================================
+try:
+    from zoneinfo import ZoneInfo
+    system_tz_name = st.context.timezone or "Asia/Ho_Chi_Minh"
+    vn_tz = ZoneInfo("Asia/Ho_Chi_Minh")
+    sample = datetime(2025, 1, 1, 12, 0, tzinfo=vn_tz).astimezone(ZoneInfo(system_tz_name))
+    system_offset = sample.utcoffset().total_seconds() / 3600
+except Exception:
+    system_tz_name, system_offset = "Asia/Ho_Chi_Minh", 7.0
+
+if "utc_offset" not in st.session_state:
+    st.session_state.utc_offset = system_offset
+
+def reset_utc():
+    st.session_state.utc_offset = system_offset
+
+if lang == "vi": st.caption(f"🌍 Hệ thống tự nhận diện: **{system_tz_name}** (UTC{system_offset:+.1f})")
+else: st.caption(f"🌍 System auto-detected: **{system_tz_name}** (UTC{system_offset:+.1f})")
+
+col_tz, col_tz_btn = st.columns([3, 1])
+with col_tz: 
+    utc_offset = st.slider(T("utc_offset_label", default="🌍 UTC Offset"), min_value=-12.0, max_value=14.0, step=0.5, key="utc_offset")
+with col_tz_btn: 
+    st.write("")
+    st.write("")
+    st.button(T("utc_reset_btn", default="🔄 Reset"), on_click=reset_utc)
+
+_now_local = datetime.now(timezone.utc) + timedelta(hours=utc_offset)
+_now_str = _now_local.strftime('%Y-%m-%d %H:%M:%S')
+if lang == "vi": st.caption(f"🕐 **Giờ hiện tại (theo offset trên):** `{_now_str}` — UTC{utc_offset:+.1f}")
+else: st.caption(f"🕐 **Current time (per offset above):** `{_now_str}` — UTC{utc_offset:+.1f}")
+# ==========================================
+
+
+if predictor._WIDGET_TEMPLATE is None:
+    st.error(T("err_widget_missing", default="⚠️ Không tìm thấy file `widget_template.html`."))
+    st.stop()
+
+_lang_errs = check_locales_errors()
+if _lang_errs:
+    st.error(T("err_lang_files", default="⚠️ Language files error:\n\n") + "\n\n".join(f"- {e}" for e in _lang_errs))
+    st.stop()
+
+try: predictor.set_secrets(dict(st.secrets))
+except Exception: pass
+
+with st.sidebar:
+    st.markdown(T("sidebar_config", default="### ⚙️ Config"))
+    if st.button(T("sidebar_reload", default="🔄 Reload config files"), use_container_width=True, key="btn_reload_sidebar"):
+        st.cache_data.clear(); st.rerun()
+    st.caption(T("sidebar_hint", default="Sửa config files → bấm Reload"))
+    
+    _current_sha = _get_main_sha()
+    if _current_sha: st.caption(f"🟢 GitHub: `{_current_sha[:7]}`")
+    else: st.caption("🔴 GitHub: Offline")
+    
+    trans_lookback_input = predictor.TRANS_ADAPTIVE_LOOKBACK
+    if SHOW_ADVANCED_UI:
+        st.markdown(T("trans_scan_title", default="#### 🔍 Quét TRANS"))
+        trans_lookback_input = st.number_input(
+            T("trans_scan_slots", default="Số slot quét ngược"), min_value=40, max_value=5000,
+            value=predictor.TRANS_ADAPTIVE_LOOKBACK, step=10, key="trans_lookback_input"
+        )
+        st.markdown("---")
+        trans_text_ss = st.session_state.get('trans_text', '')
+        if trans_text_ss:
+            with st.expander("📊 TRANS động", expanded=False):
+                stats = st.session_state.get('trans_stats', {})
+                _s_acc = stats.get('static_acc', 0); _a_acc = stats.get('adaptive_acc', 0); _delta = _a_acc - _s_acc
+                _d_icon = '🟢' if _delta > 0 else ('⚪' if _delta == 0 else '🔴')
+                st.caption(f'Static: **{_s_acc:.1f}%** | Adaptive: **{_a_acc:.1f}%** | Delta: {_d_icon} {_delta:+.1f}%')
+                _curr = predictor.get_adaptive_offset_state()
+                _tog = st.toggle('🚀 Bật Adaptive Offset (override TRANS)', value=_curr, key='adaptive_offset_toggle')
+                if _tog != _curr:
+                    predictor.set_adaptive_offset_state(_tog)
+                    st.success(T("adaptive_toggled", default="✅ Đã {status} adaptive offset", status="BẬT" if _tog else "TẮT"))
+                    st.rerun()
+                if stats.get('was_overridden', False): st.success(T('trans_overridden', default='🚀 Đã ghi đè TRANS tĩnh'))
+                else: st.info(T('trans_using_static', default='✅ Đang dùng TRANS tĩnh'))
+                st.caption(T('trans_scanned_caption', default="📥 Đã quét: **{used}** slot (yêu cầu: {req})", used=stats.get('lookback_used', 0), req=stats.get('lookback_requested', 0)))
+                st.caption(T('trans_train_test', default="📊 Train: {train} | Test: {test}", train=stats.get('train_size', 0), test=stats.get('test_size', 0)))
+                edited = st.text_area(T('trans_edit', default='Sửa nội dung:'), value=trans_text_ss, height=200, key='trans_editor_v5')
+                st.markdown("**🎯 Auto-detected Offsets:**")
+                _current_offsets = predictor.ADAPTIVE_CANDIDATE_OFFSETS
+                if _current_offsets: st.code(", ".join(map(str, _current_offsets)), language="text")
+                else: st.caption("Chưa có (bấm nút bên dưới để quét)")
+                if st.button("🔍 Chạy thử (Verify Offsets mới)", key="btn_verify_offsets", use_container_width=True):
+                    with st.spinner("Đang quét và tính toán..."):
+                        _old_offsets = list(predictor.ADAPTIVE_CANDIDATE_OFFSETS) if predictor.ADAPTIVE_CANDIDATE_OFFSETS else []
+                        _new_offsets, _old_acc, _new_acc = predictor._auto_detect_offsets()
+                        st.session_state['offset_verify_result'] = {'old_offsets': _old_offsets, 'new_offsets': _new_offsets, 'old_acc': _old_acc, 'new_acc': _new_acc}
+                    st.rerun()
+                if 'offset_verify_result' in st.session_state:
+                    res = st.session_state['offset_verify_result']
+                    st.markdown("**📊 Kết quả kiểm tra:**")
+                    st.write(f"- Bộ cũ: `Accuracy {res['old_acc']:.1f}%`")
+                    st.write(f"- Bộ mới: `Accuracy {res['new_acc']:.1f}%`")
+                    if res['new_acc'] >= res['old_acc']:
+                        st.success(f"✅ Bộ mới tốt hơn/ngang bằng (+{res['new_acc']-res['old_acc']:.1f}%)")
+                        if st.button("🚀 Áp dụng Bộ Mới", type="primary", key="btn_apply_new", use_container_width=True):
+                            predictor.ADAPTIVE_CANDIDATE_OFFSETS = res['new_offsets']
+                            predictor._build_context_offset_cache(); st.cache_data.clear(); del st.session_state['offset_verify_result']
+                            st.success("Đã áp dụng Offsets mới thành công!"); st.rerun()
+                    else:
+                        st.error(f"❌ Bộ mới KÉM HƠN ({res['new_acc']-res['old_acc']:.1f}%)")
+                        if st.button("⚠️ Vẫn áp dụng (Không khuyến khích)", key="btn_apply_force", use_container_width=True):
+                            predictor.ADAPTIVE_CANDIDATE_OFFSETS = res['new_offsets']
+                            predictor._build_context_offset_cache(); st.cache_data.clear(); del st.session_state['offset_verify_result']
+                            st.warning("Đã áp dụng Offsets mới (dù kém hơn)."); st.rerun()
+                    if st.button("🗑️ Bỏ qua / Hủy kết quả", key="btn_discard_verify", use_container_width=True):
+                        del st.session_state['offset_verify_result']; st.rerun()
+
+st.title(T("title", default="📍 Merchant Location"))
+_default_files = list_default_files()
+
+if _default_files:
+    try:
+        _d_rows, _d_min, _d_max, _used = load_default_csv()
+        if _d_rows:
+            total_mb = sum(os.path.getsize(f) for f in _default_files) / 1024 / 1024
+            shown = ", ".join(f"`{f}` ({n:,})" for f, n in _used[:5]) + (f" … (+{len(_used)-5})" if len(_used) > 5 else "")
+            info_text = T("info_header", default="📚 **Default baseline** ({n} file(s)):", n=len(_used)) + "\n\n" + f"- 📁 {shown}\n"
+            info_text += T("info_from", default="- 🗓️ **From:** `{v}` (VN, UTC+7)", v=_d_min.strftime('%Y-%m-%d %H:%M')) + "\n"
+            info_text += T("info_to", default="- 🗓️ **To:** `{v}` (VN, UTC+7)", v=_d_max.strftime('%Y-%m-%d %H:%M')) + "\n"
+            info_text += T("info_total", default="- 📊 **Total:** `{n:,}` posts  ·  💾 `{mb:.1f} MB`", n=len(_d_rows), mb=total_mb) + "\n\n"
+            st.info(info_text)
+        else: st.warning(T("no_valid", default="⚠️ No valid rows"))
+    except Exception as e: st.warning(T("read_error", default="⚠️ Read error: `{e}`", e=e))
+else: st.caption(T("no_default", default="ℹ️ No baseline CSV"))
+
+if "time_travel_slider" not in st.session_state: st.session_state.time_travel_slider = 0
+def reset_time_travel(): st.session_state.time_travel_slider = 0
+
+offset_days = st.slider(T("slider_label", default="🕰️ Time travel (days)"), min_value=-7, max_value=30, step=1, key="time_travel_slider")
+st.button(T("reset_time_travel", default="🔄 Reset Time Travel"), on_click=reset_time_travel)
+
+use_default = st.checkbox(T("use_default", default="📚 Use default baseline"), value=True)
+st.caption(
+    "📄 **Các cột CSV:** `timestamp` (mốc thời gian quy đổi sang `slot` 6h) · "
+    "`content` (nội dung pattern/vật phẩm) · `username` (người đăng/nguồn). "
+    "**Cột `id` (nếu có):** mã định danh bản ghi gốc — hệ thống **không** dùng `id` để tính chu kỳ hay `slot`, có hay không đều chạy bình thường."
+)
 st.markdown(T('csv_logic_cols_html', default="<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">Cột logic CSV:</b></span><span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(Snowflake ID nếu có — không dùng tính chu kỳ/slot)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(mốc thời gian quy đổi slot 6h)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(nội dung pattern/vật phẩm)</span></span></div>") if not str(locals().get('lang', '')).lower().startswith('en') else "<div style=\"display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;max-width:100%;overflow-wrap:anywhere;word-break:break-word;\"><span style=\"white-space:nowrap;\">📄 <b style=\"color:#e2e6f0;\">Logic CSV columns:</b></span><span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">ID</code><span style=\"color:#c8ccd8;\">(Snowflake ID if present — not used for cycle/slot)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Timestamp</code><span style=\"color:#c8ccd8;\">(timestamp mapped to 6h slot)</span></span> <span style=\"color:#6c7288;margin:0 2px;\">·</span> <span style=\"display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere;\"><code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;white-space:nowrap;\">Content</code><span style=\"color:#c8ccd8;\">(pattern/item content)</span></span></div>", unsafe_allow_html=True)
 uploaded = st.file_uploader(T("uploader", default="Upload CSV"), type=["csv"], accept_multiple_files=True)
 
