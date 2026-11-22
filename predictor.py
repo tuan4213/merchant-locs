@@ -995,9 +995,9 @@ def _slot_candidates(slot):
         out.append({
             'pattern': pat,
             'positions': positions,
-            'prob': f"{c.get('prob', 0.0)*100:.1f}%",
+            'prob': '',
             'source': src,
-            'reason': c.get('reason', ''),
+            'reason': (c.get('reason') or (f"nguồn {src}" if isinstance(src, int) else "dự đoán chuẩn")),
             'phases': c.get('phases', []),
             'type': 'real' if c.get('source_type') == 'real' else 'pred',
             'duplicates': c.get('duplicates', []),
