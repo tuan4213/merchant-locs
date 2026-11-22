@@ -1,5 +1,138 @@
 import streamlit as st
 
+# --- Global Wrap Text + 4-Column Grid Table Helper ---
+st.markdown(
+    """
+    <style>
+    .stMarkdown, .stMarkdown p, .stMarkdown div, .stMarkdown li,
+    .stSelectbox, .stSelectbox label, .stSelectbox div[data-baseweb="select"],
+    .stSelectbox div[data-baseweb="select"] span,
+    div[data-baseweb="popover"] li, div[data-baseweb="menu"] div,
+    .mc-wrap-box, .mc-wrap-box * {
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        max-width: 100% !important;
+    }
+    table.mc-grid-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin: 8px 0 10px 0;
+        font-size: 12px;
+        line-height: 1.42;
+    }
+    table.mc-grid-table th,
+    table.mc-grid-table td {
+        border: 1px solid rgba(148, 163, 184, 0.38);
+        padding: 6px 7px;
+        text-align: left;
+        vertical-align: top;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+    }
+    table.mc-grid-table th {
+        background: rgba(148, 163, 184, 0.16);
+        font-weight: 600;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+def _fmt_utc_offset(utc_offset) -> str:
+    val = float(utc_offset)
+    sign = "+" if val >= 0 else "-"
+    abs_val = abs(val)
+    if abs_val.is_integer():
+        return f"{sign}{int(abs_val)}"
+    return f"{sign}{abs_val:g}"
+
+
+def _render_tz_milestone_table(utc_offset):
+    from datetime import datetime, timezone, timedelta
+    off_val = float(utc_offset)
+    tz_str = _fmt_utc_offset(off_val)
+    tz_cur = timezone(timedelta(hours=off_val))
+    tz_vn = timezone(timedelta(hours=7))
+
+    day_prev = T("tz_day_prev", default="Hôm trước")
+    day_same = T("tz_day_same", default="Cùng ngày")
+    day_next = T("tz_day_next", default="Hôm sau")
+
+    m_first = T("tz_m_first", default="First Merchant")
+    m_second = T("tz_m_second", default="Merchant 2")
+    m_third = T("tz_m_third", default="Merchant 3")
+    m_last = T("tz_m_last", default="Last Merchant")
+
+    r_first = T("tz_rule_first", default="Khởi đầu chu kỳ ngày; ưu tiên pattern thật từ CSV, thiếu thì dùng Markov/pha.")
+    r_mid = T("tz_rule_mid", default="Nối tiếp chuỗi Markov & quy luật chuyển pha; lấp gap bằng bridge nếu thiếu slot.")
+    r_last = T("tz_rule_last", default="Chốt phiên cuối ngày; đối chiếu chéo nguồn/chuỗi và dùng fallback nếu thiếu dữ liệu.")
+
+    merchants = [
+        (m_first, 4, 0, r_first),
+        (m_second, 10, 0, r_mid),
+        (m_third, 16, 0, r_mid),
+        (m_last, 22, 0, r_last),
+    ]
+
+    rows_html = []
+    for m_label, vn_h, vn_m, rule_desc in merchants:
+        dt_vn = datetime(2026, 5, 10, vn_h, vn_m, tzinfo=tz_vn)
+        dt_cur = dt_vn.astimezone(tz_cur)
+        day_delta = (dt_cur.date() - dt_vn.date()).days
+        if day_delta < 0:
+            day_badge = day_prev
+        elif day_delta > 0:
+            day_badge = day_next
+        else:
+            day_badge = day_same
+
+        rows_html.append(
+            f"<tr>"
+            f"<td><b>{m_label}</b></td>"
+            f"<td>{dt_vn.strftime('%H:%M')}</td>"
+            f"<td><b>{dt_cur.strftime('%H:%M')}</b><br><span style='opacity:0.85;'>({day_badge})</span></td>"
+            f"<td>{rule_desc}</td>"
+            f"</tr>"
+        )
+
+    guide_txt = T(
+        "tz_milestone_guide",
+        default="Mốc giờ & quy đổi (UTC{tz_str}): Thanh trượt đổi múi giờ hiển thị; đổi UTC có thể đẩy mốc sang ngày hôm trước hoặc ngày hôm sau.",
+    ).format(tz_str=tz_str)
+    col_m = T("tz_col_merchant", default="Mốc Merchant")
+    col_vn = T("tz_col_vn", default="Giờ VN (UTC+7)")
+    col_target = T("tz_col_target", default="Giờ UTC{tz_str} & lệch ngày").format(tz_str=tz_str)
+    col_rule = T("tz_col_rule", default="Tóm tắt quy tắc đoán")
+
+    html = (
+        f"<div class='mc-wrap-box' style='margin-top:6px;margin-bottom:10px;'>"
+        f"<div style='font-size:12.5px;opacity:0.92;margin-bottom:6px;'>{guide_txt}</div>"
+        f"<table class='mc-grid-table'>"
+        f"<thead><tr><th>{col_m}</th><th>{col_vn}</th><th>{col_target}</th><th>{col_rule}</th></tr></thead>"
+        f"<tbody>{''.join(rows_html)}</tbody>"
+        f"</table>"
+        f"</div>"
+    )
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def _render_time_machine_guide():
+    tm_txt = T(
+        "time_machine_guide",
+        default="🕰️ Time Machine (Du hành thời gian): Lùi hoặc tiến số ngày trên thanh trượt để xem dữ liệu/dự đoán ở quá khứ hoặc tương lai, đối chiếu lịch sử và mô phỏng kịch bản. Chỉ đổi góc nhìn hiển thị, không sửa dữ liệu gốc.",
+    )
+    html = (
+        "<div class='mc-wrap-box' style='margin-top:6px;margin-bottom:10px;padding:8px 10px;"
+        "border-radius:8px;border:1px solid rgba(148,163,184,0.28);background:rgba(148,163,184,0.06);"
+        f"font-size:12.5px;line-height:1.5;'>{tm_txt}</div>"
+    )
+    st.markdown(html, unsafe_allow_html=True)
+
+
 # --- Global Wrap Text + Grid Table Helper ---
 st.markdown(
     """
@@ -508,6 +641,7 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
             key="utc_offset",
         )
         _render_tz_milestone_table(utc_offset)
+        _render_tz_milestone_table(utc_offset)
     with col_tz_btn:
         st.write("")
         st.write("")
@@ -552,6 +686,7 @@ with st.expander(T("predict_settings_title", default="⚙️ Predict Settings"),
         step=1,
         key="time_travel_slider",
     )
+    _render_time_machine_guide()
     _render_time_machine_guide()
     st.button(T("reset_time_travel", default="🔄 Reset Time Travel"), on_click=reset_time_travel)
 
