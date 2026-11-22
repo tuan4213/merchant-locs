@@ -363,6 +363,7 @@ st.caption(
     "`content` (nội dung pattern/vật phẩm) · `username` (người đăng/nguồn). "
     "**Cột `id` (nếu có):** mã định danh bản ghi gốc — hệ thống **không** dùng `id` để tính chu kỳ hay `slot`, có hay không đều chạy bình thường."
 )
+st.markdown("<div style=\"font-size:12.5px;line-height:1.55;color:#a8b0c4;margin:4px 0 8px 0;\">📄 <b style=\"color:#e2e6f0;\">Cột logic CSV:</b> <code style=\"color:#ffd166;background:rgba(255,209,102,.15);padding:1px 6px;border-radius:4px;font-weight:600;\">ID</code> <span style=\"color:#c8ccd8;\">(Snowflake ID nếu có — không dùng tính chu kỳ/slot)</span> · <code style=\"color:#7ab7ff;background:rgba(122,183,255,.16);padding:1px 6px;border-radius:4px;font-weight:600;\">Timestamp</code> <span style=\"color:#c8ccd8;\">(mốc thời gian quy đổi slot 6h)</span> · <code style=\"color:#90ee90;background:rgba(144,238,144,.15);padding:1px 6px;border-radius:4px;font-weight:600;\">Content</code> <span style=\"color:#c8ccd8;\">(nội dung pattern/vật phẩm)</span></div>", unsafe_allow_html=True)
 uploaded = st.file_uploader(T("uploader", default="Upload CSV"), type=["csv"], accept_multiple_files=True)
 
 # --- CẢNH BÁO TIMEZONE CSV ---
