@@ -138,7 +138,7 @@ _LANG_TO_CC = {
     "su": "ID", "sv": "SE", "sw": "KE", "ta": "IN", "te": "IN", "tg": "TJ", "th": "TH", "ti": "ER",
     "tk": "TM", "tl": "PH", "tn": "BW", "to": "TO", "tr": "TR", "ts": "ZA", "tt": "RU", "tw": "GH",
     "ty": "PF", "ug": "CN", "uk": "UA", "ur": "PK", "uz": "UZ", "ve": "ZA", "vi": "VN", "vo": "UN",
-    "wa": "BE", "wo": "SN", "xh": "ZA", "yi": "IL", "yo": "NG", "za": "CN", "zh": "CN", "zh-cn": "CN",
+    "wa": "BE", "wo": "SN", "xh": "ZA", "yi": "IL", "yo": "Yoruba", "za": "CN", "zh": "CN", "zh-cn": "CN",
     "zh-tw": "TW", "zu": "ZA",
 }
 
