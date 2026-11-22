@@ -1028,9 +1028,10 @@ def _fmt_phase_formula(slot, src_slot, phase_label):
     if isinstance(slot, int) and isinstance(src_slot, int) and slot > src_slot:
         diff = slot - src_slot
         k_val = max(1, (diff + 59) // 119)
+        p_val = (diff - k_val * 119) // 16
         jitter_val = diff - k_val * 119
-        return f"{tag}=k*119+jitter, k={k_val},jitter={jitter_val}"
-    return f"{tag}=k*119+jitter"
+        return f"{tag}=k*119+jitter, k={k_val}, p={p_val}, jitter={jitter_val}"
+    return f"{tag}=k*119+jitter, k=?, p=?, jitter=?"
 
 
 def build_widget_html(base_start_slot, offset_slots=0, n_ahead=12, lang="vi", utc_offset=7.0, missing_04=None):
