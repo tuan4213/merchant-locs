@@ -174,6 +174,10 @@
             h += `<div class="missing-warn">${L.missing_data_warn || '⚠️ <b>Dữ liệu gốc bị thiếu!</b> Dự đoán quy luật. Không có data tại '}${missDate} ${missParts.timeStr}</div>`;
         }
     }
+    const topReasonTxt = formatCandMeta(top, top && top.type === 'actual');
+    if (topReasonTxt) {
+      h += '<div class="fb-hint" style="margin-top:8px;color:#7ab7ff">💡 ' + esc(topReasonTxt) + '</div>';
+    }
     return h;
   }
   function renderFbCol(fallbacks, top, second){
@@ -271,11 +275,6 @@
       const sParts = getTimeParts(s.iso, utc_offset);
       let tags='';
       if(s.phase)tags+='<span class="tag phase">'+esc(s.phase)+'</span>';
-      if(top.prob){
-        if(top.prob === 'REAL') tags+='<span class="tag actual">'+esc(L.real_badge)+'</span>';
-        else if(top.prob === 'BRIDGE') tags+='<span class="tag bridge">'+esc(L.bridge_badge)+'</span>';
-        else tags+='<span class="tag">'+esc(top.prob)+'</span>';
-      }
       let cdDisplay;
       if(isActual || isBridge){ cdDisplay = '<span class="'+cdCls+'">✓</span>'; }
       else if(dd > 0){ cdDisplay = '<span class="'+cdCls+'">'+fmt(dd)+'</span>'; }
