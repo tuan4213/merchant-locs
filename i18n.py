@@ -106,7 +106,14 @@ def get_translator(lang):
     return T
 
 def get_widget_text(lang):
-    return _load_lang_file(lang).get('widget', {})
+    w = dict(_load_lang_file(lang).get('widget', {}))
+    if not w.get('top2_label'):
+        fb = (w.get('fallback') or '').strip()
+        if str(lang).lower().startswith('vi'):
+            w['top2_label'] = f"🥈 TOP 2 ({fb})" if fb else "🥈 TOP 2 (Dự phòng)"
+        else:
+            w['top2_label'] = f"🥈 TOP 2 ({fb})" if fb else "🥈 TOP 2 (Fallback)"
+    return w
 
 # === STATIC_ISO639_LABELS_START ===
 def _cc_flag(cc: str) -> str:

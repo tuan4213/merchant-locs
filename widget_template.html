@@ -199,7 +199,7 @@
     }
     let h = '';
     if (second) {
-      h += '<div class="fb-title" style="color:#ffd166">🥈 TOP 2 (Dự phòng)</div>';
+      h += '<div class="fb-title" style="color:#ffd166">' + esc(L.top2_label || (L.fallback ? ('🥈 TOP 2 (' + L.fallback + ')') : '🥈 TOP 2')) + '</div>';
       const checkPos = second.positions && second.positions.length ? second.positions[0] : {pos:'?',items:'—'};
       const fbCopyStr = compactPattern(second.pattern) + '|' + compactItems([checkPos]);
       const hasItem = checkPos.items && checkPos.items !== '—';
