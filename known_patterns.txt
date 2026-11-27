@@ -1,0 +1,28 @@
+base_time = 2025-01-01 04:00:00
+cycle = 119
+phase A jitter +12
+phase A k 1 2 3 4
+phase B jitter -6
+phase B k 3
+phase C jitter +6
+phase C k 7
+patch1 A2 A3 A4
+anomaly_std cycle 119 jitter 12 max_k 15 max_p 5
+anomaly_04 cycle 119 jitter 6 -6 12 -12 max_k 10 max_p 3
+std_anomaly_offset 1 A4
+std_anomaly_offset 2 A3
+std_anomaly_offset 3 A2
+std_anomaly_risk_gaps 16 116 132
+use_markov_b2 = true
+markov_b2_min_samples = 5
+trans_adaptive_lookback = 50
+markov A3 -> A3 71%
+markov A3 -> C1 29%
+markov C1 -> A3 21%
+markov C1 -> C1 79%
+markov_offset A3 = A4
+markov_offset C1 = C7
+auto_heal_threshold = 0.52
+auto_heal_min_samples = 200
+min_stable_slot = 0
+min_markov_samples = 20

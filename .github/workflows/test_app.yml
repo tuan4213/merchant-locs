@@ -1,0 +1,39 @@
+name: Test App
+on:
+  push:
+    paths: ['app.py', 'predictor.py', 'item_utils.py']
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install
+        run: pip install --quiet pandas requests python-dateutil PyGithub streamlit
+      - name: Syntax check
+        run: |
+          python -c "import ast; ast.parse(open('app.py').read()); print('app.py OK')"
+          python -c "import ast; ast.parse(open('predictor.py').read()); print('predictor.py OK')"
+      - name: Quick pipeline test
+        run: |
+          python -c "
+          import csv
+          import predictor
+          rows = []
+          with open('data.csv', encoding='utf-8-sig', errors='ignore') as f:
+              for r in csv.DictReader(f):
+                  cols = {c.strip().lower(): c for c in r}
+                  dt = predictor.parse_ts(r.get(cols.get('timestamp',''), ''))
+                  if dt: rows.append((dt, r.get(cols.get('content',''), ''), '?'))
+          predictor.ANOMALY_END_SLOT = -1000
+          result = predictor.run_pipeline([], rows[:5000], [], 0, True, 'vi', 7.0, None)
+          print(f'slot_to_items: {len(predictor.slot_to_items)}')
+          print(f'slot_to_meta:  {len(predictor.slot_to_meta)}')
+          assert len(predictor.slot_to_items) > 1000, 'items too low'
+          assert len(predictor.slot_to_meta) > 1000, 'meta too low'
+          print('✅ Pipeline OK')
+          "

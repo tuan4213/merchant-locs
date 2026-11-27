@@ -1,0 +1,353 @@
+<style>
+#mwidget{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#1e1e2e 0%,#2a2a3e 100%);color:#e0e0e0;padding:16px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:1180px;margin:8px 0;border:1px solid #3a3a4e;overflow-x:auto}
+#mwidget .t{font-size:13px;font-weight:600;letter-spacing:1px;color:#7ab7ff;text-transform:uppercase;margin-bottom:10px}
+#mwidget .big{font-size:34px;font-weight:700;color:#ffd166;font-variant-numeric:tabular-nums;margin:6px 0}
+#mwidget .sub{font-size:13px;color:#a0a0b0;margin-bottom:16px;line-height:1.4;min-height:20px}
+#mwidget .card{background:rgba(255,255,255,.03);border-radius:8px;padding:10px 14px;margin:8px 0;border-left:3px solid #3a3a4e;min-width:600px;position:relative;transition:background 0.15s}
+#mwidget .card.next{background:rgba(255,209,102,.08);border-left-color:#ffd166}
+#mwidget .card.past{opacity:.5}
+#mwidget .card.actual{background:rgba(144,238,144,.06);border-left-color:#90ee90;opacity:1}
+#mwidget .card.bridge{background:rgba(138,124,255,.06);border-left-color:#8a7cff;opacity:.85}
+#mwidget .ch, #mwidget .pat-row, #mwidget .items-list, #mwidget .fb-item {position: relative; transition: padding-left 0.2s ease;}
+#mwidget .ch { padding-left: 0; display:flex; justify-content:space-between; align-items:center; font-size:14px; margin-bottom:8px; gap:12px; flex-wrap:wrap; }
+#mwidget .ch.active { padding-left: 32px; }
+#mwidget .pat-row { padding-left: 0; display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+#mwidget .pat-row.active { padding-left: 32px; }
+#mwidget .items-list { padding-left: 0; display:flex; flex-direction:column; }
+#mwidget .items-list.active { padding-left: 32px; }
+#mwidget .float-btn {position: absolute; left: 0; top: 50%; transform: translateY(-50%); height: 24px; width: 24px; border-radius: 12px; background: rgba(30,30,46,0.95); color: #7ab7ff; border: 1px solid #7ab7ff; box-shadow: 0 2px 6px rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; font-family: inherit; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding: 0; overflow: hidden; white-space: nowrap;}
+#mwidget .ch.active .float-btn, #mwidget .pat-row.active .float-btn, #mwidget .items-list.active .float-btn, #mwidget .fb-item.active .copy-fb-btn { display: flex; }
+#mwidget .float-btn:hover, #mwidget .copy-fb-btn:hover { background: #7ab7ff; color: #1e1e2e; transform: translateY(-50%) scale(1.1); }
+#mwidget .float-btn.copied, #mwidget .copy-fb-btn.copied {width: 74px; background: #90ee90; color: #1e1e2e; border-color: #90ee90; justify-content: flex-start; padding-left: 7px;}
+#mwidget .ch .left{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+#mwidget .ch .slot{color:#7ab7ff;font-weight:700;font-size:15px}
+#mwidget .ch .time{color:#c0c0d0;font-weight:600}
+#mwidget .ch .local{font-size:11px;color:#888;margin-left:6px}
+#mwidget .ch .tag{font-size:11px;padding:1px 6px;border-radius:3px;background:rgba(122,183,255,.15);color:#7ab7ff}
+#mwidget .ch .tag.phase{background:rgba(255,158,100,.15);color:#ff9e64}
+#mwidget .ch .tag.reason{background:rgba(122,183,255,.16);color:#9cc9ff;max-width:460px;white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-height:1.3}
+#mwidget .ch .tag.actual{background:rgba(144,238,144,.25);color:#90ee90;font-weight:700}
+#mwidget .ch .tag.bridge{background:rgba(138,124,255,.25);color:#8a7cff;font-weight:700}
+#mwidget .ch .cd{color:#90ee90;font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
+#mwidget .ch .cd.soon{color:#ff6b6b;animation:pulse 1s infinite}
+#mwidget .ch .cd.past{color:#666}
+#mwidget .body{display:grid;grid-template-columns:minmax(280px,1fr) 340px;gap:16px;align-items:start}
+#mwidget .body.single{grid-template-columns:minmax(280px,1fr)}
+#mwidget .pat{flex:1;min-width:0;font-family:'SF Mono',Monaco,Consolas,monospace;font-size:13px;color:#ffd166;margin:0;padding:6px 10px;background:rgba(255,209,102,.06);border-radius:4px;letter-spacing:.4px;word-break:break-all}
+#mwidget .pat.actual{color:#90ee90;background:rgba(144,238,144,.08)}
+#mwidget .pat.bridge{color:#8a7cff;background:rgba(138,124,255,.08)}
+#mwidget .pos{display:grid;grid-template-columns:64px 1fr;gap:10px;font-size:12px;padding:3px 6px;color:#b0b0c0;line-height:1.4}
+#mwidget .pos .p{color:#ff9e64;font-family:'SF Mono',Monaco,Consolas,monospace;font-weight:600}
+#mwidget .pos .it{color:#9090a0;word-break:break-word}
+#mwidget .fb-col{border-left:1px dashed rgba(255,255,255,.08);padding-left:20px;max-height:280px;overflow-y:auto;overflow-x:visible}
+#mwidget .fb-title{font-size:11px;font-weight:600;letter-spacing:.5px;color:#7ab7ff;text-transform:uppercase;margin-bottom:6px;white-space:normal;overflow-wrap:break-word;word-break:break-word;line-height:1.35}
+#mwidget .fb-item{padding:6px 8px;padding-left: 8px; margin:6px 0;background:rgba(255,255,255,.02);border-radius:4px;border-left:2px solid #7ab7ff;font-size:11px;line-height:1.35;cursor:pointer}
+#mwidget .fb-item.active { padding-left: 32px; }
+#mwidget .fb-item.real{border-left-color:#90ee90}
+#mwidget .fb-item.dup{border-left-color:#666;opacity:0.7;cursor:default}
+#mwidget .fb-item.top2{border-left-color:#ffd166;background:rgba(255,209,102,.08);padding:8px 10px;margin-bottom:12px}
+#mwidget .fb-item.top2 .fb-pat{color:#ffd166;font-size:12px}
+#mwidget .fb-item.top2 .fb-prob{color:#ffd166;font-size:12px}
+#mwidget .copy-fb-btn {position: absolute; left: 6px; top: 50%; transform: translateY(-50%); height: 24px; width: 24px; border-radius: 12px; background: rgba(30,30,46,0.95); color: #7ab7ff; border: 1px solid #7ab7ff; box-shadow: 0 2px 6px rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 10; font-family: inherit; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); padding: 0; overflow: hidden; white-space: nowrap;}
+#mwidget .fb-head{display:flex;justify-content:space-between;gap:6px;align-items:baseline;margin-bottom:2px}
+#mwidget .fb-prob{color:#90ee90;font-weight:700;font-size:11px}
+#mwidget .fb-reason{color:#7ab7ff;font-size:10px;text-align:right;flex:1;white-space:normal;overflow-wrap:break-word;word-break:break-word;line-height:1.3}
+#mwidget .fb-pat{font-family:'SF Mono',Monaco,Consolas,monospace;color:#d0d0e0;font-size:11px;margin-top:2px;word-break:break-all;line-height:1.3}
+#mwidget .fb-hint{color:#9090a0;font-size:10px;margin-top:3px}
+#mwidget .fb-hint b{color:#ff9e64;font-weight:600}
+#mwidget .fb-empty{color:#666;font-size:11px;font-style:italic;padding:8px 0}
+#mwidget .missing-warn {background:rgba(255,107,107,.1);border:1px solid #ff6b6b;color:#ff6b6b;padding:6px 10px;border-radius:4px;margin-top:8px;font-size:11px;line-height:1.4}
+@keyframes pulse{50%{opacity:.4}}
+
+#mwidget .fb-title, #mwidget .fb-head, #mwidget .fb-reason, #mwidget .fb-hint {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+</style>
+
+<div id="mwidget"><div class="t" id="mtitle">—</div><div class="big" id="mbig">--</div><div class="sub" id="msub">—</div><div id="mrow"></div></div>
+<script>
+(function(){
+  const payload=__P__,data=payload.slots,L=payload.L,utc_offset=payload.utc_offset;
+  const bigEl=document.getElementById('mbig'),subEl=document.getElementById('msub'),rowEl=document.getElementById('mrow');
+  document.getElementById('mtitle').textContent = L.title; subEl.textContent = L.loading;
+  const pad=n=>String(n).padStart(2,'0');
+  const missingSlots = payload.missing_04 || [];
+  const missingMap = {};
+  missingSlots.forEach(m => missingMap[String(m.slot)] = m.iso);
+  function getFullDateStr(isoString, offset) {
+      const d = new Date(isoString);
+      const localMs = d.getTime() + offset * 3600000;
+      const localDate = new Date(localMs);
+      return pad(localDate.getUTCFullYear()) + '/' + pad(localDate.getUTCMonth() + 1) + '/' + pad(localDate.getUTCDate());
+  }
+  function getTimeParts(isoString, offset) {
+      const d = new Date(isoString);
+      const localMs = d.getTime() + offset * 3600000;
+      const localDate = new Date(localMs);
+      return { timeStr: pad(localDate.getUTCHours()) + ':' + pad(localDate.getUTCMinutes()), dateStr: pad(localDate.getUTCMonth() + 1) + '/' + pad(localDate.getUTCDate()) };
+  }
+  function fmt(ms){
+    if(ms<0)return L.passed;
+    const s=Math.floor(ms/1000);
+    const d=Math.floor(s/86400),h=Math.floor(s%86400/3600), m=Math.floor(s%3600/60),sec=s%60;
+    if(d>0)return d+'d '+pad(h)+'h '+pad(m)+'m';
+    if(h>0)return h+'h '+pad(m)+'m '+pad(sec)+'s';
+    if(m>0)return m+'m '+pad(sec)+'s';
+    return sec+'s';
+  }
+  function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  async function copyToClipboard(text) {
+    try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch(e) {}
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.cssText='position:fixed;left:-9999px;top:0';
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta); return ok;
+    } catch(e) { return false; }
+  }
+  function compactPattern(pat){ return (pat||'').replace(/\s+/g,'').trim(); }
+  function compactItems(positions){
+    return positions.map(p => {
+      const pos = (p.pos||'').trim();
+      const raw = (p.items||'').trim();
+      if (!raw || raw === '—') return pos + ':—';
+      const items = raw.split(',').map(s=>s.trim()).filter(Boolean).join(',');
+      return pos + ':' + items;
+    }).join('|');
+  }
+  function mkBtn(text, orig, isFb) {
+      const cls = isFb ? 'copy-fb-btn' : 'float-btn';
+      return `<button class="${cls}" data-copy="${esc(text)}" data-orig="${orig}" type="button" title="Copy">${orig}</button>`;
+  }
+  rowEl.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.float-btn, .copy-fb-btn');
+    if (btn) {
+      e.preventDefault(); e.stopPropagation();
+      const text = btn.dataset.copy || '';
+      const ok = await copyToClipboard(text);
+      if (ok) {
+          const orig = btn.getAttribute('data-orig');
+          btn.innerHTML = '✅ ' + (L.copied || 'Copied');
+          btn.classList.add('copied');
+          setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 1000);
+      } else {
+          btn.innerHTML = '❌ ' + (L.copy_failed || 'Failed');
+          setTimeout(() => { btn.innerHTML = btn.getAttribute('data-orig'); }, 1000);
+      }
+      return;
+    }
+    const fbItem = e.target.closest('.fb-item:not(.dup)');
+    const ch = e.target.closest('.ch');
+    const patRow = e.target.closest('.pat-row');
+    const itemsList = e.target.closest('.items-list');
+    const isFbActive = fbItem ? fbItem.classList.contains('active') : false;
+    const isChActive = ch ? ch.classList.contains('active') : false;
+    const isPatActive = patRow ? patRow.classList.contains('active') : false;
+    const isItemsActive = itemsList ? itemsList.classList.contains('active') : false;
+    rowEl.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+    if (fbItem && !isFbActive) fbItem.classList.add('active');
+    else if (ch && !isChActive) ch.classList.add('active');
+    else if (patRow && !isPatActive) patRow.classList.add('active');
+    else if (itemsList && !isItemsActive) itemsList.classList.add('active');
+  });
+  function renderTopCol(top, patStr, itemStr, now, isLastMerch){
+    if(!top)return '<div class="fb-empty">'+esc(L.no_cand)+'</div>';
+    let patCls = 'pat';
+    if(top.type === 'actual') patCls = 'pat actual';
+    else if(top.type === 'bridge') patCls = 'pat bridge';
+    let h = '<div class="pat-row">' + mkBtn(patStr, 'S', false) +
+            '<div class="'+patCls+'">'+esc(top.pattern)+'</div></div>';
+    if (top.positions && top.positions.length) {
+      h += '<div class="items-list">' + mkBtn(itemStr, 'I', false);
+      for(const p of top.positions){
+        const hasItem = p.items && p.items !== '—';
+        const itHtml = hasItem ? esc(p.items) : '<span style="opacity:.35;font-style:italic">—</span>';
+        h += '<div class="pos"><span class="p">'+esc(p.pos)+'</span><span class="it">'+itHtml+'</span></div>';
+      }
+      h += '</div>';
+    }
+    let srcLabel = L.src;
+    if(top.type === 'actual') srcLabel = L.src_actual || '← actual slot';
+    else if(top.type === 'bridge') srcLabel = L.src_bridge || '← bridge from';
+    h += '<div class="src">'+esc(srcLabel)+' <b>'+top.source+'</b></div>';
+    const srcStr = String(top.source);
+    if (missingMap[srcStr] && top.source !== 'history' && top.type !== 'actual' && top.type !== 'bridge') {
+        const missTime = Date.parse(missingMap[srcStr]);
+        if (missTime < now) {
+            const missParts = getTimeParts(missingMap[srcStr], utc_offset);
+            const missDate = getFullDateStr(missingMap[srcStr], utc_offset);
+            h += `<div class="missing-warn">${L.missing_data_warn || '⚠️ <b>Dữ liệu gốc bị thiếu!</b> Dự đoán quy luật. Không có data tại '}${missDate} ${missParts.timeStr}</div>`;
+        }
+    }
+    if (isLastMerch) {
+      const topReasonTxt = formatCandMeta(top, top && top.type === 'actual');
+      if (topReasonTxt) {
+        h += '<div class="fb-hint" style="margin-top:8px;color:#7ab7ff">💡 ' + esc(topReasonTxt) + '</div>';
+      }
+    }
+    return h;
+  }
+  function renderFbCol(fallbacks, top, second){
+    if(top && top.type === 'actual'){
+      return '<div class="fb-title" style="color:#90ee90">✅ ACTUAL</div><div class="fb-empty" style="color:#90ee90;font-style:normal">'+esc(L.actual_hint||'Actual pattern from CSV')+'</div>';
+    }
+    if(top && top.type === 'bridge'){
+      return '<div class="fb-title" style="color:#8a7cff">🌉 BRIDGE</div><div class="fb-empty" style="color:#8a7cff;font-style:normal">'+esc(L.bridge_hint||'Predicted pattern (gap fill).')+'</div>';
+    }
+    if(!second && fallbacks.length === 0 && (!top || !top.duplicates || top.duplicates.length === 0)){
+      return '';
+    }
+    let h = '';
+    if (second) {
+      h += '<div class="fb-title" style="color:#ffd166">' + esc(L.top2_label || (L.fallback ? ('🥈 TOP 2 (' + L.fallback + ')') : '🥈 TOP 2')) + '</div>';
+      const checkPos = second.positions && second.positions.length ? second.positions[0] : {pos:'?',items:'—'};
+      const fbCopyStr = compactPattern(second.pattern) + '|' + compactItems([checkPos]);
+      const hasItem = checkPos.items && checkPos.items !== '—';
+      const itHtml = hasItem ? esc(checkPos.items) : '<span style="opacity:.35;font-style:italic">—</span>';
+      const reasonTxt = formatCandMeta(second, second.type === 'actual');
+      h += '<div class="fb-item top2">' + mkBtn(fbCopyStr, '📋', true) +
+           '<div class="fb-head">' +
+             '<span class="fb-reason">' + esc(reasonTxt) + '</span>' +
+           '</div>' +
+           '<div class="fb-pat">' + esc(second.pattern) + '</div>' +
+           '<div class="fb-hint">' + esc(L.check) + ' <b>' + esc(checkPos.pos) + '</b>: ' + itHtml + '</div>' +
+           '</div>';
+    }
+    if (fallbacks.length > 0) {
+      h += '<div class="fb-title" style="margin-top:' + (second ? '14px' : '0') + '">' + esc(L.fallback) + '</div>';
+      for (const f of fallbacks) {
+        const cls = 'fb-item' + (f.type === 'real' ? ' real' : '');
+        const reason = formatCandMeta(f, f.type === 'actual');
+        const checkPos = f.positions.length ? f.positions[0] : {pos:'?', items:'—'};
+        const fbCopyStr = compactPattern(f.pattern) + '|' + compactItems([checkPos]);
+        const hasItem = checkPos.items && checkPos.items !== '—';
+        const itHtml = hasItem ? esc(checkPos.items) : '<span style="opacity:.35;font-style:italic">—</span>';
+        h += '<div class="' + cls + '">' + mkBtn(fbCopyStr, '📋', true) +
+             '<div class="fb-head">' +
+             '<span class="fb-reason">' + esc(reason) + '</span></div><div class="fb-pat">' + esc(f.pattern) + '</div>' +
+             '<div class="fb-hint">' + esc(L.check) + ' <b>' + esc(checkPos.pos) + '</b>: ' + itHtml + '</div></div>';
+      }
+    }
+    if (top && top.duplicates && top.duplicates.length > 0) {
+      h += '<div class="fb-title" style="margin-top:10px;color:#90ee90">' + esc(L.reinforced) + '</div>';
+      for (const d of top.duplicates) {
+        h += '<div class="fb-item dup"><div class="fb-head">' +
+             '<span class="fb-reason" style="color:#888">' + esc(d.reason || ('phase ' + d.phases.join('/'))) + '</span></div>' +
+             '<div class="fb-hint" style="color:#888">' + esc(L.dup_hint) + '</div></div>';
+      }
+    }
+    return h;
+  }
+  function render(){
+    const now=Date.now();
+    let nextIdx = -1;
+    for(let i=0; i<data.length; i++){
+      if(Date.parse(data[i].iso) > now){ nextIdx = i; break; }
+    }
+    const bigIdx = (nextIdx === -1) ? 0 : nextIdx;
+    const n = data[bigIdx];
+    const t = Date.parse(n.iso);
+    const d = t - now;
+    if(n.is_actual){ bigEl.textContent = L.real_badge; bigEl.style.color = '#90ee90'; }
+    else if(n.is_bridge){ bigEl.textContent = L.bridge_badge; bigEl.style.color = '#8a7cff'; }
+    else { bigEl.textContent='⏱ '+fmt(d); bigEl.style.color=d<600000?'#ff6b6b':'#ffd166'; }
+    const top=n.top||{pattern:'?',positions:[],source:'?',type:'?'};
+    let icon = '🟡';
+    if(top.type === 'actual') icon = '✅';
+    else if(top.type === 'real') icon = '🟢';
+    else if(top.type === 'bridge') icon = '🌉';
+    const checkPos=top.positions.length?top.positions[0].pos:'?';
+    const nParts = getTimeParts(n.iso, utc_offset);
+    subEl.innerHTML=icon+' <b>Slot '+n.slot+'</b> · <b>'+esc(nParts.timeStr)+' ('+esc(nParts.dateStr)+')</b>'+
+      ' <span class="local">('+esc(n.hname)+' VN)</span>'+
+      ' · '+esc(L.check)+' <span style="color:#ff9e64;font-weight:700">'+esc(checkPos)+'</span>';
+    const endIdx = Math.min(5, data.length);
+    let html='';
+    for(let i=0; i<endIdx; i++){
+      const s=data[i], tt=Date.parse(s.iso), dd=tt-now;
+      const isNext = (i === bigIdx);
+      const isActual = s.is_actual;
+      const isBridge = s.is_bridge;
+      const isLastMerch = (Number(s.slot) % 4 === 0);
+      let cardCls='card'+(isNext?' next':'')+(dd<0?' past':'');
+      if(isActual) cardCls += ' actual';
+      else if(isBridge) cardCls += ' bridge';
+      const cdCls='cd'+(dd<0?' past':(dd<600000?' soon':''));
+      const top=s.top||{type:'?'};
+      let ic;
+      if(top.type === 'actual') ic = '✅';
+      else if(top.type === 'real') ic = '🟢';
+      else if(top.type === 'bridge') ic = '🌉';
+      else if(top.type === 'pred') ic = '🟡';
+      else ic = '⚪';
+      const sParts = getTimeParts(s.iso, utc_offset);
+      let tags='';
+      if(s.phase)tags+='<span class="tag phase">'+esc(s.phase)+'</span>';
+      if(!isLastMerch){
+        const topReasonTxt = formatCandMeta(s.top, isActual || (top && top.type === 'actual'));
+        if(topReasonTxt)tags+='<span class="tag reason">'+esc(topReasonTxt)+'</span>';
+      }
+      let cdDisplay;
+      if(isActual || isBridge){ cdDisplay = '<span class="'+cdCls+'">✓</span>'; }
+      else if(dd > 0){ cdDisplay = '<span class="'+cdCls+'">'+fmt(dd)+'</span>'; }
+      else { cdDisplay = '<span class="'+cdCls+'">✓</span>'; }
+      let strPat = compactPattern(top.pattern);
+      let strItems = (top.positions && top.positions.length) ? compactItems(top.positions) : '';
+      let strAll = strPat + (strItems ? '|' + strItems : '');
+      let topHtml = renderTopCol(s.top, strPat, strItems, now, isLastMerch);
+      let second = null;
+      let restFallbacks = s.fallbacks || [];
+      if (restFallbacks.length > 0) {
+          second = restFallbacks[0];
+          restFallbacks = restFallbacks.slice(1);
+      }
+      let fbContent = renderFbCol(restFallbacks, s.top, second);
+      let bodyHtml = '';
+      if (fbContent) {
+          bodyHtml = '<div class="body"><div class="top-col">'+topHtml+'</div><div class="fb-col">'+fbContent+'</div></div>';
+      } else {
+          bodyHtml = '<div class="body single"><div class="top-col">'+topHtml+'</div></div>';
+      }
+      html+='<div class="'+cardCls+'">' +
+        '<div class="ch">'+ mkBtn(strAll, 'T', false) +
+        '<div class="left">'+
+        '<span>'+ic+'</span><span class="slot">'+s.slot+'</span>'+
+        '<span class="time">'+esc(sParts.timeStr)+' ('+esc(sParts.dateStr)+')</span>'+
+        '<span class="local">('+esc(s.hname)+' VN)</span>'+tags+
+        '</div>'+cdDisplay+'</div>'+
+        bodyHtml + '</div>';
+    }
+    rowEl.innerHTML=html;
+  }
+  render();
+})();
+
+function formatOffsetFormula(off, cycle = 119) {
+  if (off === null || off === undefined || off === "" || Number.isNaN(Number(off))) return "";
+  const n = Number(off);
+  if (!Number.isInteger(n) || n <= 0) return `off=${n}`;
+  const k = Math.floor(n / cycle);
+  const rem = n - k * cycle;
+  if (k <= 0) return `${n}`;
+  if (rem === 0) return `${k}×${cycle} = ${n}`;
+  const sign = rem > 0 ? "+" : "-";
+  return `${k}×${cycle} ${sign} ${Math.abs(rem)} = ${n}`;
+}
+
+function formatCandMeta(cand, isActual = false) {
+  if (!cand) return "Không có lý do / chưa có ứng viên";
+  if (isActual || cand.type === "actual") return "Dữ liệu thật từ CSV (Actual)";
+  const baseReason = (cand.reason && String(cand.reason).trim())
+    || (cand.source !== undefined && cand.source !== null && String(cand.source).trim() !== ""
+        ? `Nguồn slot ${cand.source}`
+        : "Quy tắc dự đoán");
+  const formula = formatOffsetFormula(cand.offset, 119);
+  const srcPart = (cand.source !== undefined && cand.source !== null && String(cand.source).trim() !== "")
+    ? `src=${cand.source}`
+    : "";
+  return [baseReason, formula, srcPart].filter(Boolean).join(" · ");
+}
+</script>
