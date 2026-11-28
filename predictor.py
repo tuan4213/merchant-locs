@@ -71,13 +71,36 @@ def _get_cfg(key, default=None):
 
 REPO_NAME = "tuan4213/merchant-locs"
 
-try:
-    _WIDGET_TEMPLATE = (Path(__file__).parent / 'widget_template.html').read_text(encoding='utf-8')
-except (FileNotFoundError, NameError):
+_WIDGET_TEMPLATE_MTIME = None
+
+def _resolve_widget_template_path():
     try:
-        _WIDGET_TEMPLATE = Path('widget_template.html').read_text(encoding='utf-8')
-    except FileNotFoundError:
-        _WIDGET_TEMPLATE = None
+        p = Path(__file__).parent / 'widget_template.html'
+        if p.exists():
+            return p
+    except NameError:
+        pass
+    p2 = Path('widget_template.html')
+    return p2 if p2.exists() else None
+
+def get_widget_template():
+    global _WIDGET_TEMPLATE, _WIDGET_TEMPLATE_MTIME
+    p = _resolve_widget_template_path()
+    if p is None:
+        return _WIDGET_TEMPLATE
+    try:
+        mtime = p.stat().st_mtime
+    except OSError:
+        return _WIDGET_TEMPLATE
+    if _WIDGET_TEMPLATE is None or _WIDGET_TEMPLATE_MTIME != mtime:
+        try:
+            _WIDGET_TEMPLATE = p.read_text(encoding='utf-8')
+            _WIDGET_TEMPLATE_MTIME = mtime
+        except OSError:
+            pass
+    return _WIDGET_TEMPLATE
+
+_WIDGET_TEMPLATE = get_widget_template()
 
 _TS_CANDIDATES = ['timestamp', 'date', 'time', 'datetime', 'thời gian', 'ngày', 'ngay', 'when', 'posted']
 _USER_CANDIDATES = ['username', 'user', 'name', 'player', 'người dùng', 'nguoi dung', 'author', 'poster', 'sender']
@@ -1038,7 +1061,7 @@ def _fmt_phase_formula(slot, src_slot, phase_label):
 
 
 def build_widget_html(base_start_slot, offset_slots=0, n_ahead=12, lang="vi", utc_offset=7.0, missing_04=None):
-    if _WIDGET_TEMPLATE is None:
+    if get_widget_template() is None:
         return None
     from i18n import get_widget_text
     slots = []
@@ -1066,7 +1089,7 @@ def build_widget_html(base_start_slot, offset_slots=0, n_ahead=12, lang="vi", ut
         'real_now_slot': _now_slot,
         'offset_slots': offset_slots,
     }, ensure_ascii=False).replace('</', '<\\/')
-    return _WIDGET_TEMPLATE.replace('__P__', payload)
+    return get_widget_template().replace('__P__', payload)
 
 # ==============================================================================
 # PIPELINE (Full implementation)
