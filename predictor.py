@@ -71,6 +71,7 @@ def _get_cfg(key, default=None):
 
 REPO_NAME = "tuan4213/merchant-locs"
 
+_WIDGET_TEMPLATE = None
 _WIDGET_TEMPLATE_MTIME = None
 
 def _resolve_widget_template_path():
@@ -85,20 +86,23 @@ def _resolve_widget_template_path():
 
 def get_widget_template():
     global _WIDGET_TEMPLATE, _WIDGET_TEMPLATE_MTIME
+    cur = globals().get("_WIDGET_TEMPLATE")
     p = _resolve_widget_template_path()
     if p is None:
-        return _WIDGET_TEMPLATE
+        return cur
     try:
         mtime = p.stat().st_mtime
     except OSError:
-        return _WIDGET_TEMPLATE
-    if _WIDGET_TEMPLATE is None or _WIDGET_TEMPLATE_MTIME != mtime:
+        return cur
+    if cur is None or _WIDGET_TEMPLATE_MTIME != mtime:
         try:
-            _WIDGET_TEMPLATE = p.read_text(encoding='utf-8')
+            loaded = p.read_text(encoding='utf-8')
+            _WIDGET_TEMPLATE = loaded
             _WIDGET_TEMPLATE_MTIME = mtime
+            return loaded
         except OSError:
             pass
-    return _WIDGET_TEMPLATE
+    return cur
 
 _WIDGET_TEMPLATE = get_widget_template()
 
