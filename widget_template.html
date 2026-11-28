@@ -118,6 +118,22 @@
       return pos + ':' + items;
     }).join('|');
   }
+function formatDiscordItems(positions, fallbackStr) {
+  if (Array.isArray(positions) && positions.length > 0) {
+    const lines = positions.map(p => {
+      const pos = String(p.pos || '').trim();
+      const raw = String(p.items || '').trim();
+      if (!raw || raw === '—') return `${pos} : —`;
+      const items = raw.split(',').map(s => s.trim()).filter(Boolean).join(', ');
+      return `${pos} : ${items || '—'}`;
+    });
+    return '```\n' + lines.join('\n') + '\n```';
+  }
+  const s = String(fallbackStr || '').trim();
+  if (!s) return '';
+  if (s.startsWith('```') && s.endsWith('```')) return s;
+  return '```\n' + s + '\n```';
+}
   function mkBtn(text, orig, isFb) {
       const cls = isFb ? 'copy-fb-btn' : 'float-btn';
       return `<button class="${cls}" data-copy="${esc(text)}" data-orig="${orig}" type="button" title="Copy">${orig}</button>`;
@@ -161,7 +177,8 @@
     let h = '<div class="pat-row">' + mkBtn(patStr, 'S', false) +
             '<div class="'+patCls+'">'+esc(top.pattern)+'</div></div>';
     if (top.positions && top.positions.length) {
-      h += '<div class="items-list">' + mkBtn(itemStr, 'I', false);
+      const dcCopyStr = formatDiscordItems(top.positions, itemStr);
+      h += '<div class="items-list">' + mkBtn(dcCopyStr, 'I', false);
       for(const p of top.positions){
         const hasItem = p.items && p.items !== '—';
         const itHtml = hasItem ? esc(p.items) : '<span style="opacity:.35;font-style:italic">—</span>';
