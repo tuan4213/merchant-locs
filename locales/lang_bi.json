@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Orijinal data i mis!</b> Predik rule. No data long "
   },
   "other_languages_placeholder": "🌐 Olgeta narafala lanwis",
-  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
-  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
+  "default_baseline_summary": "Taem yu stap usum default baseline data: App ia i kakaem ol niufala standard dataset long remote source; sapos offline o i no stap, em i foldaon long ol local CSV files, i stretem timezones, mo i katemaot ol semsem ro tabol.",
+  "default_loader_summary": "Data loading summary: Em i skenem ol gudfala CSV files, i lukluk sapos i gat ol niu samting, i joenem ol rekod, mo i tekemaot ol semsem samting bifo prediksen (mo i stap usum cache blong reread gogo i kwiktaem moa)."
 }

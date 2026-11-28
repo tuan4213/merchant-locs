@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Data piitchuaq!</b> Rule prediction. Data piitchuq "
   },
   "other_languages_placeholder": "🌐 Atani uqautchit",
-  "default_baseline_summary": "Atani baseline data: App-ig utqiqtuq kiksruqtualuamik data-mik remote source-mit; offline-kpatun unaluunavailable-kpatun, utiqtuq local CSV file-nut, normalize-tlugu timezones, unalu deduplicate-tlugu rows.",
-  "default_loader_summary": "Data loading summary: Misigsuqtut CSV files, uqaqtut update-nut, katitirutit records, unalu deduplicate-tlugu entries prediction-atinnagu (cache-qaqhuni uuma-aluqtuq)."
+  "default_baseline_summary": "Default baseline data-mik atuglutigo: App-m tigusivik suli qulitruaq standard dataset-mik remote source-min; offline-pat kuvviupat pigiumanilu, local CSV files-nut utiruqtuq, timezones-nik normalise-iluni, rows-nilu deduplicate-iluni.",
+  "default_loader_summary": "Data loading summary: Valid CSV files scan-ilugit, updates qissutinik, records merge-ilugit, entries-nilu deduplicate-ilugit prediction sioranilu (cache-taqaqtuni fast reloads-nunt)."
 }

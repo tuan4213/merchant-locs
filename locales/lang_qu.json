@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Qallariy datos pisichkan!</b> Kamachiy watuy. Mana datos kanchu "
   },
   "other_languages_placeholder": "🌐 Huk simikuna",
-  "default_baseline_summary": "Sapaq baseline datukuna apasqa kaptinqa: Appqa karu pukyumanta musuq standard datukuna apamun; mana internet kaptinqa otaq mana tarikuptinqa, local CSV archiwukunamanmi kutin, horukunatataq tupachin, iskaylla kaq rafikunatataq qullun.",
-  "default_loader_summary": "Datukuna apamuy pisichiy: Allin CSV archiwukunata maskhan, musuqchasqakunata qawarin, huñun, manaraq willachkaspa iskaylla kaqkunata qullun (khuyaylla kaq cache nisqawan)."
+  "default_baseline_summary": "Sapaq baseline datata llamk'achispa: Appqa qhipaq kaq standard dataset nisqatam karumanta apamun; mana kachkaspaqa utaq mana tarikuspaqa, local CSV archivokunamanmi kutirin, tiempukunatataq allichan, chanta iskaychasqa filakunatapas qullunmi.",
+  "default_loader_summary": "Datakuna churasqamanta pisichay: Allin CSV archivokunatam qhawan, musuqchasqakunata maskan, registrokunatam huñun, chaymantataq mana iskaychasqa kananpaq ñawpaqman willaypaq qullun (cache nisqawanmi usqhaylla kutichinanpaq)."
 }

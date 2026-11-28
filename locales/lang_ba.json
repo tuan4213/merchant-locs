@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Dữ liệu gốc bị thiếu!</b> Dự đoán quy luật. Không có data tại "
   },
   "other_languages_placeholder": "🌐 Башҡа телдәр",
-  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
-  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
+  "default_baseline_summary": "Gandabki baseline data qullanhanda: App remote source-tan standard dataset-ty alyar, offline yä yullämağandö local CSV files-qa yörelä, timezones normalize itä, rows deduplicate itä.",
+  "default_loader_summary": "Data loading summary: Valid CSV files-ty tikşerä, yañartwlärdikh yarlay, records quşar, prediction aldından deduplicate itä (tizräg asıl ösöön cache menän)."
 }

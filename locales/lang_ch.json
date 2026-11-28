@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Fultan i dåton orijen!</b> Profecia ley. Tåya' dåto gi "
   },
   "other_languages_placeholder": "🌐 Otro na lengguåhe",
-  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
-  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
+  "default_baseline_summary": "Ku anai' usando i default baseline data: I app ha chule' i patgon standard dataset ginen i remote source; siña offline pat ti manåsu' yan ma'gas, humuyong gi local CSV files, ninasgas i timezones, ya ha chule' i manmå'gas na rows.",
+  "default_loader_summary": "Data loading summary: Ha diskribi i manmå'gue' CSV files, ha atan update, ha unidu i records, ya ha chule' i kopia antes di prediksion (con cache para mas kpahålu gi ta'lo)."
 }

@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Original data lasi!</b> Predict pattern. Data lasi at "
   },
   "other_languages_placeholder": "🌐 Hetu gado",
-  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
-  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
+  "default_baseline_summary": "Namo default baseline data karadia: App ese remote source amo latest standard dataset e abia; boma offline o handai lasi negedi, local CSV files eiaia, timezones e normalize-ia, bona rows e deduplicate-ia.",
+  "default_loader_summary": "Data loading summary: Valid CSV files e scan-ia, updates e tarataratia, records e merge-ia, bona entries e deduplicate-ia prediction gabe (cache danu reloads e hatuaia)."
 }

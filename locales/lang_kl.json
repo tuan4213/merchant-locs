@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Paasissutissat aallaqqaammut amigaatuupput!</b> Malittarisassat siulittorneqarput. Nassaassaangilaq ukunannga: "
   },
   "other_languages_placeholder": "🌐 Oqaatsit allat",
-  "default_baseline_summary": "Baseline-data aallussamik atorneqartillugu: App-ip remote source-mit data nutaanerpaaq aallarpaa; offline-immat imaluunniit pissarsiariuminaatsillugu, local CSV-file-nut uterpoq, nalunaaquttap akunneri naleqqussarpai, quppernerillu assigiiaartut peerlugit.",
-  "default_loader_summary": "Data loading summary: CSV-file-it atuuttut misissorpai, nutaanik misissorluni, nalunaarsukkat katillugit, siumoortumullu siuninnguatigut assigiiaartut peerlugit (cache atorlugu sukkanerusumik aallarteqqissinnaaniarlugu)."
+  "default_baseline_summary": "Nalunaarsuutit tunngaviusut aallerfigalugit: App-ip peerutsiarsimasumik standardimik aallerpoq; nittartakkaniarpalluunniit imaluunniit piuminarani, local CSV-nik atorpoq, nalunaaquttap akunneri naleqqussarlugit, amalu kukkunerit peersarlugit.",
+  "default_loader_summary": "Nalunaarsuutit ikissutit: CSV pitsaasut misissorpai, nutaanik misissuisarluni, ataatsimoortitsisarluni, amalu kukkunerit peersarlugit siulittuutit sioqqullugit (cache atorlugu sukkasuumik nutarterfigineqarnissaa)."
 }

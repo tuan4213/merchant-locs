@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Ũhoro wa kīambīrīria nĩ mwaga!</b> Kūratha mūhianīre. Gũtirĩ ūhoro harī"
   },
   "other_languages_placeholder": "🌐 Njoki ingĩ",
-  "default_baseline_summary": "Riria ugoretie data ya mbere: App irathii ikoya data njeru kuuma handu ha kure; kana iri offline kana tiyaoneka, iracooka kuri faili cia CSV cia ku handu, ikahunjia mahinda, na ikoruo na uthaka wa kurugamira.",
-  "default_loader_summary": "Uritanirio wa data: Igathaka faili cia CSV iria njeru, ikarieki maũndũ mameru, ikahaarania mbica, na ikoruo na uthaka wa kurugamira mbere ya utabiri (na caching niguo gwikira ihenya)."
+  "default_baseline_summary": "Riria ühuthagira icira cia mbere cia bata: App ictukia dataset ya thii ya gatagati kuuma handü hari küra; kana yari offline kana tiyaoneka, ihotithagia mahuti ma CSV ma gicigo, ihotithagia thigari cia thaa, na igacokia mĩoroto mĩiganu.",
+  "default_loader_summary": "Ündü wa kũpakia icira: Ĩcabagia mahuti ma CSV ma ma, ĩcungaga marũhu, ĩgacokaniria marigithano, na igacokia mĩoroto ya mĩthia mbere ya küringwo (na cache ya gũthiĩ na mĩako mĩesi)."
 }

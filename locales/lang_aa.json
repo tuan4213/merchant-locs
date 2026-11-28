@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Data keenni maqaane!</b> Kaxxaah madqa. Data mataa"
   },
   "other_languages_placeholder": "🌐 Afkal le",
-  "default_baseline_summary": "Default baseline data: App fetches latest standard dataset from remote source; if offline, uses local CSV, normalizes timezones, and deduplicates rows.",
-  "default_loader_summary": "Data loading summary: Scans valid CSV, checks updates, merges records, and deduplicates before prediction."
+  "default_baseline_summary": "Default baseline data kee marisa: App remote sourceh remote standard dataset abba, offline taamahama local CSV files kaata, timezones normalizee, is-data deduplicateeh.",
+  "default_loader_summary": "Data loading summary: Valid CSV files scannee, updates checkise, records mergeeh, prediction akah data deduplicateeh (cacheh leh faster reloads koh)."
 }

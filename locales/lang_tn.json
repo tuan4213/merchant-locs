@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Tshedimosetso ya ntlha e duile!</b> Bolelopele bo dirwa go ya ka melao. Ga go na data kwa "
   },
   "other_languages_placeholder": "🌐 Puo tse dingwe",
-  "default_baseline_summary": "Fa o dirisa data ya motheo e e tlwaelegileng: App e lata data ya bosheng e tswa kwa motsweding o o kgakala; fa e le gore ga e mo marang-rang kgapa ga e bonale, e boela kwa difaeleng tsa selegae tsa CSV, e tlhamalatsa nako, mme e fedisa mola o o boeletsweng.",
-  "default_loader_summary": "Kakanyo ya go laega data: E sekaseka difaeleng tsa CSV tse di siameng, e tlhola diphetogo, e kopanya ditshedimosetso, mme e tlosa tse di boeletsweng pele ga e bolelela pele (ka caching go potlakisa go laega gape)."
+  "default_baseline_summary": "Fa o dirisa data ya baseline ya tlwaelo: App e tsaya dataset e ntsha ya standard go tswa kwa motsweding wa kgole; fa e le gore ga e mo marang-rang kgotsa ga e bonale, e boela kwa difaeleng tsa CSV tsa gae, e baakanya mabaka a nako, mme e tlosa mela e e phetaphofetseng.",
+  "default_loader_summary": "Kakanyo ya go laela data: E sekaseka difaeleng tsa CSV tse di siameng, e lekola dintlha tse disha, e kopanya rekoto, mme e tlosaentries tse di phetaphofetseng pele ga bolelopele (ka caching go potlakisa go laela gape)."
 }

@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Fowt kedhlow dalleth!</b> Heolek patternt. Nyns eus kedhlow dhe "
   },
   "other_languages_placeholder": "🌐 Yethow erel",
-  "default_baseline_summary": "Pan úverys data baseline savonek: An app a dyght an dataset savonek diwettha dhiworth an pennfenten bell; mar kwytyys yn-dannlin po an arvow nag eus, ev a dry drugh dhe restrorow CSV leel, a furvyth tiredhow prys, hag a lett ow tretha linennow.",
-  "default_loader_summary": "Sommen karga data: Y skantlyn restrorow CSV ewn, y check diwedhow, y unnya covargyansow, hag y lett ow tretha Entrys kyns ragwirs (gans caching rag dasskarga moy skaffa)."
+  "default_baseline_summary": "Hlana usya data baseline lker: An app a wra kesകരa an dataset savonek diwettha a'n gvenn pel; mar ny vos argrik po an arghow ma, ev a fysk dhe restrennow CSV leel, ow restrni tisaor yeth, hag ow hestenni ranz.",
+  "default_loader_summary": "Sommen karga data: Ev a wra skanning restrennow CSV ewrek, checkya rag diwedhansow, kesunya recordys, hag ow hestenni entransow kyns a ragweler (gen kachya rag daskarga skaffa)."
 }

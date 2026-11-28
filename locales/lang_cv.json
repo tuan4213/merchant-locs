@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Тӗп даннӑйсем ҫук!</b> Йӗркелӗх прогнозе. Даннӑйсем ҫук вырӑн: "
   },
   "other_languages_placeholder": "🌐 Урӓр чӓлсем",
-  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
-  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
+  "default_baseline_summary": "Default baseline data усă курнă чухне: App remote source'ран стандартлă dataset'а илсе килет; offline е çук пулсан, local CSV files' çине куçать, timezones нормализацилет, rows тасатать.",
+  "default_loader_summary": "Data loading summary: Тĕрĕс CSV files тĕрĕслеет, çĕнетӳсене пăхать, records пĕрлештереет, prediction умĕн пĕр п<bos>2 хутчен килекенсене кăларса пăрахăçлать (cache усă курса хăвăртрах çĕнетме)."
 }

@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Gwayak data noondeshkam!</b> Inebadizid pattern. Gaawiin data "
   },
   "other_languages_placeholder": "🌐 Gwayak inaakonigewin",
-  "default_baseline_summary": "Gii-izhichiged data baseline: App owaabajitoon data gii-ozhibii'igan remote source; mii dash gaawiin wiigo ojaamisiin, gashkitoon gichi-CSV files, onizhishibii'igan timezones, mii dash gaa-gii-giishpinigaad rows.",
-  "default_loader_summary": "Data loading summary: Giigoonde CSV files, gwayak-waabandaan updates, miinigowizi records, mii dash giishpinigaad entries gii-zhichiged prediction (caching wiigi-waabandaan)."
+  "default_baseline_summary": "Jiwebi-inendamin aabajitooyan baseline data: App oodonan dashan standard dataset remote source-ing; kiigo offline gii dash unavailabli, gwayak ojibiiigan CSV files, e-izhichigaak timezone, mitigwewebinani gidaabikiwebinigan.",
+  "default_loader_summary": "Data loading summary: E-gikenindamook valid CSV files, e-waabindamook updates, e-nitaawichigaadak records, miinwaa e-mitigwewebinang entries bizon-prediction (cache-ig anishinaabe-reload)."
 }

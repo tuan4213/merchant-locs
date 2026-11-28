@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Missing data!</b> No data at "
   },
   "other_languages_placeholder": "🌐 Damer a ekakon",
-  "default_baseline_summary": "Ngame e tshi ngela baseline data: App e nwa dataset e pyu jen remote source; eji offline ak eji unavailable, e robedia jen local CSV files, normalize timezone, im deduplicate rows.",
-  "default_loader_summary": "Data loading summary: Scan valid CSV files, check update, merge records, im deduplicate entries nge prediction (kaba caching nge reload e pyu)."
+  "default_baseline_summary": "Ngame iyage data baseline: App e tsimin dataset standard meta ma remote source; ngame offline o unavailabli, e tsi local CSV files, normalizes timezones, me deduplicates rows.",
+  "default_loader_summary": "Data loading summary: E scans valid CSV files, checks updates, merges records, me deduplicates entries kaga prediction (mar caching kaga faster reloads)."
 }

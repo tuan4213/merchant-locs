@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Jire bayan bazine!</b> Lamar shimro. Na shimro bayan ba "
   },
   "other_languages_placeholder": "🌐 Suru gade",
-  "default_baseline_summary": "Default baseline data-yeul sayonghal ttae: App-i remote source-eseo choesin standard dataset-eul gajyeoomnida; offline-igeona sayonghal su eopseul ttae, local CSV file-uro dora-gago, timezone-eul jeonggyuhwahae, row-deul-eul jungbok-jegeohamnida.",
-  "default_loader_summary": "Data loading summary: Yuhyo-han CSV file-deul-eul seukaen-hago, update-eul hwakinhago, record-deul-eul byeonghap-hago, yetsuk-jeon-e hangmok-deul-eul jungbok-jegeohamnida (ppareun jaerod-eul wihae caching sayong)."
+  "default_baseline_summary": "Default baseline data nәrokko: App shәl sәrvәro rәmoti souroroko shәti standard dataset kolro; offline dәwo unavailabli dәwo, local CSV file kolro togi, timezone kolro normalizes kuro, row kolro deduplicates kuro.",
+  "default_loader_summary": "Data loading summary: Valid CSV file kolro scans kuro, updates checks kuro, records merges kuro, prediction yәrwo entry kolro deduplicates kuro (faster reloads yәrwo caching nәrshi)."
 }

@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Omahongero wombo mamazire!</b> Okusoka pattern. Kapena omahongero pa "
   },
   "other_languages_placeholder": "🌐 Omiraka jo",
-  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
-  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
+  "default_baseline_summary": "Ngee tjiwa default baseline data: App mai eta latest standard dataset kure kure; oove kuna internet orueete, mai ririva local CSV files, mai nomalize-ia timezones, na mai deduplicate-ia rows.",
+  "default_loader_summary": "Data loading summary: Mai scan-ia valid CSV files, mai konoke updates, mai merge-ia records, na mai deduplicate-ia entries pwa prediction (na cache mu maito reloads)."
 }

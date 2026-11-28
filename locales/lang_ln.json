@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Bikolo ya liboso ezangi!</b> Kolakisa liboso ya mibeko. Makambo ezali te na "
   },
   "other_languages_placeholder": "🌐 Mingomba misusu",
-  "default_baseline_summary": "Ntango ozali kosalela ba data ya ebandeli ya standard: App ezali kozwa dataset ya sika koleka na liziba ya mosika; soki ezali na internet te to ezali te, ezongi na ba farse ya CSV ya esika, ezali kobongola ba zone ya tango, mpe ezali kolongola ba nzela oyo ezongami.",
-  "default_loader_summary": "Kufina ya kolongola ba data: Ezali kotala ba farse ya CSV ya malamu, ezali kotalela ba nsoholo, ezali kobongola ba records, mpe ezali kolongola ba nzela liboso ya kosakola (na cache mpo na kozongisa noki)."
+  "default_baseline_summary": "Ntango ozali kosalela data ya baseline ya liboso: App ezwaka dataset ya sika ya standard uta na esika ya mosika; soki ezali offline to ezali te, ezongaka na ba-fichier CSV ya local, ezali konormaliza ba-timezone, mpe elongolaka ba-ligne oyo ezongani.",
+  "default_loader_summary": "Na mokuse ya kozongisa data: Ezali kotala ba-fichier CSV ya malamu, ezali kosehla soki ezali na sika, ezali kosangisa ba-enregistrement, mpe elongolaka ba-entrée oyo ezongani liboso ya kosakola (na caching mpo na kozongisa nokinoki)."
 }

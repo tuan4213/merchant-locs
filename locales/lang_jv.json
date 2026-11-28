@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Data asli kurang!</b> Prediksi aturan. Ora ana data ing "
   },
   "other_languages_placeholder": "🌐 Basa liyane",
-  "default_baseline_summary": "Nalika nggunakake data baseline standar: Aplikasi njupuk dataset standar paling anyar saka sumber jarak adoh; yen offline utawa ora kasedhiya, aplikasi bakal bali menyang file CSV lokal, nyelarasake zona wektu, lan ngilangi duplikat baris.",
-  "default_loader_summary": "Ringkesan muat data: Ngundhuh file CSV sing sah, mriksa nganyari, nggabungake cathetan, lan ngilangi duplikat sadurunge prediksi (kanthi caching supaya muat ulang luwih cepet)."
+  "default_baseline_summary": "Nalika nggunakake data dhasar standar: Aplikasi njupuk dataset standar paling anyar saka sumber jarak jauh; yen luring utawa ora kasedhiya, aplikasi bakal bali menyang file CSV lokal, nggampangake zona wektu, lan ngilangi baris sing padha.",
+  "default_loader_summary": "Ringkesan muat data: Mriksa file CSV sing valid, mriksa nganyari, nggabungake cathetan, lan ngilangi entri dobel sadurunge prediksi (kanthi cache supaya luwih cepet dimuat maneh)."
 }

@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>ངོ་མའི་གནས་སྡུད་ ཆད་འདུག!</b> ཚོད་དཔག་ པེ་ཊརན། གནས་སྡུད་མིན་འདུག་ ས་གནས "
   },
   "other_languages_placeholder": "🌐 ཁ་སྐད་གཞན།",
-  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
-  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
+  "default_baseline_summary": "སྔོན་སྒྲིག་གཞི་རྟེན་ གནས་སྡུད་ལག་ལེན་འཐབ་སྐབས།: འཕྲུལ་རྟ་འདི་གིས་ ཐག་རིང་ཁུངས་ནས་ གསར་ཤོས་ཀྱི་ཚད་ལྡན་གཞི་སྡུད་ཆ་ཚན་ལེན་འོང་། ཨོཕ་ལིན་ཡང་ན་མི་འཐོབ་པ་ཅིན་ ཉེ་གནས་ CSV ཡིག་སྣོད་ཚུ་ལུ་བརྟེན་ཏེ་ དུས་ཚེས་ཁུག་མཉམ་སྒྲིག་དང་ གཅིག་མཚུངས་མེད་པ་བཟོ་འོང་།",
+  "default_loader_summary": "གནས་སྡུད་མངོན་གསལ་བསྡོམས་དོན།: ནུས་ལྡན་ CSV ཡིག་སྣོད་ཚུ་ ཞིབ་འཚོལ་འབད་དེ་ དུས་མཐུན་ཞིབ་དཔྱད་དང་  રેކོརཌ་ཚུ་ཟླ་བསྒྲིལ་རྐྱབ་སྟེ། ཚོད་དཔག་མ་འབད་གོང་དུ་ གཅིག་མཚུངས་མེད་པ་བཟོ་འོང་།"
 }

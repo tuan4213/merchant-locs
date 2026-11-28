@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Jɛgɛ lamini teli ma bɛ!</b> Ka ɲɛfɛli don. Sɛbɛni tɛ yen"
   },
   "other_languages_placeholder": "🌐 Kalan wɛrɛw",
-  "default_baseline_summary": "When using default baseline data: The app fetches the latest standard dataset from the remote source; if offline or unavailable, it falls back to local CSV files, normalizes timezones, and deduplicates rows.",
-  "default_loader_summary": "Data loading summary: Scans valid CSV files, checks for updates, merges records, and deduplicates entries before prediction (with caching for faster reloads)."
+  "default_baseline_summary": "Default baseline data ka baarakɛli tuma: App ye standard dataset labɛnbilen ta remote source la; ni a ye offline walima a ma sɔrɔ, a bɛ segin local CSV fiilw kan, ka timezones ladɔn, ka rows minɛn minɛn.",
+  "default_loader_summary": "Data loading summary: CSV fiil ɲɛtaa wɛrɛw sɛgɛsɛgɛli, kɛnɛw ɲini, records lajɛli, ani kɔnɔko labɛn fɔlɔ (ka cache baarakɛ walasa ka sigili jɔ ɲɛ)."
 }

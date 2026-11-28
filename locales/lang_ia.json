@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Data original mancante!</b> Prediction de regula. Nulle data a "
   },
   "other_languages_placeholder": "🌐 Altres linguas",
-  "default_baseline_summary": "Quando usa datos de base predefinite: Le app recipe le ultime conjunto de datos standard ab le fonte remote; si illo es foras de linea, illo usa files CSV local, normalisa zonas de tempore, e remove duplicatos.",
-  "default_loader_summary": "Sumario de karga de datos: Scanna files CSV valide, verifica actualisationes, funde registros, e remove duplicatos ante prediction (con cache pro recargas plus rapide)."
+  "default_baseline_summary": "Quando usa le datos de base predefinite: Le application prende le ultime conjunto de datos standard ab le fonte remote; si illo es foras de linea o non disponibile, illo retorna al files CSV local, normaliza le fusos horari, e deduplica le lineas.",
+  "default_loader_summary": "Summario de karga de datos: Scanna files CSV valide, verifica actualisationes, funde registros, e deduplica entratas ante le predition (con cache pro recargas plus rapide)."
 }

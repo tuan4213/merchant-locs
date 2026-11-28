@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Data repakutanga riri kushayikwa!</b> Kufembera mitemo. Hapana data pa "
   },
   "other_languages_placeholder": "🌐 Mimwe mitauro",
-  "default_baseline_summary": "Paunenge uchishandisa data yekutanga yakajairika: App inotora data itsva kubva kure; kana pasina internet kana isipo, inoshandisa mafaera eCSV ari pafoni, inogadzirisa nguva, uye inobvisa mitsara inodzokororwa.",
-  "default_loader_summary": "Pfupiso yekuisa data: Inotarisa mafaera eCSV akakodzera, inotarisa zvekare, inobatanidza marekodhi, uye inobvisa zvakadzokororwa pamberi pekufanotaura (ine caching yekukurumidza kurodha zvakare)."
+  "default_baseline_summary": "Paunoshandisa default baseline data: App inatora dataset nyowani kubva kure; kana iri offline kana isipo, inodzokera kumafaira eCSV emunharaunda, inogadzirisa matunzwe enguva, uye inobvisa mitsara inodzokororwa.",
+  "default_loader_summary": "Pfupiso yekodha data: Inotarisa mafaira eCSV anoshanda, inotarisa zvitsva, inobatanidza zvinyorwa, uye inobvisa zvakadzokororwa pamberi pezviratidzo (ine caching yekurodha nekukurumidza)."
 }

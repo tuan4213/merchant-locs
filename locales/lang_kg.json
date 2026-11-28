@@ -86,6 +86,6 @@
     "missing_data_warn": "⚠️ <b>Bikuma ya yantikulu mebika!</b> Mvitasu ya mambu. Bikuma kele ve na "
   },
   "other_languages_placeholder": "🌐 Minkoko ya nkaka",
-  "default_baseline_summary": "Ntangu ke sadila ba data ya baseline ya luyantiku: App ke baka dataset ya kuswaswisa ya mpa na kisina ya yule; kana yo kele ve na ntaneti to na nzila ve, yo ke vutukila ba fyele ya CSV ya kisika, ke songisa ba zone ya ntangu, mpe ke katula ba lendi.",
-  "default_loader_summary": "Kufina ya kuluta ya data: Ke tala ba fyele ya CSV ya mbote, ke tala ba nsokolo, ke vukisa ba nzila, mpe ke katula ba lendi na ntwala ya kusakula (ti cache sambu na kuluta nswalu)."
+  "default_baseline_summary": "Ntangu yandi ke sadila banzong ya ntete ya metulama: App ke botula nkanda ya mpa ya nene na kisika ya yinda; kana ke na internet ve to kele ve, yandi ke vutukila babuku ya CSV ya kisika, yandi ke yidika ntangu ya ntsi, mpe yandi ke katula banzaka yina ke zinga.",
+  "default_loader_summary": "Kufidila mambu ya kunata mambu: Yandi ke tala babuku ya CSV ya mbote, yandi ke tala mambu ya mpa, yandi ke kabula mikanda, mpe yandi ke katula banzaka na ntwala ya kusakula (ti cache na kati sambu na kuvutukila nswalu)."
 }
